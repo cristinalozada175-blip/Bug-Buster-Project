@@ -24,15 +24,15 @@ body.page-admin {
   margin: 0;
   min-height: 100vh;
   line-height: 1.5;
-  display: grid;
+  /*display: grid;
   grid-template-columns: var(--a-sidebar-w) minmax(0, 1fr);
-  grid-template-areas: "side main";
+  grid-template-areas: "side main";*/
 }
 
 .page-admin *, .page-admin *::before, .page-admin *::after { box-sizing: border-box; }
 
 /* ---------- Sidebar / navigation ---------- */
-.page-admin .admin-sidebar,
+/*.page-admin .admin-sidebar,
 .page-admin > nav,
 .page-admin > header {
   grid-area: side;
@@ -97,7 +97,7 @@ body.page-admin {
 }
 
 .page-admin nav li:last-child a { color: var(--a-berry); }
-.page-admin nav li:last-child a:hover { background: #F7DDD6; }
+.page-admin nav li:last-child a:hover { background: #F7DDD6; }*/
 
 .page-admin a:focus-visible,
 .page-admin button:focus-visible,
@@ -111,7 +111,7 @@ body.page-admin {
 /* ---------- Main content ---------- */
 .page-admin main,
 .page-admin .admin-main {
-  grid-area: main;
+  /*grid-area: main;*/
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
@@ -380,17 +380,17 @@ body.page-admin {
 
 @media (max-width: 800px) {
   body.page-admin {
-    grid-template-columns: 1fr;
-    grid-template-areas: "side" "main";
+    /*grid-template-columns: 1fr;
+    grid-template-areas: "side" "main";*/
   }
 
   .page-admin .admin-sidebar,
   .page-admin > nav,
   .page-admin > header {
-    position: static;
+    /*position: static;
     height: auto;
     border-right: 0;
-    border-bottom: 3px solid var(--a-line);
+    border-bottom: 3px solid var(--a-line);*/
   }
 
   .page-admin nav ul { grid-auto-flow: column; grid-auto-columns: max-content; overflow-x: auto; padding-bottom: 4px; }
