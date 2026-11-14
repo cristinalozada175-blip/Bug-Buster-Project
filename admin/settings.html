@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Settings | Python Garden Admin</title>
+  <meta name="description" content="System settings, preferences, and configuration for Python Garden Admin.">
+  <link rel="icon" href="data:,">
+
+  <!-- ===== Google Fonts ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Pixelify+Sans:wght@500;700&display=swap" 
+    rel="stylesheet"
+  >
+
+  <!-- ===== Stylesheets ===== -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/pixel.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/settings.css">
+</head>
+<body data-role="admin" data-page="settings" class="page-admin">
+
+  <!-- ===== HEADER / NAVIGATION ===== -->
+  <header class="admin-header" id="app-nav">
+    <div class="container land-top">
+      <a href="dashboard.html" class="px-nav__brand" aria-label="Python Garden Admin — Go to Dashboard">
+        <span class="pixel-icon" aria-hidden="true">🌱</span>
+        Python Garden
+      </a>
+
+      <nav aria-label="Admin main navigation">
+        <ul class="nav-links-inline row">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="users.html">Gardeners</a></li>
+          <li><a href="lessons.html">Levels</a></li>
+          <li><a href="shops.html">Shop</a></li>
+          <li><a href="settings.html" class="active" aria-current="page">Settings</a></li>
+          <li class="nav-logout"><a href="#" id="btn-logout">Log Out</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="page-main" id="main-content">
+
+    <!-- ========== PAGE HEADER ========== -->
+    <div class="page-head">
+      <div class="head-left">
+        <h1>⚙️ Settings</h1>
+        <p class="page-subtitle">Manage system preferences, account, and server configuration</p>
+        <p class="current-date" id="current-date">— Loading date —</p>
+      </div>
+      <div class="head-actions">
+        <button class="px-btn px-btn--primary px-btn--small" id="btn-save-all">💾 Save All Changes</button>
+      </div>
+    </div>
+
+    <!-- ========== SETTINGS TABS ========== -->
+    <div class="settings-tabs">
+      <button class="tab-btn active" data-tab="general">🌿 General</button>
+      <button class="tab-btn" data-tab="account">👤 Account</button>
+      <button class="tab-btn" data-tab="server">🌐 Server</button>
+      <button class="tab-btn" data-tab="notifications">🔔 Notifications</button>
+      <button class="tab-btn" data-tab="advanced">⚡ Advanced</button>
+    </div>
+
+    <!-- ========== TAB CONTENT ========== -->
+    <div class="tab-content-wrapper">
+      
+      <!-- === GENERAL SETTINGS === -->
+      <section class="tab-content active" id="tab-general">
+        <div class="admin-grid">
+          <div class="px-card">
+            <div class="card-header">
+              <h2>🎨 Appearance & Theme</h2>
+            </div>
+            <div class="form-group">
+              <label for="site-name">Site Name</label>
+              <input type="text" id="site-name" class="form-input" value="Python Garden" data-save="true">
+            </div>
+            <div class="form-group">
+              <label for="theme-mode">Color Mode</label>
+              <select id="theme-mode" class="form-select" data-save="true">
+                <option value="light" selected>☀️ Light Mode</option>
+                <option value="dark">🌙 Dark Mode</option>
+                <option value="auto">🔄 Auto (System)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="animations-enable" checked data-save="true">
+                Enable animations & transitions
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="compact-view" data-save="true">
+                Compact view mode
+              </label>
+            </div>
+          </div>
+
+          <div class="px-card">
+            <div class="card-header">
+              <h2>🌍 Regional & Language</h2>
+            </div>
+            <div class="form-group">
+              <label for="language">Language</label>
+              <select id="language" class="form-select" data-save="true">
+                <option value="en" selected>🇬🇧 English</option>
+                <option value="tl">🇵🇭 Tagalog</option>
+                <option value="es">🇪🇸 Spanish</option>
+                <option value="zh">🇨🇳 Chinese</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="timezone">Timezone</label>
+              <select id="timezone" class="form-select" data-save="true">
+                <option value="utc+8" selected>🕐 UTC+8 — Manila, PH</option>
+                <option value="utc">🕐 UTC — Coordinated Universal Time</option>
+                <option value="utc+7">🕐 UTC+7 — Jakarta, Indonesia</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="date-format">Date Format</label>
+              <select id="date-format" class="form-select" data-save="true">
+                <option value="mdy">MM/DD/YYYY</option>
+                <option value="dmy" selected>DD/MM/YYYY</option>
+                <option value="ymd">YYYY-MM-DD</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- === ACCOUNT SETTINGS === -->
+      <section class="tab-content" id="tab-account">
+        <div class="admin-grid">
+          <div class="px-card">
+            <div class="card-header">
+              <h2>👤 Admin Profile</h2>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="admin-first">First Name *</label>
+                <input type="text" id="admin-first" class="form-input" placeholder="Enter first name" data-save="true" required>
+              </div>
+              <div class="form-group">
+                <label for="admin-last">Last Name *</label>
+                <input type="text" id="admin-last" class="form-input" placeholder="Enter last name" data-save="true" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="admin-email">Email Address *</label>
+              <input type="email" id="admin-email" class="form-input" placeholder="admin@pythongarden.com" data-save="true" required>
+            </div>
+            <div class="form-group">
+              <label for="admin-role">Account Role</label>
+              <input type="text" id="admin-role" class="form-input" value="Super Administrator" readonly>
+              <small class="form-hint">Role cannot be changed here</small>
+            </div>
+          </div>
+
+          <div class="px-card">
+            <div class="card-header">
+              <h2>🔐 Security</h2>
+            </div>
+            <div class="form-group">
+              <label for="current-password">Current Password</label>
+              <input type="password" id="current-password" class="form-input" placeholder="••••••••">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password" class="form-input" placeholder="Min. 8 characters">
+              </div>
+              <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" class="form-input" placeholder="Repeat new password">
+              </div>
+            </div>
+            <button class="px-btn px-btn--primary px-btn--small" id="btn-change-pass">🔑 Update Password</button>
+            
+            <hr class="divider">
+            
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="two-factor-enable" data-save="true">
+                Enable Two-Factor Authentication (2FA)
+              </label>
+            </div>
+            <button class="px-btn px-btn--ghost px-btn--small" id="btn-sessions">📋 View Active Sessions</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- === SERVER SETTINGS === -->
+      <section class="tab-content" id="tab-server">
+        <div class="admin-grid">
+          <div class="px-card">
+            <div class="card-header">
+              <h2>🌐 API & Database Connection</h2>
+              <span class="connection-status" id="server-status-indicator">
+                <span class="status-dot status-checking"></span> Checking...
+              </span>
+            </div>
+            <div class="form-group">
+              <label for="api-base-url">API Base URL</label>
+              <input type="url" id="api-base-url" class="form-input" placeholder="https://api.pythongarden.com/v1" data-save="true">
+            </div>
+            <div class="form-group">
+              <label for="db-host">Database Host</label>
+              <input type="text" id="db-host" class="form-input" placeholder="localhost" data-save="true">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="db-port">Port</label>
+                <input type="number" id="db-port" class="form-input" value="5432" data-save="true">
+              </div>
+              <div class="form-group">
+                <label for="db-name">Database Name</label>
+                <input type="text" id="db-name" class="form-input" placeholder="pythongarden_db" data-save="true">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="api-key">API Key</label>
+              <input type="password" id="api-key" class="form-input" placeholder="••••••••••••••••" data-save="true">
+              <button type="button" class="btn-icon btn-toggle-visibility" id="toggle-api-key" title="Show/Hide">👁️</button>
+            </div>
+            <div class="button-group">
+              <button class="px-btn px-btn--ghost px-btn--small" id="btn-test-conn">🔗 Test Connection</button>
+              <button class="px-btn px-btn--primary px-btn--small" id="btn-save-conn">💾 Save Settings</button>
+            </div>
+          </div>
+
+          <div class="px-card">
+            <div class="card-header">
+              <h2>📊 System Information</h2>
+            </div>
+            <div class="info-list">
+              <div class="info-row">
+                <span class="info-label">Server Status</span>
+                <span class="info-value" id="info-server-status">—</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Last Sync</span>
+                <span class="info-value" id="info-last-sync">—</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Database</span>
+                <span class="info-value" id="info-db-ver">PostgreSQL 15.0</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Environment</span>
+                <span class="info-value badge badge-dev">Development</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Cache Status</span>
+                <span class="info-value" id="info-cache">Ready</span>
+              </div>
+            </div>
+            <hr class="divider">
+            <div class="danger-zone">
+              <h3>⚠️ Danger Zone</h3>
+              <p>These actions are irreversible. Proceed with caution.</p>
+              <button class="px-btn px-btn--danger px-btn--small" id="btn-clear-cache">🧹 Clear All Cache</button>
+              <button class="px-btn px-btn--danger px-btn--small" id="btn-reset-data">🗑️ Reset Demo Data</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- === NOTIFICATIONS === -->
+      <section class="tab-content" id="tab-notifications">
+        <div class="admin-grid">
+          <div class="px-card">
+            <div class="card-header">
+              <h2>🔔 Alert Preferences</h2>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="notify-new-user" checked data-save="true">
+                New Gardener sign-up notification
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="notify-completion" checked data-save="true">
+                Lesson completion milestones
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="notify-system" checked data-save="true">
+                System updates & maintenance alerts
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="notify-reports" data-save="true">
+                Weekly summary reports via email
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="notify-sound" checked data-save="true">
+                Enable sound notifications
+              </label>
+            </div>
+          </div>
+
+          <div class="px-card">
+            <div class="card-header">
+              <h2>📧 Email Settings</h2>
+            </div>
+            <div class="form-group">
+              <label for="email-from">Sender Email</label>
+              <input type="email" id="email-from" class="form-input" placeholder="no-reply@pythongarden.com" data-save="true">
+            </div>
+            <div class="form-group">
+              <label for="email-frequency">Report Frequency</label>
+              <select id="email-frequency" class="form-select" data-save="true">
+                <option value="daily">Daily</option>
+                <option value="weekly" selected>Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="off">Off</option>
+              </select>
+            </div>
+            <button class="px-btn px-btn--ghost px-btn--small" id="btn-test
