@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Shop — Python Garden Admin</title>
+  <meta name="description" content="Garden Shop — Manage items available for purchase">
+  <link rel="icon" href="data:,">
+
+  <!-- ===== Google Fonts ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Pixelify+Sans:wght@500;700&display=swap" 
+    rel="stylesheet"
+  >
+
+  <!-- ===== Stylesheets ===== -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/pixel.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/shops.css">
+</head>
+<body data-role="admin" data-page="shop" class="page-admin">
+
+  <!-- ===== HEADER / NAVIGATION — ✅ Same as Dashboard ===== -->
+  <header class="admin-header" id="app-nav">
+    <div class="container land-top">
+      <a href="dashboard.html" class="px-nav__brand" aria-label="Python Garden Admin — Go to Dashboard">
+        <span class="pixel-icon" aria-hidden="true">🌱</span>
+        Python Garden
+      </a>
+
+      <nav aria-label="Admin main navigation">
+        <ul class="nav-links-inline row">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="users.html">Gardeners</a></li>
+          <li><a href="lessons.html">Levels</a></li>
+          <li><a href="shops.html" class="active" aria-current="page">Shop</a></li>
+          <li><a href="settings.html">Settings</a></li>
+          <li class="nav-logout"><a href="#">Log Out</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="page-main" id="main-content">
+
+    <!-- ========== PAGE HEADER ========== -->
+    <div class="page-head">
+      <div class="head-left">
+        <h1>🛍️ Garden Shop</h1>
+        <p class="page-subtitle">Manage items available for Gardeners to buy using their Seeds</p>
+        <p class="current-date" id="current-date">— Loading date —</p>
+      </div>
+      <div class="head-actions">
+        <button class="px-btn px-btn--primary px-btn--small" id="btn-add-item">➕ Add New Item</button>
+        <button class="px-btn px-btn--ghost px-btn--small">📋 Export List</button>
+      </div>
+    </div>
+
+    <!-- ========== QUICK STATS ========== -->
+    <div class="quick-stats">
+      <div class="stat-item">
+        <span class="stat-icon">📦</span>
+        <div>
+          <p class="stat-label">Total Items</p>
+          <p class="stat-value" id="total-items">8</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">🌱</span>
+        <div>
+          <p class="stat-label">Seeds</p>
+          <p class="stat-value" id="seed-count">4</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">🔧</span>
+        <div>
+          <p class="stat-label">Tools</p>
+          <p class="stat-value" id="tool-count">1</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">🎀</span>
+        <div>
+          <p class="stat-label">Decor</p>
+          <p class="stat-value" id="decor-count">3</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">✅</span>
+        <div>
+          <p class="stat-label">Active</p>
+          <p class="stat-value" id="active-count">8</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== FILTER & SEARCH ========== -->
+    <div class="filter-bar">
+      <div class="filter-left">
+        <label>Category:</label>
+        <select class="px-select px-select--small" id="filter-category">
+          <option value="all">All Categories</option>
+          <option value="seed">🌱 Seeds</option>
+          <option value="tool">🔧 Tools</option>
+          <option value="decor">🎀 Decorations</option>
+        </select>
+        <label>Status:</label>
+        <select class="px-select px-select--small" id="filter-status">
+          <option value="all">All Status</option>
+          <option value="active" selected>✅ Active</option>
+          <option value="inactive">⏸️ Hidden</option>
+        </select>
+      </div>
+      <div class="filter-right">
+        <input type="text" id="search-items" class="form-input" placeholder="🔍 Search items...">
+      </div>
+    </div>
+
+    <!-- ========== ITEMS TABLE — ✅ Maayos na Table Layout ========== -->
+    <section class="px-card" aria-labelledby="shop-table-h">
+      <div class="card-header">
+        <h2 id="shop-table-h">📋 Items Available for Purchase</h2>
+        <span class="card-note">Prices in 🌱 Seeds</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="shop-table">
+          <thead>
+            <tr>
+              <th class="col-icon">Icon</th>
+              <th class="col-name">Item Name</th>
+              <th class="col-category">Category</th>
+              <th class="col-price">Price</th>
+              <th class="col-desc">Description</th>
+              <th class="col-status">Status</th>
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="shop-items-body">
+            <!-- Seeds Category -->
+            <tr data-category="seed" data-status="active">
+              <td class="col-icon">🌻</td>
+              <td class="col-name"><strong>Sunflower Seed</strong></td>
+              <td><span class="tag tag-seed">Seed</span></td>
+              <td class="col-price">🌱 20</td>
+              <td class="col-desc">Bright and cheerful sunflower. Grows tall and strong!</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td class="col-actions">
+                <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                <button class="btn-icon btn-hide" title="Hide">👁️</button>
+                <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+              </td>
+            </tr>
+            <tr data-category="seed" data-status="active">
+              <td class="col-icon">🍄</td>
+              <td class="col-name"><strong>Mushroom Spore</strong></td>
+              <td><span class="tag tag-seed">Seed</span></td>
+              <td class="col-price">🌱 25</td>
+              <td class="col-desc">Grows in shady, damp corners of your garden.</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td class="col-actions">
+                <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                <button class="btn-icon btn-hide" title="Hide">👁️</button>
+                <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+              </td>
+            </tr>
+            <tr data-category="seed" data-status="active">
+              <td class="col-icon">🌷</td>
+              <td class="col-name"><strong>Tulip Bulb</strong></td>
+              <td><span class="tag tag-seed">Seed</span></td>
+              <td class="col-price">🌱 30</td>
+              <td class="col-desc">Beautiful tulips in springtime colors.</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td class="col-actions">
+                <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                <button class="btn-icon btn-hide" title="Hide">👁️</button>
+                <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+              </td>
+            </tr>
+            <tr data-category="seed" data-status="active">
+              <td class="col-icon">🌵</td>
+              <td class="col-name"><strong>Cactus Sprout</strong></td>
+              <td><span class="tag tag-seed">Seed</span></td>
+              <td class="col-price">🌱 35</td>
+              <td class="col-desc">Tough and low-maintenance. Perfect for busy gardeners!</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td class="col-actions">
+                <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                <button class="btn-icon btn-hide" title="Hide">👁️</button>
+                <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+              </td>
+            </tr>
+            
+            <!-- Tools Category -->
+            <tr data-category="tool" data-status="active">
+              <td class="col-icon">💧</td>
+              <td class="col-name"><strong>Watering Can</strong></td>
+              <td><span class="tag tag-tool">Tool</span></td>
+              <td class="col-price">🌱 40</td>
+              <td class="col-desc">Essential tool — keeps your plants hydrated and happy!</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td class="col-actions">
+                <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                <button class="btn-icon btn-hide" title="Hide">👁️</button>
+                <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+              </td>
+            </tr>
+            
+            <!-- Decorations Category -->
+            <tr data-category="decor" data-status="active">
+              <td class="col-icon">🪵</td>
+              <td class="col-name"><strong>Picket Fence</strong></td>
+              <td><span class="tag tag-decor">Decor</span></td>
+              <td class="col-price">🌱 50</td>
+              <td class="col-desc">Classic wooden fence. Keeps your garden neat and cozy.</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td class="col-actions">
+                <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                <button class="btn-icon btn-hide" title="Hide">👁️</button>
+                <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+              </td>
+            </tr>
+            <tr data-category="decor" data-status="active">
+              <td class="col-icon">🏮</td>
+              <td class="col-name"><strong>Garden Lantern</strong></td>
+              <td><span class="tag tag-decor">Decor</span></td>
+              <td class="col-price">🌱 60</td>
+              <td class="col-desc">Warm, glowing light for evening garden strolls.</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td class="col-actions">
+                <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                <button class="btn-icon btn-hide" title="Hide">👁️</button>
+                <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+              </td>
+            </tr>
+            <tr data-category="decor" data-status="active">
+              <td class="col-icon">🌊</td>
+              <td class="col-name"><strong>Lily Pond</strong></td>
+              <td><span class="tag tag-decor">Decor</span></td>
+              <td class="col-price">🌱 80</td>
+              <td class="col-desc">Serene water feature with floating lilies.</td>
+              <td><span class="status-badge status-active">Active</span></td>
+              <td class="col-actions">
+                <button class="btn-icon btn-edit" title="Edit">✏️</button>
+                <button class="btn-icon btn-hide" title="Hide">👁️</button>
+                <button class="btn-icon btn-delete" title="Delete">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ========== STATUS BAR ========== -->
+    <section class="status-bar">
+      <div class="status-group">
+        <span class="status-dot status-online"></span>
+        <span class="status-label">Server Status:</span>
+        <span class="status-value">Connected</span>
+      </div>
+      <div class="status-group">
+        <span class="status-label">Last Sync:</span>
+        <span class="status-value" id="last-sync">—</span>
+      </div>
+      <div class="status-actions">
+        <button class="px-btn px-btn--ghost px-btn--small">🧹 Clear Cache</button>
+        <button class="px-btn px-btn--primary px-btn--small">🔗 Sync Now</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="admin-footer">
+    <p>🌿 Python Garden Admin &mdash; Shop Management</p>
+  </footer>
+
+  <!-- ===== JavaScript ===== -->
+  <script>
+    // Current Date
+    document.addEventListener('DOMContentLoaded', () => {
+      const dateEl = document.getElementById('current-date');
+      const now = new Date();
+      dateEl.textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      
+      // Last Sync Time
+      const syncEl = document.getElementById('last-sync');
+      syncEl.textContent = now.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+    });
+  </script>
+</body>
+</html>
