@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Gardeners | Python Garden Admin</title>
+  <meta name="description" content="Manage registered Python Garden users — view, search, filter, and edit accounts.">
+  <link rel="icon" href="data:,">
+
+  <!-- ===== Google Fonts ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Pixelify+Sans:wght@500;700&display=swap" 
+    rel="stylesheet"
+  >
+
+  <!-- ===== Stylesheets ===== -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/pixel.css">
+  <link rel="stylesheet" href="../css/game.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/users.css">
+  <link rel="stylesheet" href="../css/shops.css">
+</head>
+<body data-role="admin" data-page="users" class="page-admin">
+
+  <!-- ===== HEADER / NAVIGATION ===== -->
+  <header class="admin-header" id="app-nav">
+    <div class="container land-top">
+      <!-- Brand / Logo -->
+      <a href="dashboard.html" class="px-nav__brand" aria-label="Python Garden Admin — Go to Dashboard">
+        <span class="pixel-icon" aria-hidden="true">🌱</span>
+        Python Garden
+      </a>
+
+      <!-- Main Navigation -->
+      <nav aria-label="Admin main navigation">
+        <ul class="nav-links-inline row">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="users.html" class="active" aria-current="page">Gardeners</a></li>
+          <li><a href="lessons.html">Levels</a></li>
+          <li><a href="garden.html">Shop</a></li>
+          <li><a href="settings.html">Settings</a></li>
+          <li class="nav-logout"><a href="#" id="btn-logout">Log Out</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="page-main" id="main-content">
+
+    <!-- === Page Header Card === -->
+    <section class="page-head" aria-labelledby="page-title">
+      <h1 id="page-title">👥 Gardeners Management</h1>
+      <p class="page-subtitle">Manage all registered accounts, track learning progress, and update user roles.</p>
+      <p class="current-date" id="current-date">— Loading date —</p>
+
+      <div class="head-actions">
+        <button class="px-btn px-btn--primary" id="btn-add-user">
+          ➕ Add New Gardener
+        </button>
+        <button class="px-btn px-btn--ghost" id="btn-export">
+          📋 Export List
+        </button>
+      </div>
+    </section>
+
+    <!-- === Search & Filters === -->
+    <section class="users-top-bar" aria-label="Search and filter users">
+      <!-- Search -->
+      <div class="px-field search-field">
+        <label for="user-search" class="px-label">🔍 Search</label>
+        <input 
+          type="search" 
+          id="user-search" 
+          class="px-input"
+          autocomplete="off"
+          placeholder="Search by username or email..."
+        >
+      </div>
+
+      <!-- Role Filter -->
+      <div class="filter-group">
+        <label for="role-filter" class="px-label">Role</label>
+        <select id="role-filter" class="px-select">
+          <option value="all">All Roles</option>
+          <option value="gardener">Gardeners</option>
+          <option value="admin">Admins</option>
+        </select>
+      </div>
+
+      <!-- Status Filter -->
+      <div class="filter-group">
+        <label for="status-filter" class="px-label">Status</label>
+        <select id="status-filter" class="px-select">
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- === Results Info === -->
+    <p id="user-count" class="muted result-count" role="status" aria-live="polite">
+      Showing <strong id="count-shown">0</strong> of <strong id="count-total">0</strong> gardeners
+    </p>
+
+    <!-- === Users Table === -->
+    <section class="table-wrap" aria-label="Registered users table">
+      <table class="px-table" id="users-table">
+        <caption class="sr-only">
+          List of registered Python Garden users with their role, progress, status, and join date.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">🌿 Username</th>
+            <th scope="col">Role</th>
+            <th scope="col">Progress</th>
+            <th scope="col">Status</th>
+            <th scope="col">Joined</th>
+            <th scope="col" class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="user-rows">
+          <!-- Empty State -->
+          <tr class="empty-state">
+            <td colspan="6" class="empty-cell">
+              <div class="empty-content">
+                <span class="empty-icon" aria-hidden="true">🌱</span>
+                <h3>No gardeners yet</h3>
+                <p>New registered users will appear here automatically.</p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Example Row — Uncomment to preview
+          <tr data-user-id="demo-001">
+            <td><strong>GreenTurtle22</strong></td>
+            <td><span class="badge badge--gardener">🌱 Gardener</span></td>
+            <td>
+              <div class="progress-cell">
+                <div class="progress-bar-inline">
+                  <div class="progress-fill-inline" style="width: 78%"></div>
+                </div>
+                <span class="progress-pct">78%</span>
+              </div>
+            </td>
+            <td><span class="status-cell status--active"><span class="status-dot"></span> Active</span></td>
+            <td>Oct 15, 2026</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-icon btn-icon--view" title="View user details" aria-label="View GreenTurtle22">👁️</button>
+                <button class="btn-icon btn-icon--edit" title="Edit user" aria-label="Edit GreenTurtle22">✏️</button>
+                <button class="btn-icon btn-icon--delete" title="Remove user" aria-label="Delete GreenTurtle22">🗑️</button>
+              </div>
+            </td>
+          </tr>
+          -->
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="admin-footer">
+    <p>🌿 Python Garden Admin &mdash; Built for learning</p>
+  </footer>
+
+  <!-- ===== JavaScript ===== -->
+  <script src="js/users.js"></script>
+  <script>
+    // Display current date — matches your screenshot format
+    document.addEventListener('DOMContentLoaded', () => {
+      const dateEl = document.getElementById('current-date');
+      const now = new Date();
+      dateEl.textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    });
+  </script>
+</body>
+</html>
