@@ -2,81 +2,266 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dashboard | Python Garden admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>Dashboard | Python Garden Admin</title>
+  <meta name="description" content="Python Garden Admin Dashboard — Overview of users, progress, and activity.">
   <link rel="icon" href="data:,">
+
+  <!-- ===== Google Fonts ===== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Pixelify+Sans:wght@500;700&display=swap" 
+    rel="stylesheet"
+  >
+
+  <!-- ===== Stylesheets ===== -->
+  <link rel="stylesheet" href="../css/shops.css">
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/pixel.css">
   <link rel="stylesheet" href="../css/game.css">
   <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body data-role="admin" data-page="dashboard" class="page-admin">
-  <div id="app-nav">
-    <nav class="admin-nav">
-      <div class="nav-brand">
-        <span class="pixel-icon">🌱</span>
-        <span class="brand-text">Python Garden</span>
-      </div>
-      <ul class="nav-links">
-        <li><a href="dashboard.html" class="active">Dashboard</a></li>
-        <li><a href="users.html">Users</a></li>
-        <li><a href="lessons.html">Levels</a></li>
-        <li><a href="#">Shop</a></li>
-        <li><a href="#">Settings</a></li>
-        <li class="nav-logout"><a href="#">Log Out</a></li>
-      </ul>
-    </nav>
-  </div>
 
-  <main class="container page-main">
+  <!-- ===== HEADER / NAVIGATION — ✅ Matches All Pages ===== -->
+  <header class="admin-header" id="app-nav">
+    <div class="container land-top">
+      <!-- Brand / Logo -->
+      <a href="dashboard.html" class="px-nav__brand" aria-label="Python Garden Admin — Go to Dashboard">
+        <span class="pixel-icon" aria-hidden="true">🌱</span>
+        Python Garden
+      </a>
+
+      <!-- Main Navigation ✅ Consistent with users.html & lessons.html -->
+      <nav aria-label="Admin main navigation">
+        <ul class="nav-links-inline row">
+          <li><a href="dashboard.html" class="active" aria-current="page">Dashboard</a></li>
+          <li><a href="users.html">Gardeners</a></li>
+          <li><a href="lessons.html">Levels</a></li>
+          <li><a href="garden.html">Shop</a></li>
+          <li><a href="settings.html">Settings</a></li>
+          <li class="nav-logout"><a href="#" id="btn-logout">Log Out</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="page-main" id="main-content">
+
+    <!-- ========== PAGE HEADER WITH DATE & QUICK ACTIONS ========== -->
     <div class="page-head">
-      <h1>🌿 Admin Dashboard</h1>
-      <p class="page-subtitle">Welcome back, Gardener! Here's how your garden is growing.</p>
+      <div class="head-left">
+        <h1>🌿 Admin Dashboard</h1>
+        <p class="page-subtitle">Welcome back, Gardener! Here's how your garden is growing.</p>
+        <p class="current-date" id="current-date">— Loading date —</p>
+      </div>
+      <div class="head-actions">
+        <button class="px-btn px-btn--primary px-btn--small" id="btn-refresh">🔄 Refresh Data</button>
+        <button class="px-btn px-btn--ghost px-btn--small" id="btn-export">📊 Export Report</button>
+      </div>
     </div>
 
+    <!-- ========== MAIN KPI CARDS ========== -->
     <section class="kpis" id="kpis" aria-label="Totals">
       <div class="kpi-card">
-        <div class="kpi-icon">👥</div>
-        <h3>Total Gardeners</h3>
-        <p class="kpi-value" id="val-users">--</p>
-        <span class="kpi-change positive">+12 this week</span>
+        <div class="kpi-icon-wrapper">
+          <span class="kpi-icon">👥</span>
+        </div>
+        <div class="kpi-content">
+          <h3>Total Gardeners</h3>
+          <p class="kpi-value" id="val-users">—</p>
+          <span class="kpi-change positive" id="change-users">—</span>
+        </div>
+        <div class="kpi-trend" id="trend-users">
+          <canvas width="60" height="40"></canvas>
+        </div>
       </div>
+
       <div class="kpi-card">
-        <div class="kpi-icon">🌻</div>
-        <h3>Total Plays</h3>
-        <p class="kpi-value" id="val-plays">--</p>
-        <span class="kpi-change positive">+8.2% this week</span>
+        <div class="kpi-icon-wrapper">
+          <span class="kpi-icon">🌻</span>
+        </div>
+        <div class="kpi-content">
+          <h3>Total Plays</h3>
+          <p class="kpi-value" id="val-plays">—</p>
+          <span class="kpi-change positive" id="change-plays">—</span>
+        </div>
+        <div class="kpi-trend" id="trend-plays">
+          <canvas width="60" height="40"></canvas>
+        </div>
       </div>
+
       <div class="kpi-card">
-        <div class="kpi-icon">🌱</div>
-        <h3>Seeds Earned</h3>
-        <p class="kpi-value" id="val-seeds">--</p>
-        <span class="kpi-change neutral">Steady growth</span>
+        <div class="kpi-icon-wrapper">
+          <span class="kpi-icon">🌱</span>
+        </div>
+        <div class="kpi-content">
+          <h3>Seeds Earned</h3>
+          <p class="kpi-value" id="val-seeds">—</p>
+          <span class="kpi-change neutral" id="change-seeds">—</span>
+        </div>
+        <div class="kpi-trend" id="trend-seeds">
+          <canvas width="60" height="40"></canvas>
+        </div>
       </div>
+
       <div class="kpi-card">
-        <div class="kpi-icon">🏆</div>
-        <h3>Completions</h3>
-        <p class="kpi-value" id="val-completions">--</p>
-        <span class="kpi-change positive">+15 today</span>
+        <div class="kpi-icon-wrapper">
+          <span class="kpi-icon">🏆</span>
+        </div>
+        <div class="kpi-content">
+          <h3>Completions</h3>
+          <p class="kpi-value" id="val-completions">—</p>
+          <span class="kpi-change positive" id="change-completions">—</span>
+        </div>
+        <div class="kpi-trend" id="trend-completions">
+          <canvas width="60" height="40"></canvas>
+        </div>
       </div>
     </section>
 
+    <!-- ========== SECONDARY STATS: QUICK INSIGHTS ========== -->
+    <section class="quick-stats" id="quick-stats">
+      <div class="stat-item">
+        <span class="stat-icon">🎯</span>
+        <div>
+          <p class="stat-label">Active Today</p>
+          <p class="stat-value" id="val-active">—</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">📈</span>
+        <div>
+          <p class="stat-label">Completion Rate</p>
+          <p class="stat-value" id="val-rate">—%</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">⭐</span>
+        <div>
+          <p class="stat-label">Avg. Score</p>
+          <p class="stat-value" id="val-score">—</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">⏱️</span>
+        <div>
+          <p class="stat-label">Avg. Time</p>
+          <p class="stat-value" id="val-time">—m</p>
+        </div>
+      </div>
+      <div class="stat-item">
+        <span class="stat-icon">🔓</span>
+        <div>
+          <p class="stat-label">Lessons Unlocked</p>
+          <p class="stat-value" id="val-unlocked">—/—</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== MAIN GRID: CHARTS + ACTIVITY + NOTIFICATIONS ========== -->
     <div class="admin-grid">
+      <!-- Completions per Level -->
       <section class="px-card" aria-labelledby="pl-h">
-        <h2 id="pl-h">📊 Completions per Level</h2>
-        <div id="per-level" class="bar-list"></div>
+        <div class="card-header">
+          <h2 id="pl-h">📊 Completions per Level</h2>
+          <select class="px-select px-select--small" id="filter-chapter">
+            <option value="all">All Chapters</option>
+            <!-- JS will populate chapters here -->
+          </select>
+        </div>
+        <div id="per-level" class="bar-list">
+          <!-- JS populates bars here from server data -->
+          <p class="empty">— No data available —</p>
+        </div>
       </section>
 
+      <!-- Recent Activity -->
       <section class="px-card">
-        <h2>🌿 Recent Activity</h2>
-        <ul class="activity-list" id="recent-activity"></ul>
+        <div class="card-header">
+          <h2>🌿 Recent Activity</h2>
+          <select class="px-select px-select--small" id="filter-activity">
+            <option value="all">All Types</option>
+            <option value="completion">Completions</option>
+            <option value="signup">New Users</option>
+            <option value="achievement">Achievements</option>
+          </select>
+        </div>
+        <ul class="activity-list" id="recent-activity">
+          <!-- JS populates activity here from server data -->
+          <li class="empty">— No recent activity —</li>
+        </ul>
+      </section>
+
+      <!-- Growth Overview -->
+      <section class="px-card">
+        <div class="card-header">
+          <h2>📈 Weekly Growth</h2>
+          <span class="card-note">Last 7 Days</span>
+        </div>
+        <div class="chart-placeholder" id="weekly-chart">
+          <!-- JS will draw chart here -->
+          <canvas id="growth-canvas" height="160"></canvas>
+        </div>
+      </section>
+
+      <!-- System Notifications & Alerts -->
+      <section class="px-card">
+        <div class="card-header">
+          <h2>🔔 System Updates</h2>
+          <span class="badge badge-warn" id="alert-count">0</span>
+        </div>
+        <ul class="alerts-list" id="system-alerts">
+          <!-- JS populates alerts/notifications here -->
+          <li class="empty">— All systems running smoothly —</li>
+        </ul>
       </section>
     </div>
+
+    <!-- ========== BOTTOM SECTION: QUICK LINKS & STATUS ========== -->
+    <section class="status-bar">
+      <div class="status-group">
+        <span class="status-dot status-online"></span>
+        <span class="status-label">Server Status:</span>
+        <span class="status-value" id="server-status">Checking...</span>
+      </div>
+      <div class="status-group">
+        <span class="status-label">Last Sync:</span>
+        <span class="status-value" id="last-sync">—</span>
+      </div>
+      <div class="status-actions">
+        <button class="px-btn px-btn--ghost px-btn--small" id="btn-clear-cache">🧹 Clear Cache</button>
+        <button class="px-btn px-btn--primary px-btn--small" id="btn-sync">🔗 Sync Now</button>
+      </div>
+    </section>
+
   </main>
 
+  <!-- ===== FOOTER ===== -->
+  <footer class="admin-footer">
+    <p>🌿 Python Garden Admin &mdash; Built for learning</p>
+  </footer>
+
+  <!-- ===== JavaScript ===== -->
+  <script>
+    // Display current date
+    document.addEventListener('DOMContentLoaded', () => {
+      const dateEl = document.getElementById('current-date');
+      const now = new Date();
+      dateEl.textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    });
+  </script>
   <script src="js/admin.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>
