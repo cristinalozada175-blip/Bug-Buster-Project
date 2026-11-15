@@ -2,6 +2,9 @@
    dashboard.css — Python Garden Admin Dashboard
    Version 2.2 — Unified Header & Consistent Design
    ========================================================== */
+.page-admin {
+  font-family: 'Pixelify Sans', sans-serif !important;
+}
 
 :root {
   --sky: #87E0E9;
@@ -18,25 +21,26 @@
   --soil: #A67C52;
   --text-dark: #2B363B;
   --text-muted: #6B7B7F;
-  --pixel-border: #2B363B;
+  --pixel-border: #2B1B14;  /* ← mas dark outline, same as Progress page */
   --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --shadow-soft: 4px 4px 0 rgba(43, 54, 59, 0.12);
-  --shadow-medium: 6px 6px 0 rgba(43, 54, 59, 0.18);
-  --shadow-strong: 8px 8px 0 rgba(43, 54, 59, 0.25);
+  --radius-md: 6px;         /* ← mas rounded konti */
+  --radius-lg: 8px;
+  --shadow-soft: 3px 3px 0 var(--pixel-border);
+  --shadow-medium: 4px 4px 0 var(--pixel-border);
+  --shadow-strong: 6px 6px 0 var(--pixel-border);
   --accent-red: #C4503C;
   --accent-orange: #E88C3A;
   --accent-blue: #3B82F6;
   --accent-purple: #8B5CF6;
   --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s ease;
-  --transition-slow: 0.4s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
 }
+
 
 /* ========== SCROLL-AWARE BACKGROUND ========== */
 body.page-admin {
-  background: linear-gradient(180deg, var(--sky-light) 0%, var(--sky) 30%, var(--grass) 100%) !important;
+  background: linear-gradient(180deg, var(--sky) 0%, var(--grass) 100vh) !important;
   background-attachment: fixed !important;
   background-size: 100% 200vh !important;
   background-position: 0 0 !important;
@@ -44,6 +48,8 @@ body.page-admin {
   margin: 0 !important;
   transition: background-position 0.15s ease-out !important;
 }
+
+
 
 /* ========== HEADER — Matches users.html & lessons.html ========== */
 .admin-header {
