@@ -42,9 +42,9 @@
           <li><a href="dashboard.html" class="active" aria-current="page">Dashboard</a></li>
           <li><a href="users.html">Gardeners</a></li>
           <li><a href="lessons.html">Levels</a></li>
-          <li><a href="garden.html">Shop</a></li>
+          <li><a href="shops.html">Shop</a></li>
           <li><a href="settings.html">Settings</a></li>
-          <li class="nav-logout"><a href="login.html" id="btn-logout">Log Out</a></li>
+          <li class="nav-logout"><a href="/login.html" id="btn-logout">Log Out</a></li>
         </ul>
       </nav>
     </div>
@@ -86,7 +86,7 @@
           <span class="kpi-icon">🌻</span>
         </div>
         <div class="kpi-content">
-          <h3>Total Plays</h3>
+          <h3>Completions (7d)</h3>
           <p class="kpi-value" id="val-plays">—</p>
           <span class="kpi-change positive" id="change-plays">—</span>
         </div>
@@ -100,7 +100,7 @@
           <span class="kpi-icon">🌱</span>
         </div>
         <div class="kpi-content">
-          <h3>Seeds Earned</h3>
+          <h3>Seeds Held</h3>
           <p class="kpi-value" id="val-seeds">—</p>
           <span class="kpi-change neutral" id="change-seeds">—</span>
         </div>
@@ -114,7 +114,7 @@
           <span class="kpi-icon">🏆</span>
         </div>
         <div class="kpi-content">
-          <h3>Completions</h3>
+          <h3>All-Time Completions</h3>
           <p class="kpi-value" id="val-completions">—</p>
           <span class="kpi-change positive" id="change-completions">—</span>
         </div>
@@ -141,24 +141,24 @@
         </div>
       </div>
       <div class="stat-item">
-        <span class="stat-icon">⭐</span>
+        <span class="stat-icon">🆕</span>
         <div>
-          <p class="stat-label">Avg. Score</p>
-          <p class="stat-value" id="val-score">—</p>
+          <p class="stat-label">New This Week</p>
+          <p class="stat-value" id="val-new-users">—</p>
         </div>
       </div>
       <div class="stat-item">
-        <span class="stat-icon">⏱️</span>
+        <span class="stat-icon">📅</span>
         <div>
-          <p class="stat-label">Avg. Time</p>
-          <p class="stat-value" id="val-time">—m</p>
+          <p class="stat-label">Active in 30 Days</p>
+          <p class="stat-value" id="val-active-month">—</p>
         </div>
       </div>
       <div class="stat-item">
-        <span class="stat-icon">🔓</span>
+        <span class="stat-icon">🔒</span>
         <div>
-          <p class="stat-label">Lessons Unlocked</p>
-          <p class="stat-value" id="val-unlocked">—/—</p>
+          <p class="stat-label">Suspended Accounts</p>
+          <p class="stat-value" id="val-suspended">—</p>
         </div>
       </div>
     </section>
@@ -201,7 +201,7 @@
       <section class="px-card">
         <div class="card-header">
           <h2>📈 Weekly Growth</h2>
-          <span class="card-note">Last 7 Days</span>
+          <span class="card-note">Green: signups · Gold: completions</span>
         </div>
         <div class="chart-placeholder" id="weekly-chart">
           <!-- JS will draw chart here -->
@@ -234,7 +234,7 @@
         <span class="status-value" id="last-sync">—</span>
       </div>
       <div class="status-actions">
-        <button class="px-btn px-btn--ghost px-btn--small" id="btn-clear-cache">🧹 Clear Cache</button>
+        <button class="px-btn px-btn--ghost px-btn--small" id="btn-clear-cache">↺ Reset Filters</button>
         <button class="px-btn px-btn--primary px-btn--small" id="btn-sync">🔗 Sync Now</button>
       </div>
     </section>
@@ -247,20 +247,7 @@
   </footer>
 
   <!-- ===== JavaScript ===== -->
-  <script>
-    // Display current date
-    document.addEventListener('DOMContentLoaded', () => {
-      const dateEl = document.getElementById('current-date');
-      const now = new Date();
-      dateEl.textContent = now.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    });
-  </script>
-  <script src="js/admin.js"></script>
-  <script src="js/dashboard.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/dashboard.js"></script>
 </body>
 </html>
