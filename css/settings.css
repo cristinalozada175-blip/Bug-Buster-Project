@@ -2,7 +2,9 @@
    settings.css — Python Garden Admin Settings Page
    Version 1.0 — Matches Dashboard Design
    ========================================================== */
-
+.page-admin {
+  font-family: 'Pixelify Sans', sans-serif !important;
+}
 :root {
   --danger: #C4503C;
   --danger-dark: #A03F30;
