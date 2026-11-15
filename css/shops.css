@@ -1,0 +1,221 @@
+/* ==========================================================
+   shops.css — Python Garden Admin Shop Page
+   Matches dashboard.html design — Table Styles Only
+   ========================================================== */
+
+/* ========== FILTER BAR ========== */
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: rgba(249, 244, 220, 0.7);
+  border: 2px solid var(--cream-border);
+  border-radius: var(--radius-md);
+}
+
+.filter-left,
+.filter-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filter-left label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* ========== TABLE WRAPPER ========== */
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* ========== SHOP TABLE ========== */
+.shop-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.shop-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.shop-table th {
+  background: var(--cream-dark);
+  border-bottom: 3px solid var(--pixel-border);
+  padding: 0.85rem 0.75rem;
+  text-align: left;
+  font-family: 'Pixelify Sans', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-dark);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.shop-table td {
+  padding: 0.85rem 0.75rem;
+  border-bottom: 2px solid var(--cream-border);
+  color: var(--text-dark);
+  vertical-align: middle;
+}
+
+.shop-table tbody tr {
+  transition: background var(--transition-fast);
+}
+
+.shop-table tbody tr:hover {
+  background: rgba(74, 155, 110, 0.06);
+}
+
+/* ========== TABLE COLUMNS ========== */
+.col-icon {
+  width: 60px;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.col-name {
+  min-width: 160px;
+}
+
+.col-name strong {
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+.col-category {
+  width: 110px;
+  text-align: center;
+}
+
+.col-price {
+  width: 100px;
+  text-align: center;
+  font-family: 'Pixelify Sans', sans-serif;
+  font-weight: 700;
+  color: var(--forest-dark);
+}
+
+.col-desc {
+  min-width: 220px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.col-status {
+  width: 100px;
+  text-align: center;
+}
+
+.col-actions {
+  width: 120px;
+  text-align: center;
+}
+
+/* ========== TAGS ========== */
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tag-seed {
+  background: rgba(74, 155, 110, 0.15);
+  color: var(--forest-dark);
+}
+
+.tag-tool {
+  background: rgba(242, 201, 76, 0.25);
+  color: var(--sun-dark);
+}
+
+.tag-decor {
+  background: rgba(139, 92, 246, 0.15);
+  color: #6B21A8;
+}
+
+/* ========== STATUS BADGES ========== */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-active {
+  background: rgba(74, 155, 110, 0.15);
+  color: var(--forest-dark);
+}
+
+.status-inactive {
+  background: rgba(166, 124, 82, 0.15);
+  color: var(--soil);
+}
+
+/* ========== ACTION BUTTONS ========== */
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0.3rem 0.4rem;
+  margin: 0 0.15rem;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  transform: scale(1.15);
+  background: rgba(43, 54, 59, 0.08);
+}
+
+.btn-edit:hover {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.btn-hide:hover {
+  background: rgba(242, 201, 76, 0.25);
+}
+
+.btn-delete:hover {
+  background: rgba(196, 80, 60, 0.12);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .col-desc {
+    min-width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .shop-table th,
+  .shop-table td {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.85rem;
+  }
+  
+  .col-icon {
+    font-size: 1.25rem;
+  }
+}

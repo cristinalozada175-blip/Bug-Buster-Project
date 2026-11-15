@@ -2,37 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
   <title>Levels | Python Garden Admin</title>
+  <meta name="description" content="Manage lessons, chapters, and quest levels for Python Garden.">
   <link rel="icon" href="data:,">
+
+  <!-- ===== Google Fonts ===== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pixelify+Sans:wght@500;700&display=swap" 
+    rel="stylesheet"
+  >
+
+  <!-- ===== Stylesheets ===== -->
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/pixel.css">
   <link rel="stylesheet" href="../css/game.css">
   <link rel="stylesheet" href="../css/admin.css">
   <link rel="stylesheet" href="../css/lessons.css">
+  <link rel="stylesheet" href="../css/shops.css">
 </head>
 <body data-role="admin" data-page="lessons" class="page-admin">
-  <div id="app-nav">
-    <nav class="admin-nav">
-      <div class="nav-brand">
-        <span class="pixel-icon">🌱</span>
-        <span class="brand-text">Python Garden</span>
-      </div>
-      <ul class="nav-links">
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="users.html">Users</a></li>
-        <li><a href="lessons.html" class="active">Levels</a></li>
-        <li><a href="#">Shop</a></li>
-        <li><a href="#">Settings</a></li>
-        <li class="nav-logout"><a href="#">Log Out</a></li>
-      </ul>
-    </nav>
-  </div>
 
-  <main class="container page-main">
+  <!-- ===== HEADER / NAVIGATION — ✅ Fixed ===== -->
+  <header class="admin-header" id="app-nav">
+    <div class="container land-top">
+      <!-- Brand / Logo -->
+      <a href="dashboard.html" class="px-nav__brand" aria-label="Python Garden Admin — Go to Dashboard">
+        <span class="pixel-icon" aria-hidden="true">🌱</span>
+        Python Garden
+      </a>
+
+      <!-- Main Navigation ✅ Fixed -->
+      <nav aria-label="Admin main navigation">
+        <ul class="nav-links-inline row">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="users.html">Gardeners</a></li>
+          <li><a href="lessons.html" class="active" aria-current="page">Levels</a></li>
+          <li><a href="shops.html">Shop</a></li>
+          <li><a href="settings.html">Settings</a></li>
+          <li class="nav-logout"><a href="#" id="btn-logout">Log Out</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="page-main" id="main-content">
     <div class="page-head">
       <h1>📖 Levels & Chapters</h1>
       <p class="muted">Build your garden lessons — organize chapters, create quests, and watch them grow.</p>
@@ -155,6 +174,12 @@
     </div>
   </main>
 
+  <!-- ===== FOOTER ===== -->
+  <footer class="admin-footer" style="margin-top: 3rem; padding: 1.5rem 0; border-top: 1px solid rgba(43, 54, 59, 0.1); text-align: center; color: var(--text-muted); font-size: 0.875rem;">
+    <p>🌿 Python Garden Admin &mdash; Built for learning</p>
+  </footer>
+
+  <!-- ===== JavaScript ===== -->
   <script src="js/api.js"></script>
   <script src="js/guard.js"></script>
   <script src="js/lessons.js"></script>

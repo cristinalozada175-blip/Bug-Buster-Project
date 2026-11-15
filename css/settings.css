@@ -1,0 +1,497 @@
+/* ==========================================================
+   settings.css — Python Garden Admin Settings Page
+   Version 1.0 — Matches Dashboard Design
+   ========================================================== */
+
+:root {
+  --danger: #C4503C;
+  --danger-dark: #A03F30;
+  --success: #4A9B6E;
+  --warning: #E88C3A;
+  --info: #3B82F6;
+  --shadow-soft: 4px 4px 0 rgba(43, 54, 59, 0.12);
+  --shadow-medium: 6px 6px 0 rgba(43, 54, 59, 0.18);
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}
+
+/* ========== SETTINGS TABS ========== */
+.settings-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 3px solid var(--cream-border);
+  padding-bottom: 0;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  padding: 0.75rem 1.25rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  transition: all var(--transition-normal);
+  margin-bottom: -3px;
+}
+
+.tab-btn:hover {
+  background: rgba(249, 244, 220, 0.5);
+  color: var(--text-dark);
+}
+
+.tab-btn.active {
+  background: var(--cream);
+  border-color: var(--cream-border) var(--cream-border) transparent;
+  color: var(--forest);
+  border-bottom-color: transparent;
+}
+
+/* ========== TAB CONTENT ========== */
+.tab-content-wrapper {
+  position: relative;
+  min-height: 400px;
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== FORM ELEMENTS — Consistent Styles ========== */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--pixel-border);
+  border-radius: var(--radius-sm);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--text-dark);
+  transition: all var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--forest);
+  box-shadow: 0 0 0 3px rgba(74, 155, 110, 0.15);
+}
+
+.form-input:readonly {
+  background: var(--cream-dark);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--pixel-border);
+  border-radius: var(--radius-sm);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--forest);
+  box-shadow: 0 0 0 3px rgba(74, 155, 110, 0.15);
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--pixel-border);
+  border-radius: var(--radius-sm);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--text-dark);
+  resize: vertical;
+  transition: all var(--transition-fast);
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+  display: block;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  cursor: pointer;
+  padding: 0.4rem 0;
+  transition: color var(--transition-fast);
+}
+
+.checkbox-label:hover {
+  color: var(--forest);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--forest);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ========== BUTTON VARIANTS ========== */
+.px-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border: 3px solid var(--pixel-border);
+  border-radius: var(--radius-sm);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.px-btn--small {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.px-btn--primary {
+  background: var(--forest);
+  color: #fff;
+  box-shadow: 3px 3px 0 rgba(43, 54, 59, 0.2);
+}
+
+.px-btn--primary:hover {
+  background: var(--forest-dark);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 rgba(43, 54, 59, 0.2);
+}
+
+.px-btn--primary:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 rgba(43, 54, 59, 0.2);
+}
+
+.px-btn--ghost {
+  background: transparent;
+  color: var(--text-dark);
+  border-color: var(--cream-border);
+}
+
+.px-btn--ghost:hover {
+  border-color: var(--forest);
+  color: var(--forest);
+  background: rgba(74, 155, 110, 0.08);
+}
+
+.px-btn--danger {
+  background: var(--danger);
+  border-color: var(--danger-dark);
+  color: #fff;
+  box-shadow: 3px 3px 0 rgba(43, 54, 59, 0.2);
+}
+
+.px-btn--danger:hover {
+  background: var(--danger-dark);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 rgba(43, 54, 59, 0.2);
+}
+
+.button-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  padding: 0.4rem;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  background: rgba(43, 54, 59, 0.08);
+}
+
+/* ========== CONNECTION STATUS ========== */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--cream-border);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-checking {
+  background: var(--warning);
+  animation: pulse 1.2s infinite;
+}
+
+.status-connected {
+  background: var(--success);
+  box-shadow: 0 0 0 3px rgba(74, 155, 110, 0.2);
+}
+
+.status-disconnected {
+  background: var(--danger);
+  box-shadow: 0 0 0 3px rgba(196, 80, 60, 0.15);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ========== INFO LIST ========== */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--cream-border);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.info-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badge-dev {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--info);
+}
+
+/* ========== DIVIDER ========== */
+.divider {
+  border: none;
+  border-top: 2px solid var(--cream-border);
+  margin: 1.5rem 0;
+}
+
+/* ========== DANGER ZONE ========== */
+.danger-zone {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(196, 80, 60, 0.05);
+  border: 2px solid rgba(196, 80, 60, 0.25);
+  border-radius: var(--radius-sm);
+}
+
+.danger-zone h3 {
+  font-size: 0.9rem;
+  color: var(--danger);
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+
+.danger-zone p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem;
+}
+
+.danger-zone .px-btn {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ========== TOAST NOTIFICATION ========== */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #fff;
+  border: 3px solid var(--pixel-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow-medium);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.toast__content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toast__icon {
+  font-size: 1.25rem;
+}
+
+.toast__message {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.toast.success { border-left: 5px solid var(--success); }
+.toast.error { border-left: 5px solid var(--danger); }
+.toast.warning { border-left: 5px solid var(--warning); }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .settings-tabs {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .tab-btn {
+    width: 100%;
+    text-align: left;
+    border-radius: var(--radius-sm);
+    border: 2px solid transparent;
+    margin-bottom: 0;
+  }
+
+  .tab-btn.active {
+    border: 2px solid var(--forest);
+    background: rgba(74, 155, 110, 0.08);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group .px-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .toast {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-head {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .head-actions {
+    width: 100%;
+  }
+
+  .head-actions .px-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -62,3 +62,50 @@ button, input, select, textarea { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+
+/*Dashboard---CSS base.css*/
+:root {
+  --sky-blue: #5BC0D4;
+  --grass-light: #B8D98C;
+  --grass: #9ED26E;
+  --grass-dark: #7CBF4C;
+  --cream: #F8F5E6;
+  --cream-dark: #F2EED8;
+  --text-dark: #2A4747;
+  --text-muted: #557777;
+  --accent-green: #48A972;
+  --accent-green-dark: #3A8A5C;
+  --accent-yellow: #F2C94C;
+  --accent-red: #E55353;
+  --pixel-border: #2A4747;
+  --shadow-soft: 0 4px 0 rgba(42, 71, 71, 0.15);
+  --shadow-strong: 0 6px 0 rgba(42, 71, 71, 0.2);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(180deg, var(--sky-blue) 0%, var(--grass-light) 100vh);
+  background-attachment: fixed;
+  color: var(--text-dark);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
