@@ -1,13 +1,17 @@
 /* Progress screen visual treatment inspired by the supplied Python Garden reference. */
 body:has(#progress-root) { background: #91d69b; }
-body:has(#progress-root) .px-nav { background: #fff7e3; color: var(--outline); border: 0; box-shadow: 0 3px 0 rgba(43,27,20,.16); }
-body:has(#progress-root) .px-nav__brand { color: var(--teal); }
-body:has(#progress-root) .px-nav__links a { color: var(--teal); }
-body:has(#progress-root) .px-nav__links a:hover { background: #e6efc8; }
-body:has(#progress-root) .px-nav__links a[aria-current="page"] { background: #d8edb6; color: var(--teal); }
-body:has(#progress-root) .px-chip { min-height: 32px; padding-inline: 7px; background: #f5e4b9; border: 1px solid #b99a55; border-radius: 4px; }
+body:has(#progress-root) .px-nav { background: #103d43; color: #fbf4df; border: 0; border-bottom: 3px solid #31564e; box-shadow: 0 3px 0 rgba(5,28,32,.18); }
+body:has(#progress-root) .px-nav__brand { color: #fff6df; }
+body:has(#progress-root) .px-nav__links a { color: #fff6df; }
+body:has(#progress-root) .px-nav__links a:hover { background: rgba(255,255,255,.12); }
+body:has(#progress-root) .px-nav { background: #fffdf5; color: #244b48; border: 0; border-bottom: 3px solid #ddcfaa; box-shadow: 0 3px 0 rgba(43,27,20,.12); }
+body:has(#progress-root) .px-nav__brand { color: #244b48; }
+body:has(#progress-root) .px-nav__links a { color: #244b48; }
+body:has(#progress-root) .px-nav__links a:hover { background: #eef4d9; }
+body:has(#progress-root) .px-nav__links a[aria-current="page"] { background: #f6a93b; color: #143d44; }
+body:has(#progress-root) .px-chip { min-height: 32px; padding-inline: 7px; background: #f5e4b9; border: 1px solid #b99a55; border-radius: 4px; color: #2b1b14; }
 body:has(#progress-root) .px-chip .spr { width: 20px; height: 20px; }
-body:has(#progress-root) .px-btn { min-height: 32px; box-shadow: none; border-width: 1px; border-color: #b99a55; border-radius: 4px; }
+body:has(#progress-root) .px-btn { min-height: 32px; box-shadow: none; border-width: 1px; border-color: #2b1b14; border-radius: 4px; background: #fffdf5; color: #2b1b14; }
 .progress-page { min-height: calc(100vh - 70px); padding-bottom: 56px; background: linear-gradient(145deg,#8ed09a 0%,#a8db91 52%,#c2e99c 100%); }
 .progress-hero { padding: 24px 16px 22px; text-align: center; color: #123e46; background: #55bdd5; border-bottom: 4px solid rgba(43,27,20,.16); }
 .progress-hero h1 { margin: 0; font-size: clamp(2.4rem,6vw,3.6rem); letter-spacing: .04em; }
