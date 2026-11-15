@@ -484,7 +484,7 @@ body[data-role="user"] { min-height: 100vh; background: linear-gradient(#52bddb 
 .season-snow i:nth-child(5) { --snow-x: 60%; --snow-size: 12px; --snow-duration: 10s; --snow-delay: -6s; }
 .season-snow i:nth-child(6) { --snow-x: 72%; --snow-size: 16px; --snow-duration: 13s; --snow-delay: -4s; }
 .season-snow i:nth-child(7) { --snow-x: 83%; --snow-size: 9px; --snow-duration: 11.5s; --snow-delay: -8s; }
-.season-snow i:nth-child(8) { --snow-x: 94%; --snow-size: 14px; --snow-duration: 12.5s; --snow-delay: -5s; }
+.season-snow i:nth-child(😎 { --snow-x: 94%; --snow-size: 14px; --snow-duration: 12.5s; --snow-delay: -5s; }
 .season-snow i:nth-child(9) { --snow-x: 27%; --snow-size: 11px; --snow-duration: 15s; --snow-delay: -10s; }
 .hero.season-spring .season-rain,
 .hero.season-summer .season-sun,
@@ -516,4 +516,28 @@ body[data-role="user"] { min-height: 100vh; background: linear-gradient(#52bddb 
 @media (prefers-reduced-motion: reduce) {
   .season-widget { animation: none; }
   .season-rain, .season-sun, .season-leaves, .season-snow { animation: none; }
+}
+/* Keep weather behind readable foreground content */
+.hero { isolation: isolate; }
+.hero__copy { background: #fff9df; }
+.hero.season-spring .season-rain { opacity: .28; }
+.hero.season-spring .season-rain { opacity: .28; }
+.hero.season-spring .season-rain { opacity: .28; }
+
+/* Let the landing header background reach the viewport edges */
+.hero > .land-top {
+  background: transparent;
+  border-bottom: 0;
+  isolation: isolate;
+}
+.hero > .land-top::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0 auto 0 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background: #fff6df;
+  border-bottom: 3px solid #d9cba5;
+  pointer-events: none;
 }
