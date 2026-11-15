@@ -2,7 +2,9 @@
    lessons.css — Matches dashboard.css INTERACTIVELY
    Version 2.0 — Same Design System & Animations
    ========================================================== */
-
+.page-admin {
+  font-family: 'Pixelify Sans', sans-serif !important;
+}  
 :root {
   --sky: #87E0E9;
   --sky-light: #B4E8ED;
