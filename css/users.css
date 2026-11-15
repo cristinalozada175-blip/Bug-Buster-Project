@@ -1,8 +1,6 @@
-/* ==========================================================
-   users.css — Python Garden Admin
-   Matches lessons.css •
-   ========================================================== */
-
+.page-admin {
+  font-family: 'Pixelify Sans', sans-serif !important;
+}
 :root {
   --sky: #87E0E9;
   --sky-light: #B4E8ED;

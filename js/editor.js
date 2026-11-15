@@ -55,43 +55,14 @@
     writeConsole(res.output, e ? 'Line ' + e.line + ': ' + e.message : '');
   }
 
-  function run() {
-    const checkResult = lesson ? PyRunner.check(code.value, lesson.rules) : null;
-    const result = checkResult ? checkResult.result : PyRunner.run(code.value);
-    show(result);
-
-    if (result.error) {
-      hintBox.textContent = 'Fix the code error shown in the console. When your code meets the quest goals, click Check to finish, earn seeds and XP, and unlock the next level.';
-    } else if (checkResult && checkResult.passed) {
-      hintBox.textContent = 'Your code meets the quest goals! Click Check to finish this level, collect your seeds and XP, and unlock the next level.';
-    } else if (checkResult) {
-      hintBox.textContent = checkResult.messages.join(' ') + ' Update your code, then click Check when it meets every goal to collect your rewards.';
-    } else {
-      return;
-    }
-
-    hintBox.classList.remove('is-hidden');
-  }
+  function run() { show(PyRunner.run(code.value)); }
 
   async function check() {
     const c = PyRunner.check(code.value, lesson.rules);
 
     renderGutter(c.result.error ? c.result.error.line : 0);
-
-    writeConsole(
-      c.result.output,
-      c.result.error ? 'Line ' + c.result.error.line + ': ' + c.result.error.message : '',
-      c.passed ? [] : c.messages
-    );
-
-    if (!c.passed) {
-      hintBox.textContent = c.messages.join(' ') + ' Fix this, then click Check again when every quest goal is met to collect your rewards.';
-      hintBox.classList.remove('is-hidden');
-      return;
-    }
-
-    hintBox.classList.add('is-hidden');
-
+    writeConsole(c.result.output, c.result.error ? 'Line ' + c.result.error.line + ': ' + c.result.error.message : '', c.passed ? [] : c.messages);
+    if (!c.passed) return;
     btnCheck.disabled = true;
     scene.classList.add('is-bloom');
 

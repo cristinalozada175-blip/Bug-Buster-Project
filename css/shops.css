@@ -2,7 +2,9 @@
    shops.css — Python Garden Admin Shop Page
    Matches dashboard.html design — Table Styles Only
    ========================================================== */
-
+.page-admin {
+  font-family: 'Pixelify Sans', sans-serif !important;
+}
 /* ========== FILTER BAR ========== */
 .filter-bar {
   display: flex;
