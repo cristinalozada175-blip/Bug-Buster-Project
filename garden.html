@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My garden | Python Garden</title>
+  <title>My Garden | Python Garden</title>
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,25 +13,124 @@
   <link rel="stylesheet" href="css/game.css">
   <link rel="stylesheet" href="css/reference.css">
 </head>
-<body data-role="user">
+<body data-role="user" class="garden-page">
   <div id="app-nav"></div>
   <main class="container page-main">
     <div class="page-head page-head--garden">
-      <div><p class="chapter-kicker">YOUR LITTLE CORNER</p><h1>My garden</h1><p class="muted">Plant something lovely. Your code earns the seeds to grow it.</p></div>
-      <div class="garden-seed-pocket"><span class="spr spr--sm" data-sprite="seed" aria-hidden="true"></span><strong data-bind="seeds">0</strong><span>seeds to spend</span></div>
+      <div>
+        <p class="chapter-kicker">YOUR LITTLE CORNER</p>
+        <h1>Dynamic Garden</h1>
+        <p class="muted">Plant seeds, water your crops, harvest blooms, and watch your garden grow dynamically with the seasons!</p>
+      </div>
+      <div class="garden-stats-group">
+        <div class="garden-seed-pocket">
+          <span class="spr spr--sm" data-sprite="seed" aria-hidden="true"></span>
+          <strong data-bind="seeds">0</strong>
+          <span>seeds to spend</span>
+        </div>
+      </div>
     </div>
+
+    <!-- ===== DYNAMIC WEATHER & SEASON CONTROL BAR ===== -->
+    <section class="season-control-bar" aria-label="Garden environment controls">
+      <div class="season-info">
+        <span id="season-icon" class="season-icon">☀️</span>
+        <div>
+          <strong id="season-name">Summer</strong>
+          <span id="season-weather" class="season-weather">Warm sunny breeze</span>
+        </div>
+      </div>
+      <div class="season-buttons">
+        <button id="btn-season-spring" class="season-btn" type="button" title="Spring">🌦️ Spring</button>
+        <button id="btn-season-summer" class="season-btn active" type="button" title="Summer">☀️ Summer</button>
+        <button id="btn-season-autumn" class="season-btn" type="button" title="Autumn">🍂 Autumn</button>
+        <button id="btn-season-winter" class="season-btn" type="button" title="Winter">❄️ Winter</button>
+        <button id="btn-toggle-night" class="season-btn season-btn--night" type="button" title="Toggle Day/Night">🌙 Night Mode</button>
+      </div>
+    </section>
+
+    <!-- ===== GARDEN BLOOM & HEALTH METER ===== -->
+    <section class="garden-health-card">
+      <div class="health-header">
+        <div class="health-title">
+          <span class="spr spr--sm" data-sprite="sprout"></span>
+          <strong>Garden Bloom Health</strong>
+        </div>
+        <span id="health-pct" class="health-pct">0% Blooming</span>
+      </div>
+      <div class="health-track">
+        <div id="health-bar-fill" class="health-fill" style="width: 0%;"></div>
+      </div>
+      <div class="health-details">
+        <span id="stat-plots-used">0 / 12 plots planted</span>
+        <span id="stat-watered-count">💧 0 watered</span>
+        <span id="stat-harvest-count">🌾 0 ready to harvest</span>
+      </div>
+    </section>
+
     <div class="garden">
+      <!-- ===== GARDEN FIELD ===== -->
       <section class="garden-field" aria-label="Garden plots">
-        <div class="garden-toolbar"><div><h2>Your plots</h2><p>12 sunny spaces for seeds, flowers and little decorations.</p></div><span class="plot-count">12 PLOTS</span></div>
-        <p id="garden-msg" class="hint-box garden-msg" role="status"></p>
-        <div class="garden-landscape"><div class="garden-stone-path" aria-hidden="true"></div><div id="plots" class="plots"></div></div>
+        <div class="garden-toolbar">
+          <div>
+            <h2>Your Plots</h2>
+            <p>Tap an empty plot to plant, or tap a planted plot to water, inspect, or harvest.</p>
+          </div>
+          <span class="plot-count" id="plot-count-display">12 PLOTS</span>
+        </div>
+
+        <p id="garden-msg" class="hint-box garden-msg" role="status">
+          Choose a seed or tool from the shop, then tap an empty plot to plant!
+        </p>
+
+        <div class="garden-landscape season-summer" id="garden-landscape">
+          <!-- Weather Particles Canvas/Container -->
+          <div id="weather-particles" class="weather-particles" aria-hidden="true"></div>
+          <div class="garden-stone-path" aria-hidden="true"></div>
+          <div id="plots" class="plots"></div>
+        </div>
       </section>
+
+      <!-- ===== SEED SHOP ===== -->
       <section class="seed-shop" aria-label="Seed shop">
-        <div class="shop-heading"><p class="chapter-kicker">PICK A PRIZE</p><h2>Garden shop</h2><p>Choose an item, then pick a free plot.</p></div>
+        <div class="shop-heading">
+          <p class="chapter-kicker">PICK A PRIZE</p>
+          <h2>Garden Shop</h2>
+          <p>Choose an item, then pick a free plot to plant it.</p>
+        </div>
         <div id="shop" class="shop"></div>
       </section>
     </div>
   </main>
+
+  <!-- ===== PLOT ACTION MODAL (Water, Harvest, Dig) ===== -->
+  <div id="plot-modal" class="modal-overlay is-hidden" role="dialog" aria-modal="true" aria-labelledby="plot-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="plot-modal-title">🌿 Plot Details</h2>
+        <button id="btn-close-plot-modal" class="btn-icon" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body plot-modal-body">
+        <div class="plot-modal-preview">
+          <div id="modal-plot-sprite" class="modal-plot-sprite"></div>
+          <div>
+            <h3 id="modal-plot-name">Sunflower</h3>
+            <p id="modal-plot-stage" class="muted">Stage: Blooming</p>
+            <p id="modal-plot-status" class="plot-status-tag">💧 Watered & Flourishing</p>
+          </div>
+        </div>
+        <p id="modal-plot-desc" class="plot-modal-desc">
+          This flower is fully grown and radiating warm sunshine in your garden.
+        </p>
+        <div class="plot-modal-actions">
+          <button id="btn-plot-water" class="px-btn px-btn--sun" type="button">💧 Water Plant</button>
+          <button id="btn-plot-harvest" class="px-btn px-btn--primary" type="button">🌾 Harvest (+10 Seeds)</button>
+          <button id="btn-plot-dig" class="px-btn px-btn--ghost" type="button">🧹 Dig & Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/api.js"></script>
   <script src="js/guard.js"></script>
   <script src="js/garden.js"></script>

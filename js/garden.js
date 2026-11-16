@@ -1,34 +1,153 @@
-/* My Garden: 12 plots and a seed shop. */
+/* Dynamic Garden: 12 plots, interactive growth stages, watering, harvesting, seasons and seed shop. */
 (function () {
   'use strict';
   const PG = window.PG;
   const plotsEl = document.getElementById('plots');
   if (!plotsEl) return;
+
   const shopEl = document.getElementById('shop');
   const msg = document.getElementById('garden-msg');
-  let items = [], plots = {}, seeds = 0, selected = null;
+  const landscape = document.getElementById('garden-landscape');
+  const seasonNameEl = document.getElementById('season-name');
+  const seasonWeatherEl = document.getElementById('season-weather');
+  const seasonIconEl = document.getElementById('season-icon');
+  const healthPctEl = document.getElementById('health-pct');
+  const healthBarFill = document.getElementById('health-bar-fill');
+  const statPlotsUsed = document.getElementById('stat-plots-used');
+  const statWateredCount = document.getElementById('stat-watered-count');
+  const statHarvestCount = document.getElementById('stat-harvest-count');
+
+  // Modal elements
+  const plotModal = document.getElementById('plot-modal');
+  const btnClosePlotModal = document.getElementById('btn-close-plot-modal');
+  const modalPlotSprite = document.getElementById('modal-plot-sprite');
+  const modalPlotName = document.getElementById('modal-plot-name');
+  const modalPlotStage = document.getElementById('modal-plot-stage');
+  const modalPlotStatus = document.getElementById('modal-plot-status');
+  const modalPlotDesc = document.getElementById('modal-plot-desc');
+  const btnPlotWater = document.getElementById('btn-plot-water');
+  const btnPlotHarvest = document.getElementById('btn-plot-harvest');
+  const btnPlotDig = document.getElementById('btn-plot-dig');
+
+  let items = [];
+  let plots = {}; // slot -> { item_id, stage, watered, planted_at }
+  let seeds = 0;
+  let selected = null;
+  let activeModalSlot = null;
+  let isNight = false;
+
+  const SEASONS = {
+    spring: { name: 'Spring', weather: 'Gentle spring showers & fresh blossoms', icon: '🌦️', class: 'season-spring' },
+    summer: { name: 'Summer', weather: 'Warm sunny breeze and vibrant rays', icon: '☀️', class: 'season-summer' },
+    autumn: { name: 'Autumn', weather: 'Crisp golden breeze with falling leaves', icon: '🍂', class: 'season-autumn' },
+    winter: { name: 'Winter', weather: 'Cool frosted calm and light flurries', icon: '❄️', class: 'season-winter' }
+  };
+  let currentSeasonKey = 'summer';
 
   const byId = (id) => items.find((i) => i.id === id);
+
+  function setSeason(seasonKey) {
+    currentSeasonKey = seasonKey;
+    const s = SEASONS[seasonKey];
+    if (!s) return;
+
+    landscape.classList.remove('season-spring', 'season-summer', 'season-autumn', 'season-winter');
+    landscape.classList.add(s.class);
+
+    if (seasonNameEl) seasonNameEl.textContent = s.name;
+    if (seasonWeatherEl) seasonWeatherEl.textContent = s.weather;
+    if (seasonIconEl) seasonIconEl.textContent = s.icon;
+
+    document.querySelectorAll('.season-btn').forEach(b => {
+      if (b.id === 'btn-season-' + seasonKey) b.classList.add('active');
+      else if (b.id !== 'btn-toggle-night') b.classList.remove('active');
+    });
+  }
+
+  function toggleNightMode() {
+    isNight = !isNight;
+    const btn = document.getElementById('btn-toggle-night');
+    if (isNight) {
+      landscape.classList.add('garden-night');
+      if (btn) { btn.classList.add('active'); btn.textContent = '☀️ Day Mode'; }
+    } else {
+      landscape.classList.remove('garden-night');
+      if (btn) { btn.classList.remove('active'); btn.textContent = '🌙 Night Mode'; }
+    }
+  }
+
+  function updateGardenHealth() {
+    let plantedCount = 0;
+    let bloomingCount = 0;
+    let wateredCount = 0;
+
+    for (let s = 0; s < 12; s++) {
+      const p = plots[s];
+      if (p) {
+        plantedCount++;
+        if (p.stage === 'blooming') bloomingCount++;
+        if (p.watered) wateredCount++;
+      }
+    }
+
+    const bloomPct = Math.round((bloomingCount / 12) * 100);
+    if (healthPctEl) healthPctEl.textContent = bloomPct + '% Blooming';
+    if (healthBarFill) healthBarFill.style.width = bloomPct + '%';
+
+    if (statPlotsUsed) statPlotsUsed.textContent = plantedCount + ' / 12 plots planted';
+    if (statWateredCount) statWateredCount.textContent = '💧 ' + wateredCount + ' watered';
+    if (statHarvestCount) statHarvestCount.textContent = '🌾 ' + bloomingCount + ' ready to harvest';
+  }
 
   function renderPlots() {
     plotsEl.textContent = '';
     for (let s = 0; s < 12; s++) {
-      const filled = plots[s] ? byId(plots[s]) : null;
+      const plotData = plots[s];
+      const filled = plotData ? byId(plotData.item_id) : null;
+
       if (filled) {
-        const d = PG.el('div', 'plot');
-        d.setAttribute('role', 'img');
-        d.setAttribute('aria-label', 'Plot ' + (s + 1) + ': ' + filled.name);
-        d.appendChild(PG.spriteEl(filled.sprite));
+        const stage = plotData.stage || 'blooming';
+        const isWatered = !!plotData.watered;
+        const d = PG.el('div', 'plot plot-stage--' + stage);
+        d.setAttribute('role', 'button');
+        d.setAttribute('tabindex', '0');
+        d.setAttribute('aria-label', 'Plot ' + (s + 1) + ': ' + filled.name + ' (' + stage + ')');
+
+        const wrapper = PG.el('div', 'plot-plant-wrapper');
+        // If sprout stage, show sprout sprite or small sprite
+        if (stage === 'sprout') {
+          wrapper.appendChild(PG.spriteEl('sprout'));
+        } else {
+          wrapper.appendChild(PG.spriteEl(filled.sprite));
+        }
+        d.appendChild(wrapper);
+
+        // Water droplet badge if watered
+        if (isWatered) {
+          const wBadge = PG.el('span', 'plot-water-badge', '💧');
+          wBadge.title = 'Watered';
+          d.appendChild(wBadge);
+        }
+
+        // Ready to harvest badge if blooming
+        if (stage === 'blooming') {
+          const hBadge = PG.el('span', 'plot-harvest-badge', 'HARVEST');
+          d.appendChild(hBadge);
+        }
+
+        d.addEventListener('click', () => openPlotModal(s));
+        d.addEventListener('keydown', (e) => { if (e.key === 'Enter') openPlotModal(s); });
         plotsEl.appendChild(d);
       } else {
         const b = PG.el('button', 'plot is-empty');
         b.type = 'button';
-        b.setAttribute('aria-label', 'Plot ' + (s + 1) + ', empty');
+        b.setAttribute('aria-label', 'Plot ' + (s + 1) + ', empty. Tap to plant.');
         b.appendChild(PG.el('span', 'plot-plus', '+'));
         b.addEventListener('click', () => plant(s));
         plotsEl.appendChild(b);
       }
     }
+    updateGardenHealth();
   }
 
   function renderShop() {
@@ -46,7 +165,11 @@
       b.setAttribute('aria-pressed', selected === it.id ? 'true' : 'false');
       b.setAttribute('aria-label', (selected === it.id ? 'Chosen: ' : 'Choose ') + it.name);
       b.disabled = poor;
-      b.addEventListener('click', () => { selected = selected === it.id ? null : it.id; hint(); renderShop(); });
+      b.addEventListener('click', () => {
+        selected = selected === it.id ? null : it.id;
+        hint();
+        renderShop();
+      });
       card.appendChild(b);
       shopEl.appendChild(card);
     });
@@ -54,29 +177,171 @@
 
   function hint() {
     const it = selected ? byId(selected) : null;
-    msg.textContent = it ? 'Now pick an empty plot to plant the ' + it.name.toLowerCase() + '.' : 'Choose something from the shop, then tap an empty plot.';
+    msg.textContent = it ?
+      'Selected ' + it.name + '! Now pick an empty plot to plant it.' :
+      'Choose a seed or tool from the shop, or tap an existing plot to water or harvest!';
   }
 
   async function plant(slot) {
-    if (!selected) { PG.toast('Choose something from the shop first.', true); return; }
+    if (!selected) {
+      PG.toast('Choose an item from the shop first, then tap an empty plot.', true);
+      return;
+    }
     const it = byId(selected);
     try {
-      const r = await PG.api('/api/garden.php', { body: { item_id: it.id, slot } });
-      plots[slot] = it.id;
+      const r = await PG.api('/api/garden.php', {
+        body: {
+          item_id: it.id,
+          slot,
+          action: 'plant'
+        }
+      });
+      plots[slot] = {
+        item_id: it.id,
+        stage: 'sprout',
+        watered: false,
+        planted_at: Date.now()
+      };
       seeds = r.seeds;
       PG.setStats({ seeds });
       if (seeds < it.cost_seeds) selected = null;
-      renderPlots(); renderShop(); hint();
-      PG.toast('Planted: ' + it.name);
-    } catch (e) { PG.toast(e.message, true); }
+      renderPlots();
+      renderShop();
+      hint();
+      PG.toast('Planted ' + it.name + ' in Plot ' + (slot + 1) + '! 🌱');
+    } catch (e) {
+      PG.toast(e.message, true);
+    }
   }
+
+  function openPlotModal(slot) {
+    const plotData = plots[slot];
+    if (!plotData) return;
+    activeModalSlot = slot;
+    const item = byId(plotData.item_id);
+    if (!item) return;
+
+    modalPlotName.textContent = item.name;
+    modalPlotSprite.innerHTML = '';
+    modalPlotSprite.appendChild(PG.spriteEl(item.sprite));
+
+    const stageNames = { sprout: '🌱 Sprout (Young Seedling)', growing: '🌿 Growing (Forming Buds)', blooming: '🌸 Full Bloom (Mature & Radiant)' };
+    modalPlotStage.textContent = stageNames[plotData.stage] || 'Stage: ' + plotData.stage;
+
+    if (plotData.watered) {
+      modalPlotStatus.textContent = '💧 Watered & Happy';
+      modalPlotStatus.style.background = '#d8f1d8';
+      btnPlotWater.disabled = true;
+      btnPlotWater.textContent = '✓ Already Watered';
+    } else {
+      modalPlotStatus.textContent = '☀️ Thirsty for water';
+      modalPlotStatus.style.background = '#fcf0cd';
+      btnPlotWater.disabled = false;
+      btnPlotWater.textContent = '💧 Water Plant';
+    }
+
+    if (plotData.stage === 'blooming') {
+      btnPlotHarvest.disabled = false;
+      modalPlotDesc.textContent = 'This ' + item.name + ' has fully bloomed! You can harvest it to collect bonus seeds and XP.';
+    } else {
+      btnPlotHarvest.disabled = true;
+      modalPlotDesc.textContent = 'This plant is still growing. Water it to accelerate its bloom!';
+    }
+
+    plotModal.classList.remove('is-hidden');
+  }
+
+  function closePlotModal() {
+    plotModal.classList.add('is-hidden');
+    activeModalSlot = null;
+  }
+
+  async function waterCurrentPlot() {
+    if (activeModalSlot === null) return;
+    const slot = activeModalSlot;
+    try {
+      await PG.api('/api/garden.php', {
+        body: { action: 'water', slot }
+      });
+      if (plots[slot]) {
+        plots[slot].watered = true;
+        plots[slot].stage = 'blooming';
+      }
+      closePlotModal();
+      renderPlots();
+      PG.toast('💧 Watered plot ' + (slot + 1) + '! The plant blossomed into full bloom!');
+    } catch (e) {
+      PG.toast(e.message, true);
+    }
+  }
+
+  async function harvestCurrentPlot() {
+    if (activeModalSlot === null) return;
+    const slot = activeModalSlot;
+    try {
+      const res = await PG.api('/api/garden.php', {
+        body: { action: 'harvest', slot }
+      });
+      delete plots[slot];
+      if (res.seeds !== undefined) {
+        seeds = res.seeds;
+        PG.setStats({ seeds: res.seeds, xp: res.xp });
+      }
+      closePlotModal();
+      renderPlots();
+      renderShop();
+      PG.toast('🌾 Harvest complete! +10 Seeds earned!');
+    } catch (e) {
+      PG.toast(e.message, true);
+    }
+  }
+
+  async function digCurrentPlot() {
+    if (activeModalSlot === null) return;
+    const slot = activeModalSlot;
+    if (!confirm('Dig up this plot? The planted item will be cleared.')) return;
+    try {
+      await PG.api('/api/garden.php', {
+        body: { action: 'dig', slot }
+      });
+      delete plots[slot];
+      closePlotModal();
+      renderPlots();
+      PG.toast('Plot cleared.');
+    } catch (e) {
+      PG.toast(e.message, true);
+    }
+  }
+
+  // Setup Event Listeners
+  document.getElementById('btn-season-spring')?.addEventListener('click', () => setSeason('spring'));
+  document.getElementById('btn-season-summer')?.addEventListener('click', () => setSeason('summer'));
+  document.getElementById('btn-season-autumn')?.addEventListener('click', () => setSeason('autumn'));
+  document.getElementById('btn-season-winter')?.addEventListener('click', () => setSeason('winter'));
+  document.getElementById('btn-toggle-night')?.addEventListener('click', toggleNightMode);
+
+  btnClosePlotModal?.addEventListener('click', closePlotModal);
+  btnPlotWater?.addEventListener('click', waterCurrentPlot);
+  btnPlotHarvest?.addEventListener('click', harvestCurrentPlot);
+  btnPlotDig?.addEventListener('click', digCurrentPlot);
 
   PG.ready.then((me) => {
     if (!me) return;
     PG.api('/api/garden.php').then((d) => {
-      items = d.items; seeds = d.seeds;
-      d.plots.forEach((p) => { plots[p.slot] = p.item_id; });
-      renderPlots(); renderShop(); hint();
+      items = d.items || [];
+      seeds = d.seeds || 0;
+      (d.plots || []).forEach((p) => {
+        plots[p.slot] = {
+          item_id: p.item_id,
+          stage: p.stage || 'blooming',
+          watered: !!p.watered,
+          planted_at: p.planted_at || Date.now()
+        };
+      });
+      setSeason('summer');
+      renderPlots();
+      renderShop();
+      hint();
     }).catch((e) => PG.toast(e.message, true));
   });
 })();

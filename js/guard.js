@@ -6,8 +6,20 @@
   const PG = window.PG;
   const need = document.body.dataset.role || 'user';
 
-  const USER_LINKS = [['/adventure.html', 'Adventure'], ['/garden.html', 'Garden'], ['/toolbox.html', 'Toolbox'], ['/progress.html', 'Progress']];
-  const ADMIN_LINKS = [['/admin/dashboard.html', 'Dashboard'], ['/admin/lessons.html', 'Levels'], ['/admin/users.html', 'Users']];
+  const USER_LINKS = [
+    ['/adventure.html', 'Adventure'],
+    ['/garden.html', 'Garden'],
+    ['/leaderboard.html', 'Rankings'],
+    ['/toolbox.html', 'Toolbox'],
+    ['/progress.html', 'Progress']
+  ];
+  const ADMIN_LINKS = [
+    ['/admin/dashboard.html', 'Dashboard'],
+    ['/admin/lessons.html', 'Levels'],
+    ['/admin/users.html', 'Gardeners'],
+    ['/admin/shops.html', 'Shop'],
+    ['/admin/settings.html', 'Settings']
+  ];
 
   function chip(label, key, spriteName) {
     const c = PG.el('span', 'px-chip');
@@ -48,6 +60,12 @@
 
     const stats = PG.el('div', 'px-nav__stats');
     if (!isAdminPage) {
+      if (me.is_verified) {
+        const vBadge = PG.el('span', 'px-chip badge-verified');
+        vBadge.innerHTML = '✓ Verified';
+        vBadge.title = 'Verified Gardener Account';
+        stats.appendChild(vBadge);
+      }
       stats.appendChild(chip('Seeds', 'seeds', 'seed'));
       stats.appendChild(chip('XP', 'xp', 'star'));
       stats.appendChild(chip('Day streak', 'streak', 'flame'));

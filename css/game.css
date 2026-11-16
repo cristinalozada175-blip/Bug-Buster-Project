@@ -166,3 +166,282 @@
 
 .kpi-change.positive { color: var(--accent-green); }
 .kpi-change.neutral { color: var(--accent-yellow); }
+
+
+/* ===== DYNAMIC TERMINAL DISPLAY STYLES ===== */
+.terminal-wrapper {
+  margin-top: 14px;
+  border: 2px solid #14373d;
+  border-radius: 8px;
+  background: #081d22;
+  box-shadow: 0 6px 0 rgba(10, 36, 40, 0.3);
+  overflow: hidden;
+}
+.terminal-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #0e2b31;
+  border-bottom: 2px solid #143d45;
+  user-select: none;
+}
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot--red { background: #e05b52; border: 1px solid #bf4138; }
+.dot--yellow { background: #e5b947; border: 1px solid #c79a29; }
+.dot--green { background: #57b96b; border: 1px solid #3c9b4e; }
+.terminal-title {
+  color: #a4c7bf;
+  font-family: var(--font-code, monospace);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+.terminal-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.term-status {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.status-idle { background: rgba(140, 170, 160, 0.15); color: #8da39b; }
+.status-running { background: rgba(240, 189, 75, 0.2); color: #f0bd4b; animation: termPulse 1s infinite alternate; }
+.status-success { background: rgba(105, 189, 120, 0.25); color: #69bd78; }
+.status-error { background: rgba(224, 91, 82, 0.25); color: #ff857d; }
+@keyframes termPulse { from { opacity: 0.7; } to { opacity: 1; } }
+
+.term-btn {
+  background: #143d45;
+  color: #bcd4cc;
+  border: 1px solid #235862;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.term-btn:hover {
+  background: #1e5661;
+  color: #fff;
+}
+.terminal-body {
+  padding: 12px 14px;
+  min-height: 140px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.console {
+  background: transparent !important;
+  border: 0 !important;
+  color: #e5f6e8;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.term-line {
+  display: block;
+  margin-bottom: 2px;
+}
+.term-prompt {
+  color: #79c56c;
+  font-weight: 700;
+}
+.term-stdout {
+  color: #e6fff0;
+}
+.term-stderr {
+  color: #ff857d;
+  background: rgba(224, 91, 82, 0.12);
+  padding: 2px 4px;
+  border-radius: 3px;
+  border-left: 3px solid #e05b52;
+}
+.term-note {
+  color: #f7ca62;
+  font-style: italic;
+}
+.term-verification-box {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: rgba(36, 134, 95, 0.18);
+  border: 2px solid #3c8d67;
+  border-radius: 6px;
+  color: #b9ebd3;
+  font-family: var(--font-code, monospace);
+  font-size: 0.88rem;
+}
+.term-verification-title {
+  color: #f5cb68;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.term-verification-pass {
+  color: #78df88;
+  font-weight: 700;
+}
+.term-verification-fail {
+  color: #ff9189;
+  font-weight: 700;
+}
+.term-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background: #79c56c;
+  vertical-align: -2px;
+  animation: cursorBlink 0.8s infinite;
+}
+@keyframes cursorBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ===== QUEST INTRO & LESSON TEACHING STYLES ===== */
+.intro-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.intro-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+.lesson-teaching-box {
+  margin: 16px 0;
+  padding: 14px 18px;
+  background: #f0f7ee;
+  border: 2px solid #a0cca6;
+  border-radius: 6px;
+}
+.lesson-teaching-box h3 {
+  margin: 0 0 6px;
+  color: #245d44;
+  font-size: 1.05rem;
+}
+.lesson-teaching-box p {
+  margin: 0;
+  color: #3b6051;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* ===== MODAL OVERLAY & MAXIMIZE LESSON ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 31, 35, 0.75);
+  backdrop-filter: blur(2px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-card {
+  background: #fffdf5;
+  border: 3px solid #365b4c;
+  border-radius: 9px;
+  box-shadow: 0 12px 0 rgba(10, 31, 35, 0.4);
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.modal-card--large {
+  max-width: 820px;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: #eef5e6;
+  border-bottom: 2px solid #c9dec0;
+}
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #224a3a;
+}
+.btn-icon {
+  background: transparent;
+  border: 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #496859;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+.btn-icon:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #1a3c2e;
+}
+.modal-body {
+  padding: 24px 26px;
+  overflow-y: auto;
+  line-height: 1.6;
+  color: #2c493c;
+}
+.modal-footer {
+  padding: 14px 20px;
+  background: #f8f6ed;
+  border-top: 2px solid #e1dcc9;
+  display: flex;
+  justify-content: flex-end;
+}
+.max-lesson-content pre {
+  background: #12333a;
+  color: #cbebd8;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-family: var(--font-code, monospace);
+  font-size: 0.95rem;
+  overflow-x: auto;
+}
+.goal-verified-tag {
+  display: inline-block;
+  margin-left: 8px;
+  background: #318961;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 3px;
+  vertical-align: middle;
+  animation: popIn 0.3s ease;
+}
+@keyframes popIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Toolbar adjustments */
+.toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}

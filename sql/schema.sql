@@ -5,6 +5,8 @@ create table profiles (
   role text not null default 'user' check (role in ('user','admin')),
   xp int not null default 0, seeds int not null default 0, streak int not null default 0,
   is_suspended boolean not null default false,
+  is_verified boolean not null default false,
+  last_seen_at timestamptz default now(),
   created_at timestamptz not null default now());
 create table chapters (
   id serial primary key, slug text unique not null, title text not null,

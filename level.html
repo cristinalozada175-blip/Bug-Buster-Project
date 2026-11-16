@@ -17,23 +17,57 @@
   <div id="app-nav"></div>
   <main class="container page-main">
     <p id="level-loading" class="muted">Loading level...</p>
+
+    <!-- ===== LESSON BEFORE THE GAME (Quest Briefing & Lesson Card) ===== -->
     <section id="quest-intro" class="quest-intro is-hidden" aria-labelledby="intro-title">
-      <aside class="quest-mascot"><a class="back-map" href="adventure.html">‹ Back to map</a><span class="spr spr--turtle spr--xl" data-sprite="turtle"></span><div class="bubble"><p id="intro-sprout-line">Let’s grow something good!</p></div></aside>
+      <aside class="quest-mascot">
+        <a class="back-map" href="adventure.html">‹ Back to map</a>
+        <span class="spr spr--turtle spr--xl" data-sprite="turtle"></span>
+        <div class="bubble">
+          <p id="intro-sprout-line">Let’s learn and grow something good!</p>
+        </div>
+      </aside>
       <div class="quest-paper">
-        <p class="chapter-kicker" id="intro-level"></p><h1 id="intro-title"></h1><p class="quest-concept" id="intro-concept"></p>
-        <div class="quest-sample"><span>STARTER CODE</span><pre id="intro-code"></pre></div>
-        <h2>YOUR GOALS</h2><ul id="intro-goals" class="goal-list"></ul>
-        <button id="btn-start-coding" class="px-btn px-btn--primary" type="button">Start coding ›</button>
+        <div class="intro-header-row">
+          <p class="chapter-kicker" id="intro-level"></p>
+          <button id="btn-intro-maximize" class="px-btn px-btn--ghost px-btn--small" type="button">⛶ Fullscreen Reading</button>
+        </div>
+        <h1 id="intro-title"></h1>
+        <p class="quest-concept" id="intro-concept"></p>
+
+        <!-- Teaching Card with concept overview -->
+        <div class="lesson-teaching-box" id="intro-explanation">
+          <h3>📖 The Concept</h3>
+          <p id="intro-teaching-text"></p>
+        </div>
+
+        <div class="quest-sample">
+          <span>STARTER CODE PREVIEW</span>
+          <pre id="intro-code"></pre>
+        </div>
+
+        <h2>YOUR GOALS</h2>
+        <ul id="intro-goals" class="goal-list"></ul>
+
+        <div class="intro-actions-row">
+          <button id="btn-start-coding" class="px-btn px-btn--sun" type="button">Start Coding ›</button>
+          <a class="px-btn px-btn--ghost" href="adventure.html">Back to Map</a>
+        </div>
       </div>
     </section>
+
+    <!-- ===== CODING WORKSPACE ===== -->
     <div id="level-body" class="level is-hidden">
       <section class="level-side" aria-label="Quest">
-        <div>
+        <div class="level-header-card">
           <p class="muted" id="chapter-name"></p>
           <h1 id="lesson-title"></h1>
         </div>
         <div class="px-card">
-          <h2>Quest goals</h2>
+          <div class="row row--between">
+            <h2>Quest goals</h2>
+            <button id="btn-side-lesson" class="px-btn px-btn--ghost px-btn--small" type="button">📖 Lesson Brief</button>
+          </div>
           <p id="concept"></p>
           <ul class="goal-list" id="goals"></ul>
         </div>
@@ -42,9 +76,9 @@
             <div class="scene__plot-grid">
               <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
             </div>
-            <span class="spr spr--lg plant" data-sprite="sunflower"></span>
-            <span class="spr spr--lg plant" data-sprite="tulip"></span>
-            <span class="spr spr--lg plant" data-sprite="mushroom"></span>
+            <span class="spr spr--lg plant plant--sunflower" data-sprite="sunflower"></span>
+            <span class="spr spr--lg plant plant--tulip" data-sprite="tulip"></span>
+            <span class="spr spr--lg plant plant--mushroom" data-sprite="mushroom"></span>
             <span class="spr spr--turtle spr--lg" data-sprite="turtle"></span>
           </div>
           <div class="scene__ground"></div>
@@ -59,18 +93,39 @@
           <pre id="gutter" class="editor-gutter" aria-hidden="true"></pre>
           <textarea id="code" class="editor-text" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Python code" aria-describedby="editor-help"></textarea>
         </div>
-        <p id="editor-help" class="px-help">Tab adds spaces. Press Esc, then Tab, to leave the editor. Ctrl+Enter runs your code.</p>
-        <div class="row">
-          <button id="btn-run" class="px-btn px-btn--sun" type="button">Run</button>
-          <button id="btn-check" class="px-btn px-btn--primary" type="button">Check</button>
-          <button id="btn-hint" class="px-btn px-btn--ghost" type="button">Hint</button>
-          <button id="btn-reset" class="px-btn px-btn--ghost" type="button">Reset</button>
+        <p id="editor-help" class="px-help">Tab adds 4 spaces. Press Esc, then Tab, to leave the editor. Ctrl+Enter runs your code.</p>
+        
+        <div class="row toolbar-row">
+          <button id="btn-run" class="px-btn px-btn--sun" type="button">▶ Run</button>
+          <button id="btn-check" class="px-btn px-btn--primary" type="button">✓ Verify & Check</button>
+          <button id="btn-hint" class="px-btn px-btn--ghost" type="button">💡 Hint</button>
+          <button id="btn-reset" class="px-btn px-btn--ghost" type="button">↺ Reset</button>
+          <button id="btn-view-lesson" class="px-btn px-btn--ghost" type="button">📖 Lesson</button>
+          <button id="btn-maximize-lesson" class="px-btn px-btn--ghost" type="button" title="Maximize lesson view">⛶ Maximize</button>
         </div>
+        
         <p id="hint" class="hint-box is-hidden" role="status"></p>
-        <div>
-          <h2>Console</h2>
-          <pre id="console" class="console" aria-live="polite">Press Run to see what your code prints.</pre>
+
+        <!-- ===== DYNAMIC TERMINAL DISPLAY ===== -->
+        <div class="terminal-wrapper">
+          <div class="terminal-chrome">
+            <div class="terminal-dots">
+              <span class="dot dot--red" title="Close"></span>
+              <span class="dot dot--yellow" title="Minimize"></span>
+              <span class="dot dot--green" title="Expand"></span>
+            </div>
+            <div class="terminal-title">🌿 garden-terminal &mdash; Python 3.10</div>
+            <div class="terminal-actions">
+              <span id="term-status" class="term-status status-idle">● IDLE</span>
+              <button id="btn-term-clear" class="term-btn" type="button" title="Clear terminal">🧹 Clear</button>
+              <button id="btn-term-copy" class="term-btn" type="button" title="Copy output">📋 Copy</button>
+            </div>
+          </div>
+          <div id="terminal-body" class="terminal-body">
+            <pre id="console" class="console" aria-live="polite">Press Run to execute your code in the dynamic Python terminal.</pre>
+          </div>
         </div>
+
         <section id="win" class="px-card px-card--sun win is-hidden" aria-labelledby="win-title">
           <h2 id="win-title" tabindex="-1"></h2>
           <p id="win-text"></p>
@@ -83,6 +138,25 @@
       </section>
     </div>
   </main>
+
+  <!-- ===== MAXIMIZE LESSON MODAL ===== -->
+  <div id="maximize-modal" class="modal-overlay is-hidden" role="dialog" aria-modal="true" aria-labelledby="max-title">
+    <div class="modal-card modal-card--large">
+      <div class="modal-header">
+        <h2 id="max-title">📖 Lesson Overview</h2>
+        <button id="btn-close-maximize" class="btn-icon" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body" id="max-body">
+        <div id="max-chapter" class="chapter-kicker"></div>
+        <h1 id="max-lesson-title"></h1>
+        <div id="max-content" class="max-lesson-content"></div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-max-start" class="px-btn px-btn--primary" type="button">Back to Coding Workspace ›</button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/api.js"></script>
   <script src="js/guard.js"></script>
   <script src="js/runner.js"></script>

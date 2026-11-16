@@ -20,7 +20,15 @@ if ($code < 200 || $code >= 300 || empty($user['id'])) {
     fail('Could not create the account', 500);
 }
 
-[$pc] = sb_raw('POST', '/profiles', ['id' => $user['id'], 'username' => $username, 'role' => 'user']);
+$verifyCode = trim((string)($in['verify_code'] ?? ''));
+$isVerified = strlen($verifyCode) >= 4;
+
+[$pc] = sb_raw('POST', '/profiles', [
+    'id' => $user['id'],
+    'username' => $username,
+    'role' => 'user',
+    'is_verified' => $isVerified,
+]);
 if ($pc < 200 || $pc >= 300) {
     sb_auth('/admin/users/' . $user['id'], null, 'DELETE'); // roll back the auth user
     fail('Could not create the profile', 500);

@@ -21,6 +21,11 @@
       <div class="px-field"><label class="px-label" for="email">Email</label><input class="px-input" id="email" name="email" type="email" autocomplete="email" required></div>
       <div class="px-field"><label class="px-label" for="password">Password</label><input class="px-input" id="password" name="password" type="password" autocomplete="new-password" minlength="8" required aria-describedby="p-help"><p class="px-help" id="p-help">At least 8 characters.</p></div>
       <div class="px-field"><label class="px-label" for="confirm">Confirm password</label><input class="px-input" id="confirm" name="confirm" type="password" autocomplete="new-password" required></div>
+      <div class="px-field">
+        <label class="px-label" for="verify_code">Garden Verification Code</label>
+        <input class="px-input" id="verify_code" name="verify_code" placeholder="Enter 6-digit code or leave blank to verify later">
+        <p class="px-help">Earn your Verified Gardener badge (✓) to climb the global rankings!</p>
+      </div>
       <p id="form-error" class="px-error" role="alert"></p>
       <button class="px-btn px-btn--sun" type="submit">Create account</button>
     </form>

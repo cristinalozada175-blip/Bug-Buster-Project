@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rankings | Python Garden</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/pixel.css">
+  <link rel="stylesheet" href="css/game.css">
+  <link rel="stylesheet" href="css/reference.css">
+  <link rel="stylesheet" href="css/leaderboard.css">
+</head>
+<body data-role="user" class="leaderboard-page">
+  <div id="app-nav"></div>
+  <main class="container page-main">
+    <!-- Header -->
+    <div class="page-head page-head--rankings">
+      <div>
+        <p class="chapter-kicker">GLOBAL COMMUNITY</p>
+        <h1>🏆 Gardener Rankings</h1>
+        <p class="muted">Compete with fellow Python Gardeners around the world. Write code, grow plants, and climb the ranks!</p>
+      </div>
+      <div class="my-rank-pill" id="my-rank-banner">
+        <span class="spr spr--sm" data-sprite="trophy"></span>
+        <span>Your Rank: <strong id="my-rank-pos">#--</strong></span>
+      </div>
+    </div>
+
+    <!-- ===== TOP 3 PODIUM ===== -->
+    <section class="podium-section" aria-label="Top 3 Gardeners">
+      <div class="podium-grid" id="podium-cards">
+        <!-- Rendered by JS: 2nd place, 1st place, 3rd place -->
+      </div>
+    </section>
+
+    <!-- ===== SEARCH & SORT FILTERS ===== -->
+    <section class="rank-controls" aria-label="Ranking filters">
+      <div class="search-wrap">
+        <input type="search" id="rank-search" class="px-input" placeholder="🔍 Search by gardener username..." aria-label="Search gardeners">
+      </div>
+      <div class="sort-tabs">
+        <button class="sort-tab active" data-sort="xp" type="button">⭐ XP</button>
+        <button class="sort-tab" data-sort="levels" type="button">📖 Levels</button>
+        <button class="sort-tab" data-sort="streak" type="button">🔥 Streak</button>
+        <button class="sort-tab" data-sort="seeds" type="button">🌱 Seeds</button>
+      </div>
+    </section>
+
+    <!-- ===== RANKING TABLE ===== -->
+    <section class="table-wrap rank-table-wrap" aria-label="Full Leaderboard Table">
+      <table class="px-table rank-table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 70px;">Rank</th>
+            <th scope="col">Gardener</th>
+            <th scope="col">Rank Tier</th>
+            <th scope="col" class="text-center">Levels Done</th>
+            <th scope="col" class="text-center">Streak</th>
+            <th scope="col" class="text-right">Seeds</th>
+            <th scope="col" class="text-right">Total XP</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-rows">
+          <tr>
+            <td colspan="7" class="text-center muted" style="padding: 30px;">Loading gardener rankings...</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/guard.js"></script>
+  <script src="js/leaderboard.js"></script>
+</body>
+</html>

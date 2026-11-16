@@ -1,0 +1,198 @@
+/* Leaderboard and Ranking Styles */
+.page-head--rankings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.my-rank-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: #fff8e5;
+  border: 2px solid #cebe89;
+  border-radius: 7px;
+  box-shadow: 0 4px 0 rgba(44, 86, 61, 0.12);
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  color: #245842;
+}
+.my-rank-pill strong {
+  color: #318961;
+  font-size: 1.3rem;
+}
+
+/* Podium Cards */
+.podium-section {
+  margin-bottom: 28px;
+}
+.podium-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr 1fr;
+  align-items: end;
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.podium-card {
+  background: #fffdf5;
+  border: 3px solid #63855a;
+  border-radius: 9px;
+  padding: 20px 16px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 7px 0 rgba(44, 86, 61, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+.podium-card:hover {
+  transform: translateY(-4px);
+}
+.podium-1 {
+  background: linear-gradient(180deg, #fffcf0 0%, #fff6d9 100%);
+  border-color: #d19a32;
+  box-shadow: 0 10px 0 rgba(199, 137, 26, 0.25);
+  padding-block: 28px 24px;
+  order: 2;
+}
+.podium-2 {
+  background: linear-gradient(180deg, #fffdf8 0%, #f1f4f5 100%);
+  border-color: #8c9da8;
+  box-shadow: 0 7px 0 rgba(120, 140, 150, 0.2);
+  order: 1;
+}
+.podium-3 {
+  background: linear-gradient(180deg, #fffdf8 0%, #faede1 100%);
+  border-color: #b5815b;
+  box-shadow: 0 7px 0 rgba(160, 105, 65, 0.2);
+  order: 3;
+}
+.podium-badge {
+  font-size: 2.2rem;
+  margin-bottom: 6px;
+}
+.podium-1 .podium-badge { font-size: 2.8rem; }
+.podium-rank {
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  font-weight: 800;
+  color: #66866b;
+  margin-bottom: 6px;
+}
+.podium-name {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  color: #173d42;
+  margin: 0 0 4px;
+  word-break: break-all;
+}
+.podium-1 .podium-name { font-size: 1.5rem; color: #784e03; }
+.podium-title {
+  font-size: 0.82rem;
+  color: #557762;
+  margin-bottom: 8px;
+}
+.podium-xp {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  color: #318961;
+  font-weight: 800;
+}
+
+/* Rank Controls */
+.rank-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.search-wrap {
+  flex: 1;
+  min-width: 240px;
+  max-width: 400px;
+}
+.sort-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.sort-tab {
+  background: #fdf8e6;
+  border: 2px solid #b7c7a5;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  color: #365e49;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(40, 80, 50, 0.1);
+  transition: all 0.15s ease;
+}
+.sort-tab:hover {
+  background: #eef6e4;
+  transform: translateY(-1px);
+}
+.sort-tab.active {
+  background: #39885c;
+  color: #fff;
+  border-color: #2a6946;
+  box-shadow: inset 0 2px 0 rgba(0,0,0,0.2);
+}
+
+/* Table */
+.rank-table-wrap {
+  margin-top: 10px;
+}
+.rank-table td {
+  padding-block: 12px;
+}
+.rank-badge-num {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 800;
+  display: inline-block;
+  min-width: 32px;
+}
+.rank-badge-num.gold { color: #b37e0c; }
+.rank-badge-num.silver { color: #586872; }
+.rank-badge-num.bronze { color: #9a582c; }
+
+.rank-gardener-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rank-is-me {
+  background: #edf8eb !important;
+}
+.rank-is-me td {
+  border-color: #92d49e;
+}
+.you-pill {
+  font-size: 0.68rem;
+  background: #318961;
+  color: #fff;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+
+@media (max-width: 700px) {
+  .podium-grid {
+    grid-template-columns: 1fr;
+  }
+  .podium-1 { order: 1; }
+  .podium-2 { order: 2; }
+  .podium-3 { order: 3; }
+}

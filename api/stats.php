@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require _DIR_ . '/../_bootstrap.php';
+require __DIR__ . '/_bootstrap.php';
 method_is('GET');
 require_admin();
 
@@ -49,76 +49,72 @@ foreach ($profiles as $profile) {
     if (($profile['role'] ?? '') === 'admin') $admins++;
     if (!empty($profile['is_suspended'])) $suspended++;
     $seedsHeld += (int)($profile['seeds'] ?? 0);
-    $activity[] = ['type' => 'signup', 'message' => (string)$profile['username'] . ' joined the garden', 'created_at' => (string)$profile['created_at']];
 }
-$completionCount = 0;
-$publishedCompletionCount = 0;
+
+$completions7d = 0;
+$totalCompletions = 0;
 foreach ($progress as $row) {
-    if (($row['status'] ?? '') !== 'done') continue;
-    $lessonId = (int)$row['lesson_id'];
-    $completionCount++;
-    if (array_key_exists($lessonId, $perLesson)) {
-        $perLesson[$lessonId]++;
-        if (!empty($lessonById[$lessonId]["is_published"])) $publishedCompletionCount++;
+    $status = (string)($row['status'] ?? '');
+    $completedAt = !empty($row['completed_at']) ? new DateTimeImmutable((string)$row['completed_at']) : null;
+    $lessonId = (int)($row['lesson_id'] ?? 0);
+    $uid = (string)($row['user_id'] ?? '');
+
+    if ($completedAt) {
+        if ($completedAt >= $today) $activeToday[$uid] = true;
+        if ($completedAt >= $monthStart) $activeMonth[$uid] = true;
+        if ($completedAt >= $weekStart) {
+            $completions7d++;
+            $dayKey = $completedAt->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d');
+            if (isset($weekly[$dayKey])) $weekly[$dayKey]['completions']++;
+        }
     }
-    if (empty($row['completed_at'])) continue;
-    $completed = new DateTimeImmutable((string)$row['completed_at']);
-    $completedUtc = $completed->setTimezone(new DateTimeZone('UTC'));
-    $dayKey = $completedUtc->format('Y-m-d');
-    if (isset($weekly[$dayKey])) $weekly[$dayKey]['completions']++;
-    if ($completedUtc >= $today) $activeToday[(string)$row['user_id']] = true;
-    if ($completedUtc >= $monthStart) $activeMonth[(string)$row['user_id']] = true;
-    $profile = $profileById[(string)$row['user_id']] ?? null;
-    $lesson = $lessonById[$lessonId] ?? null;
-    if ($profile && $lesson) {
+    if ($status === 'done') {
+        $totalCompletions++;
+        if (isset($perLesson[$lessonId])) $perLesson[$lessonId]++;
         $activity[] = [
             'type' => 'completion',
-            'message' => (string)$profile['username'] . ' completed ' . (string)$lesson['title'],
-            'created_at' => (string)$row['completed_at'],
+            'user' => $profileById[$uid]['username'] ?? 'Gardener',
+            'level' => $lessonById[$lessonId]['title'] ?? ('Level #' . $lessonId),
+            'chapter' => $lessonById[$lessonId]['chapter_title'] ?? 'Garden',
+            'time' => $row['completed_at'] ?? gmdate('c'),
         ];
     }
 }
-usort($activity, static fn(array $a, array $b): int => strtotime($b['created_at']) <=> strtotime($a['created_at']));
-$publishedLessons = 0;
-foreach ($lessonById as $lesson) if ($lesson['is_published']) $publishedLessons++;
-$completionRate = count($profiles) > 0 && $publishedLessons > 0
-    ? round(($publishedCompletionCount / (count($profiles) * $publishedLessons)) * 100, 1)
-    : 0;
 
-$levelRows = [];
-foreach ($lessonById as $id => $lesson) {
-    $levelRows[] = [
-        'id' => $id,
-        'title' => (string)$lesson['title'],
-        'chapter_id' => (int)$lesson['chapter_id'],
-        'chapter_title' => (string)$lesson['chapter_title'],
-        'is_published' => $lesson['is_published'],
-        'done' => $perLesson[$id] ?? 0,
+usort($activity, static fn(array $a, array $b): int => strcmp((string)$b['time'], (string)$a['time']));
+$activity = array_slice($activity, 0, 10);
+
+$perLessonRows = [];
+foreach ($lessons as $l) {
+    $lid = (int)$l['id'];
+    $perLessonRows[] = [
+        'id' => $lid,
+        'title' => $l['title'],
+        'chapter_id' => (int)$l['chapter_id'],
+        'chapter_title' => $lessonById[$lid]['chapter_title'] ?? 'Garden',
+        'is_published' => $lessonById[$lid]['is_published'] ?? true,
+        'done' => $perLesson[$lid] ?? 0,
     ];
 }
-$chapterRows = [];
-foreach ($chapters as $chapter) {
-    $chapterRows[] = [
-        'id' => (int)$chapter['id'],
-        'title' => (string)$chapter['title'],
-        'is_published' => (bool)$chapter['is_published'],
-    ];
-}
+
+$userCount = count($profiles);
+$maxPossibleCompletions = $userCount * count($lessons);
+$rate = $maxPossibleCompletions > 0 ? (int)round(($totalCompletions / $maxPossibleCompletions) * 100) : 0;
+
 json_out([
-    'users' => count($profiles),
+    'users' => $userCount,
     'new_users_7d' => $newUsers,
     'admins' => $admins,
     'suspended' => $suspended,
     'seeds_held' => $seedsHeld,
-    'active_today' => count($activeToday),
-    'active_30d' => count($activeMonth),
     'lessons' => count($lessons),
-    'published_lessons' => $publishedLessons,
-    'completions' => $completionCount,
-    'completion_rate' => $completionRate,
-    'per_lesson' => $levelRows,
-    'chapters' => $chapterRows,
-    'activity' => array_slice($activity, 0, 12),
+    'completions' => $totalCompletions,
+    'completions_7d' => $completions7d,
+    'active_today' => count($activeToday),
+    'active_month' => count($activeMonth),
+    'completion_rate' => $rate,
+    'per_lesson' => $perLessonRows,
+    'activity' => $activity,
     'weekly' => array_values($weekly),
+    'chapters' => array_values($chapterById),
 ]);
-?>

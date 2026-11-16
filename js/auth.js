@@ -26,8 +26,7 @@
       const res = await PG.api('/api/' + mode + '.php', { body, noRedirect: true });
       location.href = res.role === 'admin' ? '/admin/dashboard.html' : '/adventure.html';
     } catch (err) {
-      // CHANGE THIS LINE:
-      errBox.textContent = err.message + ' (Status: ' + err.status + ')'; // <-- Shows status and full message
+      errBox.textContent = err.message || 'Something went wrong. Please check your credentials.';
       
       btn.disabled = false;
       btn.textContent = label;

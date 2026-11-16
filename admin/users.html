@@ -43,8 +43,9 @@
           <li><a href="dashboard.html">Dashboard</a></li>
           <li><a href="users.html" class="active" aria-current="page">Gardeners</a></li>
           <li><a href="lessons.html">Levels</a></li>
-          <li><a href="garden.html">Shop</a></li>
+          <li><a href="shops.html">Shop</a></li>
           <li><a href="settings.html">Settings</a></li>
+          <li><a href="../adventure.html">Play Game</a></li>
           <li class="nav-logout"><a href="#" id="btn-logout">Log Out</a></li>
         </ul>
       </nav>
@@ -56,13 +57,18 @@
 
     <!-- === Page Header Card === -->
     <section class="page-head" aria-labelledby="page-title">
-      <h1 id="page-title">👥 Gardeners Management</h1>
-      <p class="page-subtitle">Manage all registered accounts, track learning progress, and update user roles.</p>
-      <p class="current-date" id="current-date">— Loading date —</p>
+      <div>
+        <h1 id="page-title">👥 Gardeners Management</h1>
+        <p class="page-subtitle">Manage all registered accounts, verify gardeners, track learning progress, and update user roles.</p>
+        <p class="current-date" id="current-date">— Loading date —</p>
+      </div>
 
       <div class="head-actions">
-        <button class="px-btn px-btn--primary" id="btn-add-user">
+        <button class="px-btn px-btn--primary" id="btn-add-user" type="button">
           ➕ Add New Gardener
+        </button>
+        <button class="px-btn px-btn--ghost px-btn--small" id="btn-refresh-users" type="button">
+          🔄 Refresh
         </button>
       </div>
     </section>
@@ -77,7 +83,7 @@
           id="user-search" 
           class="px-input"
           autocomplete="off"
-          placeholder="Search by username or email..."
+          placeholder="Search by username..."
         >
       </div>
 
@@ -97,7 +103,9 @@
         <select id="status-filter" class="px-select">
           <option value="all">All Status</option>
           <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
+          <option value="suspended">Suspended</option>
+          <option value="verified">Verified Only</option>
+          <option value="unverified">Unverified Only</option>
         </select>
       </div>
     </section>
@@ -111,58 +119,81 @@
     <section class="table-wrap" aria-label="Registered users table">
       <table class="px-table" id="users-table">
         <caption class="sr-only">
-          List of registered Python Garden users with their role, progress, status, and join date.
+          List of registered Python Garden users with their role, progress, verification status, and actions.
         </caption>
         <thead>
           <tr>
-            <th scope="col">🌿 Username</th>
+            <th scope="col">🌿 Gardener</th>
             <th scope="col">Role</th>
+            <th scope="col">Verification</th>
             <th scope="col">Progress</th>
             <th scope="col">Status</th>
-            <th scope="col">Joined</th>
             <th scope="col" class="col-actions">Actions</th>
           </tr>
         </thead>
         <tbody id="user-rows">
-          <!-- Empty State -->
           <tr class="empty-state">
             <td colspan="6" class="empty-cell">
               <div class="empty-content">
                 <span class="empty-icon" aria-hidden="true">🌱</span>
-                <h3>No gardeners yet</h3>
-                <p>New registered users will appear here automatically.</p>
+                <h3>Loading gardeners...</h3>
               </div>
             </td>
           </tr>
-
-          <!-- Example Row — Uncomment to preview
-          <tr data-user-id="demo-001">
-            <td><strong>GreenTurtle22</strong></td>
-            <td><span class="badge badge--gardener">🌱 Gardener</span></td>
-            <td>
-              <div class="progress-cell">
-                <div class="progress-bar-inline">
-                  <div class="progress-fill-inline" style="width: 78%"></div>
-                </div>
-                <span class="progress-pct">78%</span>
-              </div>
-            </td>
-            <td><span class="status-cell status--active"><span class="status-dot"></span> Active</span></td>
-            <td>Oct 15, 2026</td>
-            <td>
-              <div class="action-buttons">
-                <button class="btn-icon btn-icon--view" title="View user details" aria-label="View GreenTurtle22">👁️</button>
-                <button class="btn-icon btn-icon--edit" title="Edit user" aria-label="Edit GreenTurtle22">✏️</button>
-                <button class="btn-icon btn-icon--delete" title="Remove user" aria-label="Delete GreenTurtle22">🗑️</button>
-              </div>
-            </td>
-          </tr>
-          -->
         </tbody>
       </table>
     </section>
-
   </main>
+
+  <!-- ===== ADD NEW GARDENER MODAL ===== -->
+  <div id="modal-add-user" class="modal-overlay is-hidden" role="dialog" aria-modal="true" aria-labelledby="modal-add-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modal-add-title">➕ Add New Gardener</h2>
+        <button id="btn-close-add-user" class="btn-icon" aria-label="Close modal">✕</button>
+      </div>
+      <form id="form-add-user">
+        <div class="modal-body">
+          <div class="px-field">
+            <label class="px-label" for="new-username">Username</label>
+            <input class="px-input" id="new-username" required pattern="[a-zA-Z0-9_]{3,20}" placeholder="e.g. blossom_sam">
+            <p class="px-help">3-20 letters, numbers, or underscores.</p>
+          </div>
+          <div class="px-field">
+            <label class="px-label" for="new-email">Email Address</label>
+            <input class="px-input" id="new-email" type="email" required placeholder="gardener@example.com">
+          </div>
+          <div class="px-field">
+            <label class="px-label" for="new-password">Password</label>
+            <input class="px-input" id="new-password" type="password" required minlength="6" value="garden123">
+          </div>
+          <div class="form-grid">
+            <div class="px-field">
+              <label class="px-label" for="new-role">Role</label>
+              <select id="new-role" class="px-select">
+                <option value="user" selected>🌱 Gardener (User)</option>
+                <option value="admin">👑 Admin</option>
+              </select>
+            </div>
+            <div class="px-field">
+              <label class="px-label" for="new-seeds">Starting Seeds</label>
+              <input class="px-input" id="new-seeds" type="number" value="25" min="0">
+            </div>
+          </div>
+          <div class="px-field" style="margin-top: 10px;">
+            <label class="checkbox-label" style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="new-verified" checked>
+              <strong>✓ Verify account immediately</strong>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="px-btn px-btn--ghost" id="btn-cancel-add-user">Cancel</button>
+          <button type="submit" class="px-btn px-btn--primary" id="btn-submit-add-user">Create Gardener</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- ===== FOOTER ===== -->
   <footer class="admin-footer">
@@ -170,18 +201,21 @@
   </footer>
 
   <!-- ===== JavaScript ===== -->
-  <script src="js/users.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/guard.js"></script>
+  <script src="../js/user.js"></script>
   <script>
-    // Display current date — matches your screenshot format
     document.addEventListener('DOMContentLoaded', () => {
       const dateEl = document.getElementById('current-date');
       const now = new Date();
-      dateEl.textContent = now.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
+      if (dateEl) {
+        dateEl.textContent = now.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
     });
   </script>
 </body>
