@@ -81,6 +81,30 @@ if ($action === 'create') {
     json_out(['ok' => true, 'id' => $user['id']], 201);
 }
 
+// Handle Invite User by Admin (triggers Supabase Invite Email Template)
+if ($action === 'invite') {
+    $email = strtolower(trim((string)($in['email'] ?? '')));
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) fail('Enter a valid email address to invite', 422);
+
+    [$code, $inviteRes] = sb_auth('/invite', [
+        'email' => $email
+    ]);
+
+    if ($code < 200 || $code >= 300 || empty($inviteRes['id'])) {
+        fail($inviteRes['msg'] ?? ($inviteRes['error_description'] ?? 'Could not send invitation email'), 400);
+    }
+
+    $username = explode('@', $email)[0];
+    sb_raw('POST', '/profiles', [
+        'id' => $inviteRes['id'],
+        'username' => $username,
+        'role' => 'user',
+        'is_verified' => false
+    ]);
+
+    json_out(['ok' => true, 'message' => 'Invitation email sent to ' . $email], 201);
+}
+
 $id = (string)($in['id'] ?? '');
 if (!preg_match('/^[0-9a-f-]{36}$/i', $id)) fail('Invalid user', 422);
 $self = $id === (string)$admin['id'];
