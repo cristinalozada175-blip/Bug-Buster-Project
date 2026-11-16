@@ -81,7 +81,9 @@ function http_call(string $method, string $url, ?array $body, array $headers): a
 /* ---------- Supabase REST ---------- */
 function sb_raw(string $method, string $path, ?array $body = null, array $prefer = []): array {
     $base = rtrim(env_get('SUPABASE_URL') ?: env_get('NEXT_PUBLIC_SUPABASE_URL'), '/');
-    $key = env_get('SUPABASE_SERVICE_KEY') ?: env_get('SUPABASE_SECRET_KEY');
+    $key = env_get('SUPABASE_SERVICE_ROLE_KEY')
+    ?: env_get('SUPABASE_SERVICE_KEY')
+    ?: env_get('SUPABASE_SECRET_KEY');
     if ($base === '' || $key === '') fail('Server is missing Supabase settings', 500);
     $h = ['apikey: ' . $key, 'Authorization: Bearer ' . $key];
     if ($method !== 'GET' && !$prefer) $prefer = ['return=representation'];
@@ -105,9 +107,11 @@ function sb_key_anon(): string {
 }
 
 function sb_key_service(): string {
-    return env_get('SUPABASE_SERVICE_KEY')
+    return env_get('SUPABASE_SERVICE_ROLE_KEY')
+        ?: env_get('SUPABASE_SERVICE_KEY')
         ?: env_get('SUPABASE_SECRET_KEY')
         ?: (env_get('SUPABASE_ANON_KEY') ?: env_get('NEXT_PUBLIC_SUPABASE_ANON_KEY'));
+
 }
 
 function sb_auth(string $path, ?array $body, string $method = 'POST', bool $useAdmin = false): array {
