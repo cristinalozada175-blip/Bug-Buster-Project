@@ -16,5 +16,19 @@ foreach ($topics as $t) {
     else $row['unlock_hint'] = 'Finish the level "' . ($titles[$need] ?? 'a later level') . '" to unlock this.';
     $out[] = $row;
 }
-json_out(['topics' => $out]);
+$base = rtrim(
+    env_get('SUPABASE_URL') ?: env_get('NEXT_PUBLIC_SUPABASE_URL'),
+    '/'
+);
+
+$host = parse_url($base, PHP_URL_HOST);
+
+json_out([
+    'debug' => [
+        'supabase_host' => $host,
+        'total_topics' => count($out),
+        'topic_ids' => array_column($out, 'id')
+    ],
+    'topics' => $out
+]);
 ?>
