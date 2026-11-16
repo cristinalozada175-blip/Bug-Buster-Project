@@ -22,18 +22,17 @@ if (sb('GET', '/profiles?username=eq.' . q($username) . '&select=id')) {
 [$code, $userRes] = sb_auth('/signup', [
     'email' => $email,
     'password' => $password,
+    'options' => [
+        'emailRedirectTo' => null,  // Force OTP mode instead of magic link
+        'shouldCreateUser' => true,
+        'data' => [
+            'username' => $username,
+        ]
+    ],
     'data' => [
         'username' => $username,
     ]
 ], 'POST', false);
-
-// Explicitly trigger confirmation email via resend to guarantee delivery
-try {
-    sb_auth('/resend', [
-        'type' => 'signup',
-        'email' => $email
-    ], 'POST', false);
-} catch (_) {}
 
 if ($code === 422 || $code === 409) {
     fail('That email is already registered', 409);
@@ -61,6 +60,19 @@ if ($pc < 200 || $pc >= 300) {
     sb_auth('/admin/users/' . $userId, null, 'DELETE');
     error_log('Profile creation failed: ' . $pc . ' ' . json_encode($profRes));
     fail('Could not create profile record', 500);
+}
+
+// Resend confirmation email to guarantee OTP delivery
+// (The /signup call above may have created the user but not sent the email
+//  if the user already existed as unconfirmed — /resend is idempotent)
+try {
+    sb_auth('/resend', [
+        'type' => 'signup',
+        'email' => $email,
+    ], 'POST', false);
+} catch (\Throwable $e) {
+    // Non-fatal: log and continue — user was already created
+    error_log('Resend OTP error (non-fatal): ' . $e->getMessage());
 }
 
 // Do NOT set a session cookie here:

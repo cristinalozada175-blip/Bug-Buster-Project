@@ -596,7 +596,10 @@
     let failedToReach = false;
     try {
       res = await fetch(path, init);
-      if (res.status === 404 || res.status === 405 || res.status === 500) {
+      // Only fall back to mock for static-asset 404s or truly unreachable endpoints
+      // Auth, session, and data endpoints must surface real errors — no mock fallback
+      const isAuthEndpoint = /\/(login|register|logout|verify|me|forgot.?password|magic.?link|change.?email|reauthenticate)\.php/.test(path);
+      if (!isAuthEndpoint && (res.status === 404 || res.status === 405)) {
         // Fall back to local mock engine if PHP endpoint is not served
         return await mockApi(path, opts);
       }

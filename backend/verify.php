@@ -40,13 +40,10 @@ if ($action === 'verify_signup') {
 
     $userId = $vRes['user']['id'] ?? ($vRes['id'] ?? null);
 
-    // If still null, try finding user id from profiles table
-    if (empty($userId)) {
-        $pCheck = sb('GET', '/profiles?select=id,role&limit=1');
-        if ($vCode >= 200 && $vCode < 300) {
-            $uRow = sb('GET', '/profiles?username=eq.' . q(explode('@', $email)[0]) . '&select=id,role');
-            $userId = $uRow[0]['id'] ?? null;
-        }
+    // If still null, try finding user id by email prefix in profiles
+    if (empty($userId) && $vCode >= 200 && $vCode < 300) {
+        $uRow = sb('GET', '/profiles?username=eq.' . q(explode('@', $email)[0]) . '&select=id,role');
+        $userId = $uRow[0]['id'] ?? null;
     }
 
     if ($vCode < 200 || $vCode >= 300 || empty($userId)) {
@@ -76,7 +73,7 @@ if ($action === 'resend_signup') {
     sb_auth('/resend', [
         'type' => 'signup',
         'email' => $email
-    ]);
+    ], 'POST', false);
 
     json_out([
         'ok' => true,
