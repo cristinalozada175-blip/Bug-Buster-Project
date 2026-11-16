@@ -14,10 +14,10 @@ if (ini_get("session.use_cookies")) {
         $params["secure"], $params["httponly"]
     );
 }
-
+session_clear();
 // Finally, destroy the session
 session_destroy();
-
+json_out(['ok' => true]);
 // Redirect to login page
 header("Location: login.html");
 exit;
