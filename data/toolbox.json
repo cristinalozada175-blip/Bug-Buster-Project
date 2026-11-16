@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "topics": [
     {
@@ -72,3 +73,57 @@
     }
   ]
 }
+=======
+[
+  {
+    "topic": "What is Programming",
+    "summary": "Programming is the process of giving a computer step-by-step instructions to perform specific tasks.",
+    "example": "# Instructions guide the computer step by step\nprint(\"Step 1: Plant seed\")"
+  },
+  {
+    "topic": "What is Python",
+    "summary": "A high-level, beginner-friendly programming language designed with clean syntax that reads like English.",
+    "example": "# Python reads top-to-bottom, just like a story\nprint(\"Python is ready!\")"
+  },
+  {
+    "topic": "Comments",
+    "summary": "Text after the # symbol is ignored by Python. Use it to leave personal notes or explain your logic.",
+    "example": "# Keep your garden organized\nprint(\"Notes are free\")  # so is this part"
+  },
+  {
+    "topic": "Printing",
+    "summary": "The print() function outputs text or results to your game console screen.",
+    "example": "print(\"Hello, garden!\")"
+  },
+  {
+    "topic": "Variables",
+    "summary": "A variable is a container that stores a value. You give it a name, an equals sign, and a value.",
+    "example": "water = 4\nprint(water)"
+  },
+  {
+    "topic": "Strings",
+    "summary": "Strings are text values enclosed in quotation marks, used for names, labels, and messages.",
+    "example": "crop = \"Sunflower\"\nprint(crop)"
+  },
+  {
+    "topic": "Math & Calculations",
+    "summary": "You can perform basic arithmetic directly in Python using operators like * (multiply), + (add), - (subtract), and / (divide).",
+    "example": "seeds = 6\npots = 3\nprint(seeds * pots)"
+  },
+  {
+    "topic": "Decisions (if / else)",
+    "summary": "Use if and else to make your code make choices based on whether a condition is true or false.",
+    "example": "sun = 8\nif sun > 5:\n    print(\"Grow!\")\nelse:\n    print(\"Wait\")"
+  },
+  {
+    "topic": "Loops (for & range)",
+    "summary": "Loops let you repeat blocks of code automatically. range(n) counts up from 0 to n-1.",
+    "example": "for i in range(3):\n    print(\"Water plant\", i + 1)"
+  },
+  {
+    "topic": "Lists",
+    "summary": "Lists store multiple items in a single variable using square brackets []. Python starts counting items at index 0.",
+    "example": "basket = [\"Rose\", \"Mint\", \"Fern\"]\nprint(basket[1])  # Prints Mint"
+  }
+]
+>>>>>>> f2bd283 (Update lessons and toolbox data)
