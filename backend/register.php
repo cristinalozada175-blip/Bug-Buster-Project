@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 require __DIR__ . '/_bootstrap.php';
 method_is('POST');
 $in = read_json();
@@ -7,33 +8,59 @@ $username = strtolower(trim((string)($in['username'] ?? '')));
 $email = strtolower(trim((string)($in['email'] ?? '')));
 $password = (string)($in['password'] ?? '');
 
-if (!preg_match('/^[a-z0-9_]{3,20}$/', $username)) fail('Username: 3 to 20 letters, numbers or underscores');
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) fail('Enter a valid email address');
-if (strlen($password) < 8 || strlen($password) > 72) fail('Password must be 8 to 72 characters');
+if (!preg_match('/^[a-z0-9_]{3,20}$/', $username)) fail('Username: 3 to 20 letters, numbers or underscores', 422);
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) fail('Enter a valid email address', 422);
+if (strlen($password) < 8 || strlen($password) > 72) fail('Password must be 8 to 72 characters', 422);
 
-if (sb('GET', '/profiles?username=eq.' . q($username) . '&select=id')) fail('That username is taken', 409);
-
-[$code, $user] = sb_auth('/admin/users', ['email' => $email, 'password' => $password, 'email_confirm' => true]);
-if ($code === 422 || $code === 409) fail('That email is already registered', 409);
-if ($code < 200 || $code >= 300 || empty($user['id'])) {
-    error_log('Auth signup failed: ' . $code . ' ' . json_encode($user));
-    fail('Could not create the account', 500);
+// Check if username already exists in profiles
+if (sb('GET', '/profiles?username=eq.' . q($username) . '&select=id')) {
+    fail('That username is already taken', 409);
 }
 
-$verifyCode = trim((string)($in['verify_code'] ?? ''));
-$isVerified = strlen($verifyCode) >= 4;
+// Call Supabase Auth signup.
+// Calling /signup (instead of /admin/users with email_confirm: true) tells Supabase
+// to send the confirmation email with link/code to the user via SMTP.
+[$code, $userRes] = sb_auth('/signup', [
+    'email' => $email,
+    'password' => $password,
+    'data' => [
+        'username' => $username,
+    ]
+]);
 
-[$pc] = sb_raw('POST', '/profiles', [
-    'id' => $user['id'],
+if ($code === 422 || $code === 409) {
+    fail('That email is already registered', 409);
+}
+
+// Extract user ID from Supabase response
+$userId = $userRes['id'] ?? ($userRes['user']['id'] ?? null);
+
+if ($code < 200 || $code >= 300 || empty($userId)) {
+    $msg = $userRes['msg'] ?? ($userRes['error_description'] ?? 'Could not create account');
+    error_log('Auth signup failed: ' . $code . ' ' . json_encode($userRes));
+    fail($msg, $code >= 400 && $code < 500 ? $code : 500);
+}
+
+// Create profile record (is_verified = false until email confirmation/approval)
+[$pc, $profRes] = sb_raw('POST', '/profiles', [
+    'id' => $userId,
     'username' => $username,
     'role' => 'user',
-    'is_verified' => $isVerified,
+    'is_verified' => false,
 ]);
+
 if ($pc < 200 || $pc >= 300) {
-    sb_auth('/admin/users/' . $user['id'], null, 'DELETE'); // roll back the auth user
-    fail('Could not create the profile', 500);
+    // If profile insert failed, clean up auth user
+    sb_auth('/admin/users/' . $userId, null, 'DELETE');
+    error_log('Profile creation failed: ' . $pc . ' ' . json_encode($profRes));
+    fail('Could not create profile record', 500);
 }
 
-session_set($user['id'], 'user');
-json_out(['ok' => true, 'role' => 'user'], 201);
-?>
+// Do NOT set a session cookie here:
+// User cannot log in until they have verified/approved via the confirmation email.
+json_out([
+    'ok' => true,
+    'needs_verification' => true,
+    'email' => $email,
+    'message' => 'Account created! A verification email has been sent to ' . $email . '. Please check your inbox and verify your account before logging in.'
+], 201);

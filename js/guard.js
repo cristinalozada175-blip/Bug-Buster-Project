@@ -35,6 +35,32 @@
   function buildNav(me, isAdminPage) {
     const host = document.getElementById('app-nav');
     if (!host) return;
+
+    // Preserve the rich admin-header on admin pages for UI consistency
+    if (isAdminPage && host.classList.contains('admin-header')) {
+      const curFile = location.pathname.split('/').pop() || 'dashboard.html';
+      host.querySelectorAll('.nav-links-inline a').forEach(a => {
+        const href = (a.getAttribute('href') || '').split('/').pop();
+        if (href === curFile) {
+          a.classList.add('active');
+          a.setAttribute('aria-current', 'page');
+        } else if (!a.closest('.nav-logout')) {
+          a.classList.remove('active');
+          a.removeAttribute('aria-current');
+        }
+      });
+
+      const logoutBtn = host.querySelector('#btn-logout') || host.querySelector('.nav-logout a');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          try { await PG.api('/api/logout.php', { method: 'POST', body: {}, noRedirect: true }); } catch (_) {}
+          location.href = '/login.html';
+        });
+      }
+      return;
+    }
+
     const nav = PG.el('header', 'px-nav');
     const inner = PG.el('div', 'container px-nav__inner');
 
@@ -43,17 +69,18 @@
     const t = PG.el('span', 'spr spr--turtle');
     t.innerHTML = PG.turtle();
     brand.appendChild(t);
-    brand.appendChild(document.createTextNode(isAdminPage ? 'Python Garden admin' : 'Python Garden'));
+    brand.appendChild(document.createTextNode(isAdminPage ? 'Bug Buster admin' : 'Bug Buster'));
     inner.appendChild(brand);
 
     const links = PG.el('nav', 'px-nav__links');
     links.setAttribute('aria-label', 'Main');
     let list = isAdminPage ? ADMIN_LINKS : USER_LINKS;
     if (me.role === 'admin') list = list.concat(isAdminPage ? [['/adventure.html', 'Play']] : [['/admin/dashboard.html', 'Admin']]);
+    const normPath = location.pathname.replace(/^\/front/, '');
     list.forEach(([href, label]) => {
       const a = PG.el('a', null, label);
       a.href = href;
-      if (location.pathname === href || (href === '/adventure.html' && location.pathname === '/level.html')) a.setAttribute('aria-current', 'page');
+      if (normPath === href || (href === '/adventure.html' && normPath === '/level.html')) a.setAttribute('aria-current', 'page');
       links.appendChild(a);
     });
     inner.appendChild(links);
@@ -63,7 +90,7 @@
       if (me.is_verified) {
         const vBadge = PG.el('span', 'px-chip badge-verified');
         vBadge.innerHTML = '✓ Verified';
-        vBadge.title = 'Verified Gardener Account';
+        vBadge.title = 'Verified Bug Buster Account';
         stats.appendChild(vBadge);
       }
       stats.appendChild(chip('Seeds', 'seeds', 'seed'));

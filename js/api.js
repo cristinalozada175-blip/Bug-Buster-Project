@@ -195,10 +195,15 @@
       users.unshift({ ...me, completed_levels: 0, total_levels: 15, progress_percent: 0 });
       setStore('users', users);
       setStore('me', me);
-      return { ok: true, role: me.role };
+      return { ok: true, needs_verification: true, role: 'user', message: 'Verification email sent' };
     }
     if (cleanPath.endsWith('/api/logout.php')) {
       return { ok: true };
+    }
+
+    // Forgot password OTP
+    if (cleanPath.includes('/api/forgot-password.php') || cleanPath.includes('/api/forgot_password.php')) {
+      return { ok: true, message: 'Password reset code sent. (Demo code: 123456)' };
     }
 
     // 3. Verification

@@ -49,7 +49,16 @@ if (strpos($cleanRoute, '..') !== false || strpos($cleanRoute, "\0") !== false) 
 }
 
 // Target handler path in /backend
-$targetFile = dirname(__DIR__) . '/backend/' . $cleanRoute;
+$baseBackend = dirname(__DIR__) . '/backend/';
+$targetFile = $baseBackend . $cleanRoute;
+
+// Fallback checking for hyphen vs underscore
+if (!is_file($targetFile)) {
+    $alt = str_replace('-', '_', $cleanRoute);
+    if (is_file($baseBackend . $alt)) {
+        $targetFile = $baseBackend . $alt;
+    }
+}
 
 if (is_file($targetFile)) {
     $_SERVER['SCRIPT_FILENAME'] = $targetFile;

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Log in | Python Garden</title>
+  <title>Log in | Bug Buster</title>
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,37 +20,121 @@
 <body data-role="guest" class="auth">
   <a class="auth-back" href="index.html">‹ Back to home</a>
   <main class="px-card auth__card">
-    <aside class="auth-scene" aria-label="Sprout the turtle in the garden">
+    <aside class="auth-scene" aria-label="Sprout the turtle">
       <div class="auth-stars" aria-hidden="true">✦　·　✦</div>
       <span class="spr spr--turtle spr--xl" data-sprite="turtle"></span>
       <div class="bubble">
-        <p>Ready to plant some new code today?</p>
+        <p id="auth-bubble-text">Ready to solve some code puzzles today?</p>
       </div>
       <div class="auth-hill" aria-hidden="true"></div>
     </aside>
+    
     <section class="auth-form-side">
-      <div class="auth__brand"><span class="spr spr--turtle" data-sprite="turtle"></span>
-        <div>
-          <p class="chapter-kicker">WELCOME BACK</p>
-          <h1>Welcome back, gardener!</h1>
+      <!-- Standard Login Box -->
+      <div id="login-section">
+        <div class="auth__brand"><span class="spr spr--turtle" data-sprite="turtle"></span>
+          <div>
+            <p class="chapter-kicker">WELCOME BACK</p>
+            <h1>Welcome back!</h1>
+          </div>
         </div>
+        <p class="auth-intro">Sign in to continue your adventure.</p>
+        
+        <form id="auth-form" data-mode="login" novalidate>
+          <div class="px-field">
+            <label class="px-label" for="email">Email address</label>
+            <input class="px-input" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+          </div>
+          <div class="px-field">
+            <div class="auth-label-row">
+              <label class="px-label" for="password">Password</label>
+              <button type="button" id="btn-show-forgot" class="auth-forgot" style="background: none; border: none; padding: 0; font-family: inherit; cursor: pointer;">Forgot password?</button>
+            </div>
+            <input class="px-input" id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+          </div>
+          
+          <p id="form-error" class="px-error" role="alert"></p>
+          <button class="px-btn px-btn--sun auth-submit" type="submit">Log in ›</button>
+        </form>
+
+        <!-- Unverified / Pending Approval Prompt Box (Shown if 403 unconfirmed) -->
+        <div id="login-unverified-box" class="is-hidden" style="margin-top: 14px; padding: 12px; background: #fff8e8; border: 2px solid var(--sun); border-radius: 8px;">
+          <strong style="color: #8c5b00; font-size: .95rem; display: block; margin-bottom: 4px;">Account Not Verified Yet</strong>
+          <p style="font-size: .88rem; margin-bottom: 8px; color: #5a4000;">Check your email to approve your account, or enter the 6-digit code below:</p>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="login-verify-code" class="px-input" placeholder="6-digit code" maxlength="8" style="text-align: center; font-size: 1rem;">
+            <button type="button" id="btn-login-verify" class="px-btn px-btn--sun px-btn--small" style="white-space: nowrap;">Approve</button>
+          </div>
+          <div style="margin-top: 6px; text-align: right;">
+            <button type="button" id="btn-resend-email" style="background: none; border: none; color: #2e604d; text-decoration: underline; font-size: .82rem; cursor: pointer;">Resend verification email</button>
+          </div>
+        </div>
+
+        <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
+        <div class="auth-providers" aria-label="Available sign in options">
+          <span class="provider-mark">G&nbsp; Google</span>
+          <span class="provider-mark">◈&nbsp; GitHub</span>
+        </div>
+        <p class="auth__alt">New here? <a href="register.html">Create an account</a></p>
       </div>
-      <p class="auth-intro">Your garden has been waiting for you.</p>
-      <form id="auth-form" data-mode="login" novalidate>
-        <div class="px-field"><label class="px-label" for="email">Email address</label><input class="px-input"
-            id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
-        <div class="px-field">
-          <div class="auth-label-row"><label class="px-label" for="password">Password</label><span
-              class="auth-forgot">Forgot password?</span></div><input class="px-input" id="password" name="password"
-            type="password" autocomplete="current-password" placeholder="Enter your password" required>
+
+      <!-- Forgot Password: Step 1 (Request OTP) -->
+      <div id="forgot-section" class="is-hidden">
+        <div class="auth__brand"><span class="spr spr--turtle" data-sprite="turtle"></span>
+          <div>
+            <p class="chapter-kicker">PASSWORD RECOVERY</p>
+            <h1>Reset password</h1>
+          </div>
         </div>
-        <p id="form-error" class="px-error" role="alert"></p>
-        <button class="px-btn px-btn--sun auth-submit" type="submit">Log in ›</button>
-      </form>
-      <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
-      <div class="auth-providers" aria-label="Available sign in options"><span class="provider-mark">G&nbsp;
-          Google</span><span class="provider-mark">◈&nbsp; GitHub</span></div>
-      <p class="auth__alt">New here? <a href="register.html">Create an account</a></p>
+        <p class="auth-intro">Enter your email and we'll send a 6-digit OTP code to reset your password.</p>
+        
+        <form id="forgot-form" novalidate>
+          <div class="px-field">
+            <label class="px-label" for="forgot-email">Email address</label>
+            <input class="px-input" id="forgot-email" type="email" placeholder="you@example.com" required>
+          </div>
+          
+          <p id="forgot-error" class="px-error" role="alert"></p>
+          <p id="forgot-success" style="color: #276a50; font-weight: bold; margin-bottom: 10px;" class="is-hidden" role="status"></p>
+          <button class="px-btn px-btn--sun auth-submit" type="submit">Send Reset Code ›</button>
+          <p class="auth__alt" style="margin-top: 14px;"><a href="#" id="btn-back-login-1">‹ Back to Log in</a></p>
+        </form>
+      </div>
+
+      <!-- Forgot Password: Step 2 (Enter OTP & New Password) -->
+      <div id="reset-section" class="is-hidden">
+        <div class="auth__brand"><span class="spr spr--turtle" data-sprite="turtle"></span>
+          <div>
+            <p class="chapter-kicker">SET NEW PASSWORD</p>
+            <h1>Enter OTP code</h1>
+          </div>
+        </div>
+        <p class="auth-intro">Check your inbox for the 6-digit code from Bug Buster.</p>
+        
+        <form id="reset-form" novalidate>
+          <div class="px-field">
+            <label class="px-label" for="reset-email">Email address</label>
+            <input class="px-input" id="reset-email" type="email" readonly style="background: #eef4ed; cursor: not-allowed;">
+          </div>
+          <div class="px-field">
+            <label class="px-label" for="reset-otp">6-Digit OTP Code</label>
+            <input class="px-input" id="reset-otp" type="text" placeholder="e.g. 123456" maxlength="8" required style="font-size: 1.15rem; letter-spacing: 3px; text-align: center;">
+          </div>
+          <div class="px-field">
+            <label class="px-label" for="reset-new-password">New password</label>
+            <input class="px-input" id="reset-new-password" type="password" minlength="8" placeholder="At least 8 characters" required>
+          </div>
+          <div class="px-field">
+            <label class="px-label" for="reset-confirm-password">Confirm new password</label>
+            <input class="px-input" id="reset-confirm-password" type="password" placeholder="Repeat new password" required>
+          </div>
+          
+          <p id="reset-error" class="px-error" role="alert"></p>
+          <button class="px-btn px-btn--sun auth-submit" type="submit">Change Password ›</button>
+          <p class="auth__alt" style="margin-top: 14px;"><a href="#" id="btn-back-login-2">‹ Back to Log in</a></p>
+        </form>
+      </div>
+
     </section>
   </main>
   <script src="../js/api.js"></script>
