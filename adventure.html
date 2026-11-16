@@ -1,6 +1,21 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script>
+  // Check authentication status on page load
+  async function checkAuth() {
+    try {
+      const response = await fetch('api/me.php');
+      if (!response.ok) {
+        // Session is invalid or cleared, force redirect to login
+        window.location.replace('login.html');
+      }
+    } catch (e) {
+      window.location.replace('login.html');
+    }
+  }
+  checkAuth();
+</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Adventure | Python Garden</title>
