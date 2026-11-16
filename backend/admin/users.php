@@ -94,7 +94,11 @@ switch ($action) {
         if ($self) fail('You cannot suspend yourself', 422);
         $patch = ['is_suspended' => true]; break;
     case 'unsuspend': $patch = ['is_suspended' => false]; break;
-    case 'verify': $patch = ['is_verified' => true]; break;
+    case 'verify':
+        $patch = ['is_verified' => true];
+        // Also confirm in Supabase Auth so user can log in immediately
+        try { sb_auth('/admin/users/' . $id, ['email_confirm' => true], 'PUT'); } catch (_) {}
+        break;
     case 'unverify': $patch = ['is_verified' => false]; break;
     case 'reset':
         if ($self) fail('You cannot reset your own progress here', 422);

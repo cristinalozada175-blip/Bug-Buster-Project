@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sign up | Python Garden</title>
+  <title>Sign up | Bug Buster</title>
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,33 +18,76 @@
 </head>
 
 <body data-role="guest" class="auth">
+  <a class="auth-back" href="index.html">‹ Back to home</a>
   <main class="px-card auth__card">
-    <div class="auth__brand"><span class="spr spr--turtle" data-sprite="turtle"></span>
-      <h1>Join the garden</h1>
-    </div>
-    <form id="auth-form" data-mode="register" novalidate>
-      <div class="px-field"><label class="px-label" for="username">Username</label><input class="px-input" id="username"
-          name="username" autocomplete="username" required aria-describedby="u-help">
-        <p class="px-help" id="u-help">3 to 20 letters, numbers or underscores. Saved in lowercase.</p>
+    <aside class="auth-scene" aria-label="Sprout the turtle">
+      <div class="auth-stars" aria-hidden="true">✦　·　✦</div>
+      <span class="spr spr--turtle spr--xl" data-sprite="turtle"></span>
+      <div class="bubble">
+        <p>Ready to start your bug busting adventure?</p>
       </div>
-      <div class="px-field"><label class="px-label" for="email">Email</label><input class="px-input" id="email"
-          name="email" type="email" autocomplete="email" required></div>
-      <div class="px-field"><label class="px-label" for="password">Password</label><input class="px-input" id="password"
-          name="password" type="password" autocomplete="new-password" minlength="8" required aria-describedby="p-help">
-        <p class="px-help" id="p-help">At least 8 characters.</p>
+      <div class="auth-hill" aria-hidden="true"></div>
+    </aside>
+    <section class="auth-form-side">
+      <div class="auth__brand"><span class="spr spr--turtle" data-sprite="turtle"></span>
+        <div>
+          <p class="chapter-kicker">CREATE AN ACCOUNT</p>
+          <h1>Join Bug Buster</h1>
+        </div>
       </div>
-      <div class="px-field"><label class="px-label" for="confirm">Confirm password</label><input class="px-input"
-          id="confirm" name="confirm" type="password" autocomplete="new-password" required></div>
-      <div class="px-field">
-        <label class="px-label" for="verify_code">Garden Verification Code</label>
-        <input class="px-input" id="verify_code" name="verify_code"
-          placeholder="Enter 6-digit code or leave blank to verify later">
-        <p class="px-help">Earn your Verified Gardener badge (✓) to climb the global rankings!</p>
+      <p class="auth-intro">Learn Python, solve challenges, and climb the rankings.</p>
+      
+      <!-- Registration Form -->
+      <form id="auth-form" data-mode="register" novalidate>
+        <div class="px-field">
+          <label class="px-label" for="username">Username</label>
+          <input class="px-input" id="username" name="username" autocomplete="username" placeholder="e.g. coder_sprout" required aria-describedby="u-help">
+          <p class="px-help" id="u-help">3 to 20 letters, numbers or underscores.</p>
+        </div>
+        <div class="px-field">
+          <label class="px-label" for="email">Email address</label>
+          <input class="px-input" id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        </div>
+        <div class="px-field">
+          <label class="px-label" for="password">Password</label>
+          <input class="px-input" id="password" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required aria-describedby="p-help">
+          <p class="px-help" id="p-help">At least 8 characters.</p>
+        </div>
+        <div class="px-field">
+          <label class="px-label" for="confirm">Confirm password</label>
+          <input class="px-input" id="confirm" name="confirm" type="password" autocomplete="new-password" placeholder="Repeat your password" required>
+        </div>
+        
+        <p id="form-error" class="px-error" role="alert"></p>
+        <button class="px-btn px-btn--sun auth-submit" type="submit">Create account ›</button>
+      </form>
+
+      <!-- Post-registration Verification Notice (Hidden until signup) -->
+      <div id="verify-notice-container" class="is-hidden" style="margin-top: 16px;">
+        <div class="px-card" style="padding: 18px; border: 2px solid var(--forest); background: #f4faf2; text-align: center;">
+          <span class="spr spr--turtle spr--md" data-sprite="turtle"></span>
+          <h2 style="font-size: 1.3rem; margin: 8px 0 4px; color: var(--forest);">Verify your email</h2>
+          <p id="verify-msg" style="font-size: .95rem; margin-bottom: 12px; line-height: 1.4;">
+            We sent a verification link to your email. You must approve/verify your email before you can log in.
+          </p>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <input type="text" id="verify-input-code" class="px-input" placeholder="Or enter 6-digit code" maxlength="8" style="text-align: center; font-size: 1.1rem; letter-spacing: 2px;">
+            <button type="button" id="btn-submit-verify" class="px-btn px-btn--sun" style="white-space: nowrap;">Approve ›</button>
+          </div>
+          <p id="verify-feedback" class="px-error" style="margin-top: 8px;" role="alert"></p>
+          <div style="margin-top: 14px;">
+            <a href="login.html" class="px-btn px-btn--ghost px-btn--small">Go to Log in</a>
+          </div>
+        </div>
       </div>
-      <p id="form-error" class="px-error" role="alert"></p>
-      <button class="px-btn px-btn--sun" type="submit">Create account</button>
-    </form>
-    <p class="auth__alt">Already have an account? <a href="login.html">Log in</a></p>
+
+      <div class="auth-divider"><span>OR CONTINUE WITH</span></div>
+      <div class="auth-providers" aria-label="Available sign in options">
+        <span class="provider-mark">G&nbsp; Google</span>
+        <span class="provider-mark">◈&nbsp; GitHub</span>
+      </div>
+      <p class="auth__alt">Already have an account? <a href="login.html">Log in</a></p>
+    </section>
   </main>
   <script src="../js/api.js"></script>
   <script src="../js/guard.js"></script>
