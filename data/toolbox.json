@@ -1,40 +1,74 @@
 {
   "topics": [
     {
-      "title": "Comments",
+      "id": 1,
+      "title": "Programming Fundamentals",
       "unlock_lesson_title": null,
-      "summary": "Text after # is ignored by Python. Use it to leave notes for yourself.",
-      "example_code": "# This line is a note\nprint(\"Notes are free\")  # so is this part"
+      "summary": "Programming is creating instructions for computers. Every program follows 3 stages: Input (information entered), Process (computer follows steps), and Output (results displayed).",
+      "example_code": "# Input -> Process -> Output\n# Displaying an instruction:\nprint(\"Step 1: Plant seed\")"
     },
     {
-      "title": "print()",
-      "unlock_lesson_title": "Say hello",
+      "id": 2,
+      "title": "What is Python?",
+      "unlock_lesson_title": "What is Python?",
+      "summary": "Python executes instructions sequentially from top to bottom. Python is case-sensitive: always use lowercase print().",
+      "example_code": "print(\"Prepare the soil\")\nprint(\"Plant the seeds\")\nprint(\"Water the garden\")"
+    },
+    {
+      "id": 3,
+      "title": "Comments",
+      "unlock_lesson_title": "Leaving Garden Notes",
+      "summary": "Text after # is ignored by Python during execution. Use comments to leave notes and explain your code to humans.",
+      "example_code": "# This line is a note for programmers\nwater = 5  # Inline comment\nprint(\"Notes are free\")"
+    },
+    {
+      "id": 4,
+      "title": "print() Function",
+      "unlock_lesson_title": "Say Hello",
       "summary": "print() shows text or values in the console. Text goes inside quotes. Several values can be separated with commas.",
-      "example_code": "print(\"Hello, garden!\")\nprint(\"Plants:\", 3)"
+      "example_code": "print(\"Hello, garden!\")\nprint(\"Plant:\", \"Rose\", \"Water:\", 5)"
     },
     {
+      "id": 5,
       "title": "Variables",
-      "unlock_lesson_title": "Name your water",
-      "summary": "A variable stores a value under a name. Use = to store it, then use the name later.",
-      "example_code": "water = 4\nname = \"Sprout\"\nprint(name, water)"
+      "unlock_lesson_title": "Name Your Water",
+      "summary": "A variable stores a value under a name using =. You can access and update variables. Names cannot begin with numbers or have spaces.",
+      "example_code": "water = 4\nwater = water + 2\nprint(water)  # prints 6"
     },
     {
-      "title": "Math operators",
-      "unlock_lesson_title": "Count the seeds",
-      "summary": "Use + - * / for arithmetic. // divides and drops the decimals, % gives the remainder, ** is a power.",
-      "example_code": "print(6 * 3)\nprint(7 // 2)\nprint(7 % 3)\nprint(2 ** 3)"
+      "id": 6,
+      "title": "Strings & Concatenation",
+      "unlock_lesson_title": "Label Your Plant",
+      "summary": "Strings represent text in quotes. Combine them using + (concatenation). Measure the number of characters in a string with len().",
+      "example_code": "first = \"Python\"\nsecond = \"Garden\"\nprint(first + \" \" + second)\nprint(len(first))  # 6"
     },
     {
+      "id": 7,
+      "title": "Math Operators",
+      "unlock_lesson_title": "Count the Seeds",
+      "summary": "Use + - * / for arithmetic. // divides and drops decimals (floor division), % gives remainder (modulus), ** is exponentiation.",
+      "example_code": "print(6 * 3)   # 18\nprint(10 // 3) # 3\nprint(10 % 3)  # 1\nprint(2 ** 3)  # 8"
+    },
+    {
+      "id": 8,
       "title": "if and else",
-      "unlock_lesson_title": "Sunny or not",
+      "unlock_lesson_title": "Sunny or Not?",
       "summary": "if runs code only when a condition is true. else runs when it is not. Indent the code inside by 4 spaces.",
       "example_code": "sun = 8\nif sun > 5:\n    print(\"Grow!\")\nelse:\n    print(\"Wait\")"
     },
     {
+      "id": 9,
       "title": "for loops and range()",
-      "unlock_lesson_title": "Water every plant",
-      "summary": "A for loop repeats code. range(3) gives 0, 1 and 2, so the loop body runs three times.",
+      "unlock_lesson_title": "Water Every Plant",
+      "summary": "A for loop repeats code. range(3) gives 0, 1, and 2, so the loop body runs three times. Use i + 1 to start display numbers at 1.",
       "example_code": "for i in range(3):\n    print(\"Water plant\", i + 1)"
+    },
+    {
+      "id": 10,
+      "title": "Lists and Indexing",
+      "unlock_lesson_title": "Seed Basket",
+      "summary": "Lists store multiple items in order inside square brackets []. Python uses zero-based indexing: the first item is at index [0].",
+      "example_code": "basket = [\"Rose\", \"Mint\", \"Fern\"]\nprint(basket[0])  # Rose\nprint(basket[1])  # Mint\nbasket.append(\"Sunflower\")"
     }
   ]
 }

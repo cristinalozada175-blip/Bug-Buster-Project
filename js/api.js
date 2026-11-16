@@ -519,14 +519,38 @@
     }
 
     if (cleanPath.endsWith('/api/toolbox.php')) {
-      return {
-        topics: [
-          { id: 1, title: 'Comments', summary: 'Text after # is ignored by Python.', example_code: '# Note\nprint("Hi")' },
-          { id: 2, title: 'print()', summary: 'print() shows values in console.', example_code: 'print("Hello, garden!")' },
-          { id: 3, title: 'Variables', summary: 'Store values with = sign.', example_code: 'water = 4\nprint(water)' },
-          { id: 4, title: 'Lists', summary: 'Ordered collections starting at 0.', example_code: 'crops = ["sunflower", "tulip"]\nprint(crops[0])' }
-        ]
-      };
+      let tbData = getStore('toolbox_cache', null);
+      if (!tbData) {
+        try {
+          const resp = await fetch('/data/toolbox.json');
+          if (resp.ok) {
+            tbData = await resp.json();
+            setStore('toolbox_cache', tbData);
+          }
+        } catch (_) {}
+      }
+
+      const rawTopics = (tbData && tbData.topics) || [];
+      const topics = rawTopics.map((t, idx) => {
+        let unlocked = true;
+        if (t.unlock_lesson_title) {
+          // Check if the user has completed any lessons or this specific level
+          // In mock mode, if progress has any done levels or if level matches
+          const completedCount = Object.values(progress).filter(v => v === 'done').length;
+          // Each topic unlocks after level (idx + 1)
+          unlocked = completedCount >= idx;
+        }
+        return {
+          id: t.id || (idx + 1),
+          title: t.title,
+          unlocked: unlocked,
+          summary: t.summary,
+          example_code: t.example_code,
+          unlock_hint: t.unlock_lesson_title ? 'Finish level "' + t.unlock_lesson_title + '" to unlock this.' : 'Available now'
+        };
+      });
+
+      return { topics: topics };
     }
 
     return { ok: true };

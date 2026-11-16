@@ -130,29 +130,55 @@ insert into shop_items (name, kind, cost_seeds, sprite) values ('Garden lantern'
 insert into shop_items (name, kind, cost_seeds, sprite) values ('Lily pond', 'decor', 80, 'pond');
 
 -- Toolbox Topics
-insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values ('Comments', 'Text after # is ignored by Python. Use it to leave notes for yourself.', '# This line is a note
-print("Notes are free")  # so is this part', null);
-insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values ('print()', 'print() shows text or values in the console. Text goes inside quotes. Several values can be separated with commas.', 'print("Hello, garden!")
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('Programming Fundamentals', 'Programming is creating instructions for computers. Every program follows 3 stages: Input (information entered), Process (computer follows steps), and Output (results displayed).', '# Input -> Process -> Output
+# Displaying an instruction:
+print("Step 1: Plant seed")', null);
+
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('What is Python?', 'Python executes instructions sequentially from top to bottom. Python is case-sensitive: always use lowercase print().', 'print("Prepare the soil")
+print("Plant the seeds")
+print("Water the garden")', (select id from lessons where title='What is Python?' limit 1));
+
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('Comments', 'Text after # is ignored by Python. Use it to leave notes for yourself.', '# This line is a note
+print("Notes are free")  # so is this part', (select id from lessons where title='Leaving Garden Notes' limit 1));
+
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('print()', 'print() shows text or values in the console. Text goes inside quotes. Several values can be separated with commas.', 'print("Hello, garden!")
 print("Plants:", 3)', (select id from lessons where title='Say hello' limit 1));
-insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values ('Variables', 'A variable stores a value under a name. Use = to store it, then use the name later.', 'water = 4
+
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('Variables', 'A variable stores a value under a name. Use = to store it, then use the name later.', 'water = 4
 name = "Sprout"
 print(name, water)', (select id from lessons where title='Name your water' limit 1));
-insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values ('Math operators', 'Use + - * / for arithmetic. // divides and drops the decimals, % gives the remainder, ** is a power.', 'print(6 * 3)
+
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('Strings & Concatenation', 'Strings represent text in quotes. Combine them using + (concatenation). Measure the number of characters in a string with len().', 'first = "Python"
+second = "Garden"
+print(first + " " + second)
+print(len(first))', (select id from lessons where title='Label Your Plant' limit 1));
+
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('Math operators', 'Use + - * / for arithmetic. // divides and drops the decimals, % gives the remainder, ** is a power.', 'print(6 * 3)
 print(7 // 2)
 print(7 % 3)
 print(2 ** 3)', (select id from lessons where title='Count the seeds' limit 1));
-insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values ('if and else', 'if runs code only when a condition is true. else runs when it is not. Indent the code inside by 4 spaces.', 'sun = 8
+
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('if and else', 'if runs code only when a condition is true. else runs when it is not. Indent the code inside by 4 spaces.', 'sun = 8
 if sun > 5:
     print("Grow!")
 else:
     print("Wait")', (select id from lessons where title='Sunny or not' limit 1));
-insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values ('for loops and range()', 'A for loop repeats code. range(3) gives 0, 1 and 2, so the loop body runs three times.', 'for i in range(3):
+
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('for loops and range()', 'A for loop repeats code. range(3) gives 0, 1 and 2, so the loop body runs three times.', 'for i in range(3):
     print("Water plant", i + 1)', (select id from lessons where title='Water every plant' limit 1));
-insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values ('Lists and Indexing', 'Lists hold multiple items in order. The first item is at index 0.', 'harvest = ["carrot", "tomato", "radish"]
+
+insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
+('Lists and Indexing', 'Lists hold multiple items in order. The first item is at index 0.', 'harvest = ["carrot", "tomato", "radish"]
 print(harvest[0])', (select id from lessons where title='Gather the Harvest' limit 1));
-insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values ('Functions', 'Functions group statements under a name with def.', 'def water_flower(name):
-    return "Watered " + name
-print(water_flower("Rose"))', (select id from lessons where title='Garden Greeting Function' limit 1));
 
 -- Achievements
 insert into achievements (title, description, rule_key, threshold) values ('First sprout', 'Finish your first level', 'lessons_done', 1);

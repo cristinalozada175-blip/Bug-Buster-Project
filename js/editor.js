@@ -249,6 +249,26 @@
     hintBox.classList.remove('is-hidden');
   }
 
+  let lessonMaterials = [];
+  fetch('../data/lesson_materials.json')
+    .then(r => r.ok ? r.json() : null)
+    .then(d => {
+      if (d && Array.isArray(d.lessons)) {
+        lessonMaterials = d.lessons;
+        if (lesson) fill(lesson);
+      }
+    })
+    .catch(() => {});
+
+  function findMaterial(l) {
+    if (!l || !lessonMaterials.length) return null;
+    return lessonMaterials.find(m => 
+      m.id === l.id || 
+      (m.title && l.title && m.title.toLowerCase() === l.title.toLowerCase()) || 
+      (m.concept && l.concept && m.concept.toLowerCase() === l.concept.toLowerCase())
+    );
+  }
+
   function openMaximizeModal() {
     if (!lesson) return;
     $('max-chapter').textContent = (lesson.chapter_title || 'Chapter') + ' · Level ' + (lesson.sort_order || lesson.id);
@@ -257,14 +277,98 @@
     const body = $('max-content');
     body.innerHTML = '';
 
-    // Concept explanation
-    const conceptText = CONCEPT_EXPLANATIONS[lesson.concept] || lesson.concept || '';
-    const expBox = PG.el('div', 'lesson-teaching-box');
-    expBox.innerHTML = '<h3>📖 Concept: ' + escapeHtml(lesson.concept || '') + '</h3><p>' + escapeHtml(conceptText) + '</p>';
-    body.appendChild(expBox);
+    const mat = findMaterial(lesson);
+
+    if (mat) {
+      // 1. Topic & Introduction
+      const introBox = PG.el('div', 'lesson-teaching-box');
+      introBox.innerHTML = '<h3>📖 ' + escapeHtml(mat.topic || mat.concept || lesson.concept || '') + '</h3><p>' + escapeHtml(mat.introduction || '') + '</p>';
+      body.appendChild(introBox);
+
+      // 2. Full Discussion Subsections
+      if (Array.isArray(mat.discussion) && mat.discussion.length) {
+        mat.discussion.forEach(sec => {
+          const secTitle = PG.el('h4', null, sec.heading || '');
+          secTitle.style.marginTop = '16px';
+          secTitle.style.marginBottom = '6px';
+          secTitle.style.color = '#224a3a';
+          body.appendChild(secTitle);
+          const p = PG.el('p', null, sec.text || '');
+          p.style.whiteSpace = 'pre-line';
+          p.style.lineHeight = '1.6';
+          body.appendChild(p);
+        });
+      }
+
+      // 3. Syntax Reference
+      if (mat.syntax) {
+        const synTitle = PG.el('h4', null, '📌 Syntax');
+        synTitle.style.marginTop = '16px';
+        synTitle.style.color = '#224a3a';
+        body.appendChild(synTitle);
+        const preSyn = PG.el('pre', null, mat.syntax);
+        body.appendChild(preSyn);
+      }
+
+      // 4. Code Examples
+      if (Array.isArray(mat.code_examples) && mat.code_examples.length) {
+        const exTitle = PG.el('h4', null, '💡 Code Examples');
+        exTitle.style.marginTop = '16px';
+        exTitle.style.color = '#224a3a';
+        body.appendChild(exTitle);
+        mat.code_examples.forEach(ex => {
+          if (ex.explanation) {
+            const expP = PG.el('p', null, ex.explanation);
+            expP.style.margin = '4px 0';
+            body.appendChild(expP);
+          }
+          if (ex.code) {
+            const exPre = PG.el('pre', null, ex.code);
+            body.appendChild(exPre);
+          }
+        });
+      }
+
+      // 5. Common Mistakes
+      if (Array.isArray(mat.common_mistakes) && mat.common_mistakes.length) {
+        const misTitle = PG.el('h4', null, '⚠️ Common Mistakes to Avoid');
+        misTitle.style.marginTop = '16px';
+        misTitle.style.color = '#a03525';
+        body.appendChild(misTitle);
+        const misUl = PG.el('ul', 'goal-list');
+        mat.common_mistakes.forEach(m => {
+          const li = PG.el('li', null, m);
+          misUl.appendChild(li);
+        });
+        body.appendChild(misUl);
+      }
+
+      // 6. Knowledge Check Questions
+      if (Array.isArray(mat.knowledge_check) && mat.knowledge_check.length) {
+        const kcTitle = PG.el('h4', null, '🧠 Quick Knowledge Check');
+        kcTitle.style.marginTop = '16px';
+        kcTitle.style.color = '#224a3a';
+        body.appendChild(kcTitle);
+        const kcUl = PG.el('ol', null);
+        kcUl.style.paddingLeft = '20px';
+        mat.knowledge_check.forEach(q => {
+          const li = PG.el('li', null, q);
+          li.style.marginBottom = '6px';
+          kcUl.appendChild(li);
+        });
+        body.appendChild(kcUl);
+      }
+    } else {
+      // Fallback to brief explanation if not in lesson_materials.json
+      const conceptText = CONCEPT_EXPLANATIONS[lesson.concept] || lesson.concept || '';
+      const expBox = PG.el('div', 'lesson-teaching-box');
+      expBox.innerHTML = '<h3>📖 Concept: ' + escapeHtml(lesson.concept || '') + '</h3><p>' + escapeHtml(conceptText) + '</p>';
+      body.appendChild(expBox);
+    }
 
     // Goals
     const h2 = PG.el('h3', null, '🎯 Quest Goals');
+    h2.style.marginTop = '20px';
     body.appendChild(h2);
     const ul = PG.el('ul', 'goal-list');
     (lesson.goals || []).forEach(g => {
@@ -273,7 +377,7 @@
     body.appendChild(ul);
 
     // Starter code preview
-    const h3 = PG.el('h3', null, '💻 Code Reference');
+    const h3 = PG.el('h3', null, '💻 Code Reference & Starter');
     body.appendChild(h3);
     const pre = PG.el('pre', null, lesson.starter_code || '# Write your Python code here\n');
     body.appendChild(pre);
@@ -309,10 +413,11 @@
     document.title = l.title + ' | Python Garden';
 
     // 1. Populate Lesson Before the Game (Quest Intro Paper)
+    const mat = findMaterial(l);
     $('intro-level').textContent = (l.chapter_title || 'Chapter') + ' · Level ' + (l.sort_order || l.id);
     $('intro-title').textContent = l.title;
-    $('intro-concept').textContent = 'Concept: ' + (l.concept || 'Python Basics');
-    $('intro-teaching-text').textContent = CONCEPT_EXPLANATIONS[l.concept] || l.concept || 'Practice your Python skills to grow this plant.';
+    $('intro-concept').textContent = 'Concept: ' + ((mat && (mat.topic || mat.concept)) || l.concept || 'Python Basics');
+    $('intro-teaching-text').textContent = (mat && mat.introduction) || CONCEPT_EXPLANATIONS[l.concept] || l.concept || 'Practice your Python skills to grow this plant.';
     $('intro-code').textContent = l.starter_code || '# Write code here\n';
 
     const introGoals = $('intro-goals');
