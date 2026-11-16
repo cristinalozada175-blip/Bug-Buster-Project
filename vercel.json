@@ -1,5 +1,53 @@
 {
   "functions": {
-    "api/**/*.php": { "runtime": "vercel-php@0.7.4" }
-  }
+    "api/index.php": {
+      "runtime": "vercel-php@0.7.4"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.php"
+    },
+    {
+      "source": "/",
+      "destination": "/front/index.html"
+    },
+    {
+      "source": "/adventure.html",
+      "destination": "/front/adventure.html"
+    },
+    {
+      "source": "/garden.html",
+      "destination": "/front/garden.html"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/front/index.html"
+    },
+    {
+      "source": "/leaderboard.html",
+      "destination": "/front/leaderboard.html"
+    },
+    {
+      "source": "/level.html",
+      "destination": "/front/level.html"
+    },
+    {
+      "source": "/login.html",
+      "destination": "/front/login.html"
+    },
+    {
+      "source": "/progress.html",
+      "destination": "/front/progress.html"
+    },
+    {
+      "source": "/register.html",
+      "destination": "/front/register.html"
+    },
+    {
+      "source": "/toolbox.html",
+      "destination": "/front/toolbox.html"
+    }
+  ]
 }
