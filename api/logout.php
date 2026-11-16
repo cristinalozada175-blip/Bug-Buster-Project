@@ -1,8 +1,6 @@
 <?php
 session_start();
-require __DIR__ . '/_bootstrap.php';
-method_is('POST');
-json_out(['ok' => true]);
+
 
 
 // Initialize the session
