@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,12 +8,15 @@
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/pixel.css">
-  <link rel="stylesheet" href="css/game.css">
-  <link rel="stylesheet" href="css/reference.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/pixel.css">
+  <link rel="stylesheet" href="../css/game.css">
+  <link rel="stylesheet" href="../css/reference.css">
 </head>
+
 <body data-role="user">
   <div id="app-nav"></div>
   <main class="container page-main">
@@ -30,7 +34,8 @@
       <div class="quest-paper">
         <div class="intro-header-row">
           <p class="chapter-kicker" id="intro-level"></p>
-          <button id="btn-intro-maximize" class="px-btn px-btn--ghost px-btn--small" type="button">⛶ Fullscreen Reading</button>
+          <button id="btn-intro-maximize" class="px-btn px-btn--ghost px-btn--small" type="button">⛶ Fullscreen
+            Reading</button>
         </div>
         <h1 id="intro-title"></h1>
         <p class="quest-concept" id="intro-concept"></p>
@@ -66,7 +71,8 @@
         <div class="px-card">
           <div class="row row--between">
             <h2>Quest goals</h2>
-            <button id="btn-side-lesson" class="px-btn px-btn--ghost px-btn--small" type="button">📖 Lesson Brief</button>
+            <button id="btn-side-lesson" class="px-btn px-btn--ghost px-btn--small" type="button">📖 Lesson
+              Brief</button>
           </div>
           <p id="concept"></p>
           <ul class="goal-list" id="goals"></ul>
@@ -91,19 +97,22 @@
       <section class="level-work" aria-label="Code editor">
         <div class="editor">
           <pre id="gutter" class="editor-gutter" aria-hidden="true"></pre>
-          <textarea id="code" class="editor-text" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Python code" aria-describedby="editor-help"></textarea>
+          <textarea id="code" class="editor-text" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off"
+            aria-label="Python code" aria-describedby="editor-help"></textarea>
         </div>
-        <p id="editor-help" class="px-help">Tab adds 4 spaces. Press Esc, then Tab, to leave the editor. Ctrl+Enter runs your code.</p>
-        
+        <p id="editor-help" class="px-help">Tab adds 4 spaces. Press Esc, then Tab, to leave the editor. Ctrl+Enter runs
+          your code.</p>
+
         <div class="row toolbar-row">
           <button id="btn-run" class="px-btn px-btn--sun" type="button">▶ Run</button>
           <button id="btn-check" class="px-btn px-btn--primary" type="button">✓ Verify & Check</button>
           <button id="btn-hint" class="px-btn px-btn--ghost" type="button">💡 Hint</button>
           <button id="btn-reset" class="px-btn px-btn--ghost" type="button">↺ Reset</button>
           <button id="btn-view-lesson" class="px-btn px-btn--ghost" type="button">📖 Lesson</button>
-          <button id="btn-maximize-lesson" class="px-btn px-btn--ghost" type="button" title="Maximize lesson view">⛶ Maximize</button>
+          <button id="btn-maximize-lesson" class="px-btn px-btn--ghost" type="button" title="Maximize lesson view">⛶
+            Maximize</button>
         </div>
-        
+
         <p id="hint" class="hint-box is-hidden" role="status"></p>
 
         <!-- ===== DYNAMIC TERMINAL DISPLAY ===== -->
@@ -122,7 +131,8 @@
             </div>
           </div>
           <div id="terminal-body" class="terminal-body">
-            <pre id="console" class="console" aria-live="polite">Press Run to execute your code in the dynamic Python terminal.</pre>
+            <pre id="console" class="console"
+              aria-live="polite">Press Run to execute your code in the dynamic Python terminal.</pre>
           </div>
         </div>
 
@@ -157,9 +167,10 @@
     </div>
   </div>
 
-  <script src="js/api.js"></script>
-  <script src="js/guard.js"></script>
-  <script src="js/runner.js"></script>
-  <script src="js/editor.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/guard.js"></script>
+  <script src="../js/runner.js"></script>
+  <script src="../js/editor.js"></script>
 </body>
+
 </html>

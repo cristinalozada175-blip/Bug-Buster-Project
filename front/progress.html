@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,11 +8,14 @@
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/pixel.css">
-  <link rel="stylesheet" href="css/game.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/pixel.css">
+  <link rel="stylesheet" href="../css/game.css">
 </head>
+
 <body data-role="user">
   <div id="app-nav"></div>
   <main class="container page-main" id="progress-root">
@@ -21,7 +25,12 @@
     </div>
     <div class="stack">
       <section class="px-card rank-card" aria-labelledby="rank-name">
-        <div class="row"><span class="spr spr--lg" data-sprite="trophy"></span><div><p class="muted">Current rank</p><h2 id="rank-name">...</h2></div></div>
+        <div class="row"><span class="spr spr--lg" data-sprite="trophy"></span>
+          <div>
+            <p class="muted">Current rank</p>
+            <h2 id="rank-name">...</h2>
+          </div>
+        </div>
         <div>
           <label class="px-label" for="xp-bar">Progress to next rank</label>
           <progress id="xp-bar" class="px-bar px-bar--sun" max="1" value="0"></progress>
@@ -43,8 +52,9 @@
       </section>
     </div>
   </main>
-  <script src="js/api.js"></script>
-  <script src="js/guard.js"></script>
-  <script src="js/progress.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/guard.js"></script>
+  <script src="../js/progress.js"></script>
 </body>
+
 </html>

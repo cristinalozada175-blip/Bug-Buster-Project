@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,13 +8,16 @@
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/pixel.css">
-  <link rel="stylesheet" href="css/game.css">
-  <link rel="stylesheet" href="css/reference.css">
-  <link rel="stylesheet" href="css/leaderboard.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/pixel.css">
+  <link rel="stylesheet" href="../css/game.css">
+  <link rel="stylesheet" href="../css/reference.css">
+  <link rel="stylesheet" href="../css/leaderboard.css">
 </head>
+
 <body data-role="user" class="leaderboard-page">
   <div id="app-nav"></div>
   <main class="container page-main">
@@ -22,7 +26,8 @@
       <div>
         <p class="chapter-kicker">GLOBAL COMMUNITY</p>
         <h1>🏆 Gardener Rankings</h1>
-        <p class="muted">Compete with fellow Python Gardeners around the world. Write code, grow plants, and climb the ranks!</p>
+        <p class="muted">Compete with fellow Python Gardeners around the world. Write code, grow plants, and climb the
+          ranks!</p>
       </div>
       <div class="my-rank-pill" id="my-rank-banner">
         <span class="spr spr--sm" data-sprite="trophy"></span>
@@ -40,7 +45,8 @@
     <!-- ===== SEARCH & SORT FILTERS ===== -->
     <section class="rank-controls" aria-label="Ranking filters">
       <div class="search-wrap">
-        <input type="search" id="rank-search" class="px-input" placeholder="🔍 Search by gardener username..." aria-label="Search gardeners">
+        <input type="search" id="rank-search" class="px-input" placeholder="🔍 Search by gardener username..."
+          aria-label="Search gardeners">
       </div>
       <div class="sort-tabs">
         <button class="sort-tab active" data-sort="xp" type="button">⭐ XP</button>
@@ -73,8 +79,9 @@
     </section>
   </main>
 
-  <script src="js/api.js"></script>
-  <script src="js/guard.js"></script>
-  <script src="js/leaderboard.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/guard.js"></script>
+  <script src="../js/leaderboard.js"></script>
 </body>
+
 </html>

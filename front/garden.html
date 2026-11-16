@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,12 +8,15 @@
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/pixel.css">
-  <link rel="stylesheet" href="css/game.css">
-  <link rel="stylesheet" href="css/reference.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&amp;family=Pixelify+Sans:wght@500;700&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/pixel.css">
+  <link rel="stylesheet" href="../css/game.css">
+  <link rel="stylesheet" href="../css/reference.css">
 </head>
+
 <body data-role="user" class="garden-page">
   <div id="app-nav"></div>
   <main class="container page-main">
@@ -20,7 +24,8 @@
       <div>
         <p class="chapter-kicker">YOUR LITTLE CORNER</p>
         <h1>Dynamic Garden</h1>
-        <p class="muted">Plant seeds, water your crops, harvest blooms, and watch your garden grow dynamically with the seasons!</p>
+        <p class="muted">Plant seeds, water your crops, harvest blooms, and watch your garden grow dynamically with the
+          seasons!</p>
       </div>
       <div class="garden-stats-group">
         <div class="garden-seed-pocket">
@@ -45,7 +50,8 @@
         <button id="btn-season-summer" class="season-btn active" type="button" title="Summer">☀️ Summer</button>
         <button id="btn-season-autumn" class="season-btn" type="button" title="Autumn">🍂 Autumn</button>
         <button id="btn-season-winter" class="season-btn" type="button" title="Winter">❄️ Winter</button>
-        <button id="btn-toggle-night" class="season-btn season-btn--night" type="button" title="Toggle Day/Night">🌙 Night Mode</button>
+        <button id="btn-toggle-night" class="season-btn season-btn--night" type="button" title="Toggle Day/Night">🌙
+          Night Mode</button>
       </div>
     </section>
 
@@ -104,7 +110,8 @@
   </main>
 
   <!-- ===== PLOT ACTION MODAL (Water, Harvest, Dig) ===== -->
-  <div id="plot-modal" class="modal-overlay is-hidden" role="dialog" aria-modal="true" aria-labelledby="plot-modal-title">
+  <div id="plot-modal" class="modal-overlay is-hidden" role="dialog" aria-modal="true"
+    aria-labelledby="plot-modal-title">
     <div class="modal-card">
       <div class="modal-header">
         <h2 id="plot-modal-title">🌿 Plot Details</h2>
@@ -131,8 +138,9 @@
     </div>
   </div>
 
-  <script src="js/api.js"></script>
-  <script src="js/guard.js"></script>
-  <script src="js/garden.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/guard.js"></script>
+  <script src="../js/garden.js"></script>
 </body>
+
 </html>
