@@ -47,5 +47,13 @@ if (empty($rows[0]['is_verified'])) {
     sb('PATCH', '/profiles?id=eq.' . q($userId), ['is_verified' => true]);
 }
 
-session_set($rows[0]['id'], $rows[0]['role']);
-json_out(['ok' => true, 'role' => $rows[0]['role']]);
+$token = session_set($rows[0]['id'], $rows[0]['role']);
+json_out([
+    'ok' => true,
+    'role' => $rows[0]['role'],
+    'token' => $token,
+    'user' => [
+        'id' => $rows[0]['id'],
+        'role' => $rows[0]['role']
+    ]
+]);

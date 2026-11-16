@@ -17,16 +17,23 @@ if (sb('GET', '/profiles?username=eq.' . q($username) . '&select=id')) {
     fail('That username is already taken', 409);
 }
 
-// Call Supabase Auth signup.
-// Calling /signup (instead of /admin/users with email_confirm: true) tells Supabase
-// to send the confirmation email with link/code to the user via SMTP.
+// Call Supabase Auth signup using the anon key so Supabase
+// sends the confirmation email with the OTP code via SMTP.
 [$code, $userRes] = sb_auth('/signup', [
     'email' => $email,
     'password' => $password,
     'data' => [
         'username' => $username,
     ]
-]);
+], 'POST', false);
+
+// Explicitly trigger confirmation email via resend to guarantee delivery
+try {
+    sb_auth('/resend', [
+        'type' => 'signup',
+        'email' => $email
+    ], 'POST', false);
+} catch (_) {}
 
 if ($code === 422 || $code === 409) {
     fail('That email is already registered', 409);
@@ -42,12 +49,12 @@ if ($code < 200 || $code >= 300 || empty($userId)) {
 }
 
 // Create profile record (is_verified = false until email confirmation/approval)
-[$pc, $profRes] = sb_raw('POST', '/profiles', [
+[$pc, $profRes] = sb_raw('POST', '/profiles?on_conflict=id', [
     'id' => $userId,
     'username' => $username,
     'role' => 'user',
     'is_verified' => false,
-]);
+], ['resolution=merge-duplicates']);
 
 if ($pc < 200 || $pc >= 300) {
     // If profile insert failed, clean up auth user

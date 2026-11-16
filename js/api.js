@@ -579,6 +579,14 @@
   PG.api = async function (path, opts) {
     opts = opts || {};
     const init = { method: opts.method || 'GET', headers: {}, credentials: 'same-origin' };
+
+    // Transmit session Bearer token from localStorage for bulletproof dual auth
+    const savedToken = localStorage.getItem('pg_token');
+    if (savedToken) {
+      init.headers['Authorization'] = 'Bearer ' + savedToken;
+      init.headers['X-Session-Token'] = savedToken;
+    }
+
     if (opts.body !== undefined) {
       init.method = opts.method || 'POST';
       init.headers['Content-Type'] = 'application/json';
@@ -602,6 +610,15 @@
 
     let data = null;
     try { data = await res.json(); } catch (e) { /* not JSON */ }
+
+    // Store returned session token
+    if (data && data.token) {
+      localStorage.setItem('pg_token', data.token);
+    }
+    if (path.includes('logout.php')) {
+      localStorage.removeItem('pg_token');
+    }
+
     if (res.status === 401 && !opts.noRedirect) {
       if (!location.pathname.endsWith('/login.html')) location.href = '/login.html';
     }

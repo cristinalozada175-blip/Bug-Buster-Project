@@ -56,8 +56,10 @@
                     body: { action: 'verify_signup', email: body.email, code },
                     noRedirect: true
                   });
-                  PG.toast('Account verified successfully! Redirecting...');
-                  setTimeout(() => { location.href = 'login.html'; }, 1000);
+                  PG.toast('Account verified successfully! Starting your adventure...');
+                  setTimeout(() => {
+                    location.href = vr.role === 'admin' ? '/admin/dashboard.html' : '/adventure.html';
+                  }, 800);
                 } catch (ve) {
                   if (verifyErr) verifyErr.textContent = ve.message || 'Invalid code.';
                   verifyBtn.disabled = false;
@@ -89,13 +91,15 @@
               if (!code) return;
               inlineVerifyBtn.disabled = true;
               try {
-                await PG.api('/api/verify.php', {
+                const vr = await PG.api('/api/verify.php', {
                   body: { action: 'verify_signup', email: emailVal, code },
                   noRedirect: true
                 });
-                PG.toast('Account approved! You can now log in.');
+                PG.toast('Account approved! Logging in...');
                 unverifiedBox.classList.add('is-hidden');
-                if (errBox) errBox.textContent = 'Account approved! Please enter your password to log in.';
+                setTimeout(() => {
+                  location.href = vr.role === 'admin' ? '/admin/dashboard.html' : '/adventure.html';
+                }, 800);
               } catch (e) {
                 PG.toast(e.message || 'Verification failed', true);
               } finally {

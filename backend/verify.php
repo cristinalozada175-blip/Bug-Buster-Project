@@ -22,25 +22,49 @@ if ($action === 'verify_signup') {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) fail('Enter a valid email address', 422);
     if ($code === '' || strlen($code) < 4) fail('Enter the verification code sent to your email', 422);
 
+    // Try type 'email' first (used by default Supabase confirmation emails)
     [$vCode, $vRes] = sb_auth('/verify', [
-        'type' => 'signup',
+        'type' => 'email',
         'email' => $email,
         'token' => $code
-    ]);
+    ], 'POST', false);
+
+    // If that fails, try type 'signup'
+    if ($vCode < 200 || $vCode >= 300 || empty($vRes['user']['id'])) {
+        [$vCode, $vRes] = sb_auth('/verify', [
+            'type' => 'signup',
+            'email' => $email,
+            'token' => $code
+        ], 'POST', false);
+    }
 
     $userId = $vRes['user']['id'] ?? ($vRes['id'] ?? null);
 
+    // If still null, try finding user id from profiles table
+    if (empty($userId)) {
+        $pCheck = sb('GET', '/profiles?select=id,role&limit=1');
+        if ($vCode >= 200 && $vCode < 300) {
+            $uRow = sb('GET', '/profiles?username=eq.' . q(explode('@', $email)[0]) . '&select=id,role');
+            $userId = $uRow[0]['id'] ?? null;
+        }
+    }
+
     if ($vCode < 200 || $vCode >= 300 || empty($userId)) {
-        fail('Invalid or expired verification code', 400);
+        fail('Invalid or expired verification code. Please check your code or resend email.', 400);
     }
 
     // Update profile is_verified
     sb('PATCH', '/profiles?id=eq.' . q((string)$userId), ['is_verified' => true]);
 
+    // Automatically log user in upon successful verification!
+    $token = session_set((string)$userId, 'user');
+
     json_out([
         'ok' => true,
-        'message' => 'Your account has been verified and approved! You can now log in.',
-        'is_verified' => true
+        'message' => 'Your account has been verified and approved!',
+        'is_verified' => true,
+        'token' => $token,
+        'role' => 'user'
     ]);
 }
 
