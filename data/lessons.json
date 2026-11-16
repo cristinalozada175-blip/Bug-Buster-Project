@@ -1,19 +1,82 @@
 {
   "chapters": [
     {
-      "slug": "first-sprouts",
-      "title": "First sprouts",
+      "slug": "getting-started",
+      "title": "Getting Started",
       "sort_order": 1,
       "is_published": true,
-      "blurb": "Print, variables, math, decisions and loops.",
+      "blurb": "Understanding programming, Python fundamentals, and leaving garden notes.",
       "lessons": [
         {
           "id": 1,
-          "title": "Say hello",
+          "title": "What is Programming?",
+          "concept": "Programming Fundamentals",
+          "sort_order": 1,
+          "goals": [
+            "Understand that programs follow instructions step by step",
+            "Display your first instruction: Step 1: Plant seed"
+          ],
+          "starter_code": "# Computers follow instructions step by step\nprint(\"Step 1: Plant seed\")\n",
+          "expected_output": "Step 1: Plant seed",
+          "rules": {
+            "mustContain": ["print(", "Step 1: Plant seed"],
+            "hint": "Put your text inside quotes: print(\"Step 1: Plant seed\")"
+          },
+          "reward_seeds": 15,
+          "reward_xp": 40
+        },
+        {
+          "id": 2,
+          "title": "What is Python?",
+          "concept": "Python Basics",
+          "sort_order": 2,
+          "goals": [
+            "Learn that Python runs code from top to bottom",
+            "Make the console say: Python is ready!"
+          ],
+          "starter_code": "# Python is case-sensitive! Always use lowercase print()\nprint(\"Python is ready!\")\n",
+          "expected_output": "Python is ready!",
+          "rules": {
+            "mustContain": ["print(", "Python is ready!"],
+            "hint": "Remember lowercase print: print(\"Python is ready!\")"
+          },
+          "reward_seeds": 15,
+          "reward_xp": 40
+        },
+        {
+          "id": 3,
+          "title": "Leaving Garden Notes",
+          "concept": "Comments",
+          "sort_order": 3,
+          "goals": [
+            "Use the # symbol to write a comment that Python ignores",
+            "Keep the message line active to print: Notes are free"
+          ],
+          "starter_code": "# Add a # in front of this note so Python ignores it\n# Plant seeds carefully\nprint(\"Notes are free\")\n",
+          "expected_output": "Notes are free",
+          "rules": {
+            "mustContain": ["#", "print("],
+            "hint": "Lines starting with # are notes for you. Python only runs lines without #"
+          },
+          "reward_seeds": 15,
+          "reward_xp": 40
+        }
+      ]
+    },
+    {
+      "slug": "first-sprouts",
+      "title": "First Sprouts",
+      "sort_order": 2,
+      "is_published": true,
+      "blurb": "Displaying output, variables, plant labels, and math calculations.",
+      "lessons": [
+        {
+          "id": 4,
+          "title": "Say Hello",
           "concept": "Printing",
           "sort_order": 1,
           "goals": [
-            "Use print() to show a message",
+            "Use print() to say hello to your garden",
             "Make the console say exactly: Hello, garden!"
           ],
           "starter_code": "# Say hello to your garden\nprint(\"Hello, garden!\")\n",
@@ -26,279 +89,123 @@
           "reward_xp": 40
         },
         {
-          "id": 2,
-          "title": "Name your water",
+          "id": 5,
+          "title": "Name Your Water",
           "concept": "Variables",
           "sort_order": 2,
           "goals": [
             "Create a variable named water and set it to 4",
-            "Print the variable"
+            "Print the variable's value using print(water)"
           ],
           "starter_code": "# Store a number in a variable, then print it\nwater = 4\nprint(water)\n",
           "expected_output": "4",
           "rules": {
             "mustContain": ["water", "print(water)"],
-            "hint": "A variable is a name, an equals sign and a value: water = 4"
+            "hint": "A variable stores a value: water = 4. Print it without quotes: print(water)"
           },
           "reward_seeds": 15,
           "reward_xp": 40
         },
-        {
-          "id": 3,
-          "title": "Count the seeds",
-          "concept": "Math",
-          "sort_order": 3,
-          "goals": [
-            "Multiply seeds by pots using *",
-            "Print the total"
-          ],
-          "starter_code": "seeds = 6\npots = 3\n# Print how many seeds you need in total\nprint(seeds * pots)\n",
-          "expected_output": "18",
-          "rules": {
-            "mustContain": ["*", "print("],
-            "hint": "You can put a calculation inside print: print(seeds * pots)"
-          },
-          "reward_seeds": 15,
-          "reward_xp": 40
-        },
-        {
-          "id": 4,
-          "title": "Sunny or not",
-          "concept": "Decisions",
-          "sort_order": 4,
-          "goals": [
-            "Write an if that checks sun > 5",
-            "Add an else for the other case",
-            "Print Grow! when the sun is bright"
-          ],
-          "starter_code": "sun = 8\n# If sun is above 5, print Grow! Otherwise print Wait\nif sun > 5:\n    print(\"Grow!\")\nelse:\n    print(\"Wait\")\n",
-          "expected_output": "Grow!",
-          "rules": {
-            "mustContain": ["if", "else", "print("],
-            "hint": "End the if line with a colon and indent the next line by 4 spaces."
-          },
-          "reward_seeds": 15,
-          "reward_xp": 40
-        },
-        {
-          "id": 5,
-          "title": "Water every plant",
-          "concept": "Loops",
-          "sort_order": 5,
-          "goals": [
-            "Use a for loop with range(3)",
-            "Print Water plant 1, Water plant 2 and Water plant 3"
-          ],
-          "starter_code": "# Water 3 plants, one line each\nfor i in range(3):\n    print(\"Water plant\", i + 1)\n",
-          "expected_output": "Water plant 1\nWater plant 2\nWater plant 3",
-          "rules": {
-            "mustContain": ["for", "range"],
-            "hint": "range(3) counts 0, 1, 2. Print i + 1 to start at 1."
-          },
-          "reward_seeds": 15,
-          "reward_xp": 40
-        }
-      ]
-    },
-    {
-      "slug": "sprouting-logic",
-      "title": "Sprouting Logic & Data",
-      "sort_order": 2,
-      "is_published": true,
-      "blurb": "Lists, indexing, conditionals, and while loops.",
-      "lessons": [
         {
           "id": 6,
-          "title": "Gather the Harvest",
-          "concept": "Lists",
-          "sort_order": 1,
+          "title": "Label Your Plant",
+          "concept": "Strings",
+          "sort_order": 3,
           "goals": [
-            "Access the first element of harvest with [0]",
-            "Print the first vegetable"
+            "Store the plant name \"Sunflower\" in the crop variable",
+            "Print the plant label to the console"
           ],
-          "starter_code": "# Store 3 garden vegetables in a list\nharvest = [\"carrot\", \"tomato\", \"radish\"]\n# Print the first vegetable\nprint(harvest[0])\n",
-          "expected_output": "carrot",
+          "starter_code": "# Label your plant with a text string\ncrop = \"Sunflower\"\nprint(crop)\n",
+          "expected_output": "Sunflower",
           "rules": {
-            "mustContain": ["harvest[0]", "print("],
-            "hint": "Lists in Python start at index 0: harvest[0]"
+            "mustContain": ["crop", "print(crop)"],
+            "hint": "Words go inside quotation marks: crop = \"Sunflower\""
           },
           "reward_seeds": 20,
           "reward_xp": 50
         },
         {
           "id": 7,
-          "title": "Count the Petals",
-          "concept": "List Length",
-          "sort_order": 2,
+          "title": "Count the Seeds",
+          "concept": "Math",
+          "sort_order": 4,
           "goals": [
-            "Use len() to measure the flowers list",
-            "Print the length"
+            "Multiply seeds by pots using *",
+            "Print the total seeds needed (18)"
           ],
-          "starter_code": "flowers = [\"rose\", \"tulip\", \"daisy\", \"sunflower\"]\n# Print how many flowers are in the garden\nprint(len(flowers))\n",
-          "expected_output": "4",
+          "starter_code": "seeds = 6\npots = 3\n# Multiply seeds by pots and print total\nprint(seeds * pots)\n",
+          "expected_output": "18",
           "rules": {
-            "mustContain": ["len(flowers)", "print("],
-            "hint": "len(flowers) returns the total number of items in the list."
+            "mustContain": ["*", "print("],
+            "hint": "Python uses * for multiplication: print(seeds * pots)"
           },
           "reward_seeds": 20,
           "reward_xp": 50
-        },
+        }
+      ]
+    },
+    {
+      "slug": "growing-logic",
+      "title": "Growing Logic",
+      "sort_order": 3,
+      "is_published": true,
+      "blurb": "Making decisions with conditionals, repeating with loops, and organizing lists.",
+      "lessons": [
         {
           "id": 8,
-          "title": "Flower Bloom Checker",
-          "concept": "Logic and Conditions",
-          "sort_order": 3,
+          "title": "Sunny or Not?",
+          "concept": "Decisions",
+          "sort_order": 1,
           "goals": [
-            "Use an if condition with 'and'",
-            "Print Blooming! when both sun >= 7 and water >= 5",
-            "Add else block printing Wilting"
+            "Write an if that checks if sun > 5",
+            "Add an else block for when sunlight is low",
+            "Print Grow! when the sun is bright"
           ],
-          "starter_code": "sun = 10\nwater = 8\n# If sun >= 7 and water >= 5, print Blooming! Otherwise print Wilting\nif sun >= 7 and water >= 5:\n    print(\"Blooming!\")\nelse:\n    print(\"Wilting\")\n",
-          "expected_output": "Blooming!",
+          "starter_code": "sun = 8\n# If sun is above 5, print Grow! Otherwise print Wait\nif sun > 5:\n    print(\"Grow!\")\nelse:\n    print(\"Wait\")\n",
+          "expected_output": "Grow!",
           "rules": {
-            "mustContain": ["if", "and", "else", "print("],
-            "hint": "Combine conditions with 'and': if sun >= 7 and water >= 5:"
+            "mustContain": ["if", "else", "print("],
+            "hint": "End the if and else lines with a colon (:) and indent the print lines by 4 spaces."
           },
           "reward_seeds": 25,
           "reward_xp": 60
         },
         {
           "id": 9,
-          "title": "Watering While Sprouting",
-          "concept": "While Loops",
-          "sort_order": 4,
+          "title": "Water Every Plant",
+          "concept": "Loops",
+          "sort_order": 2,
           "goals": [
-            "Use a while loop checking drops > 0",
-            "Print 'Drop ' with current drops count",
-            "Subtract 1 from drops inside the loop"
+            "Use a for loop with range(3)",
+            "Print Water plant 1, Water plant 2, and Water plant 3"
           ],
-          "starter_code": "drops = 3\n# Use a while loop to count down drops\nwhile drops > 0:\n    print(\"Drop \" + str(drops))\n    drops -= 1\n",
-          "expected_output": "Drop 3\nDrop 2\nDrop 1",
+          "starter_code": "# Water 3 plants using a loop\nfor i in range(3):\n    print(\"Water plant\", i + 1)\n",
+          "expected_output": "Water plant 1\nWater plant 2\nWater plant 3",
           "rules": {
-            "mustContain": ["while", "drops", "print("],
-            "hint": "Don't forget to decrease drops inside the while loop: drops -= 1"
+            "mustContain": ["for", "range"],
+            "hint": "range(3) counts 0, 1, 2. Use i + 1 to display 1, 2, 3!"
           },
           "reward_seeds": 25,
           "reward_xp": 60
         },
         {
           "id": 10,
-          "title": "Garden Greeting Function",
-          "concept": "Functions",
-          "sort_order": 5,
+          "title": "Seed Basket",
+          "concept": "Lists",
+          "sort_order": 3,
           "goals": [
-            "Define a function named greet_plant with one parameter",
-            "Return greeting text",
-            "Call the function and print the result"
+            "Create a list of 3 plants with square brackets [ ]",
+            "Access and print the second plant using [1]",
+            "Make the console display: Mint"
           ],
-          "starter_code": "# Define a function named greet_plant with one parameter\ndef greet_plant(name):\n    return \"Hello \" + name\n\nprint(greet_plant(\"Daisy\"))\n",
-          "expected_output": "Hello Daisy",
+          "starter_code": "# Store 3 garden plants in a list\nbasket = [\"Rose\", \"Mint\", \"Fern\"]\n# Print the second plant (index 1)\nprint(basket[1])\n",
+          "expected_output": "Mint",
           "rules": {
-            "mustContain": ["def greet_plant", "return", "print("],
-            "hint": "Functions let you reuse code. Indent the function body with 4 spaces."
+            "mustContain": ["basket[1]", "print("],
+            "hint": "Python starts counting at index 0! So basket[0] is Rose, and basket[1] is Mint."
           },
           "reward_seeds": 30,
           "reward_xp": 75
-        }
-      ]
-    },
-    {
-      "slug": "master-garden",
-      "title": "Master Garden Algorithms",
-      "sort_order": 3,
-      "is_published": true,
-      "blurb": "Dictionaries, f-strings, list filtering, and algorithms.",
-      "lessons": [
-        {
-          "id": 11,
-          "title": "Catalog the Seeds",
-          "concept": "Dictionaries",
-          "sort_order": 1,
-          "goals": [
-            "Access the sunflower price using prices['sunflower']",
-            "Print the price"
-          ],
-          "starter_code": "prices = {\"sunflower\": 20, \"tulip\": 30}\n# Print the price of a sunflower\nprint(prices[\"sunflower\"])\n",
-          "expected_output": "20",
-          "rules": {
-            "mustContain": ["prices[", "print("],
-            "hint": "Dictionary values are retrieved with their key: prices[\"sunflower\"]"
-          },
-          "reward_seeds": 30,
-          "reward_xp": 80
-        },
-        {
-          "id": 12,
-          "title": "Greenhouse Temperature",
-          "concept": "F-Strings",
-          "sort_order": 2,
-          "goals": [
-            "Use an f-string or formatting to combine variables",
-            "Print exactly: The Fern is at 24C"
-          ],
-          "starter_code": "temp = 24\nplant = \"Fern\"\n# Print: The Fern is at 24C\nprint(f\"The {plant} is at {temp}C\")\n",
-          "expected_output": "The Fern is at 24C",
-          "rules": {
-            "mustContain": ["print(", "24"],
-            "hint": "Use formatted text: print(f\"The {plant} is at {temp}C\")"
-          },
-          "reward_seeds": 35,
-          "reward_xp": 85
-        },
-        {
-          "id": 13,
-          "title": "Weed Remover",
-          "concept": "List Filtering",
-          "sort_order": 3,
-          "goals": [
-            "Loop over garden_bed",
-            "Use if item == 'flower':",
-            "Print only the flowers"
-          ],
-          "starter_code": "garden_bed = [\"flower\", \"weed\", \"flower\", \"weed\", \"flower\"]\n# Loop over garden_bed and print only items that equal 'flower'\nfor item in garden_bed:\n    if item == \"flower\":\n        print(item)\n",
-          "expected_output": "flower\nflower\nflower",
-          "rules": {
-            "mustContain": ["for", "if", "print("],
-            "hint": "Check each item inside the loop: if item == \"flower\": print(item)"
-          },
-          "reward_seeds": 35,
-          "reward_xp": 90
-        },
-        {
-          "id": 14,
-          "title": "Garden Grid Matrix",
-          "concept": "Nested Loops",
-          "sort_order": 4,
-          "goals": [
-            "Use nested for loops with range()",
-            "Print the plot coordinates for each cell"
-          ],
-          "starter_code": "# Plant a 2x3 garden grid: Rows 1 to 2, Columns 1 to 3\nfor row in range(1, 3):\n    for col in range(1, 4):\n        print(f\"Plot ({row},{col})\")\n",
-          "expected_output": "Plot (1,1)\nPlot (1,2)\nPlot (1,3)\nPlot (2,1)\nPlot (2,2)\nPlot (2,3)",
-          "rules": {
-            "mustContain": ["for", "range", "print("],
-            "hint": "A loop inside another loop generates coordinates for rows and columns."
-          },
-          "reward_seeds": 40,
-          "reward_xp": 100
-        },
-        {
-          "id": 15,
-          "title": "Ultimate Garden Simulator",
-          "concept": "Capstone Project",
-          "sort_order": 5,
-          "goals": [
-            "Sum all numbers in the crops list",
-            "Print exactly: Harvest total: 50"
-          ],
-          "starter_code": "# Garden Simulator: Calculate total harvest seeds\ncrops = [10, 25, 15]\ntotal = 0\nfor yield_amount in crops:\n    total += yield_amount\nprint(\"Harvest total:\", total)\n",
-          "expected_output": "Harvest total: 50",
-          "rules": {
-            "mustContain": ["for", "total", "print("],
-            "hint": "Accumulate the sum with total += yield_amount inside your loop."
-          },
-          "reward_seeds": 50,
-          "reward_xp": 150
         }
       ]
     }

@@ -93,16 +93,16 @@
   };
 
   const DEFAULT_USERS = [
-    { id: 'a0000001-0000-0000-0000-000000000001', username: 'flora_coder', role: 'user', xp: 1420, seeds: 420, streak: 14, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 30 * 86400000).toISOString(), completed_levels: 15, total_levels: 15, progress_percent: 100 },
-    { id: 'a0000002-0000-0000-0000-000000000002', username: 'python_sprout', role: 'user', xp: 1150, seeds: 310, streak: 10, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 24 * 86400000).toISOString(), completed_levels: 13, total_levels: 15, progress_percent: 87 },
-    { id: 'a0000003-0000-0000-0000-000000000003', username: 'botanist_bob', role: 'user', xp: 890, seeds: 240, streak: 7, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 18 * 86400000).toISOString(), completed_levels: 10, total_levels: 15, progress_percent: 67 },
-    { id: 'a0000004-0000-0000-0000-000000000004', username: 'green_thumb_max', role: 'user', xp: 680, seeds: 180, streak: 6, is_verified: false, is_suspended: false, created_at: new Date(Date.now() - 14 * 86400000).toISOString(), completed_levels: 8, total_levels: 15, progress_percent: 53 },
-    { id: 'a0000005-0000-0000-0000-000000000005', username: 'leafy_luna', role: 'user', xp: 520, seeds: 135, streak: 5, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 12 * 86400000).toISOString(), completed_levels: 6, total_levels: 15, progress_percent: 40 },
-    { id: 'a000000a-0000-0000-0000-00000000000a', username: 'admin_rose', role: 'admin', xp: 480, seeds: 165, streak: 6, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 30 * 86400000).toISOString(), completed_levels: 5, total_levels: 15, progress_percent: 33 },
-    { id: 'a0000006-0000-0000-0000-000000000006', username: 'clover_clara', role: 'user', xp: 380, seeds: 95, streak: 4, is_verified: false, is_suspended: false, created_at: new Date(Date.now() - 9 * 86400000).toISOString(), completed_levels: 5, total_levels: 15, progress_percent: 33 },
-    { id: 'a0000007-0000-0000-0000-000000000007', username: 'seedling_sam', role: 'user', xp: 240, seeds: 60, streak: 3, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 6 * 86400000).toISOString(), completed_levels: 3, total_levels: 15, progress_percent: 20 },
-    { id: 'a0000008-0000-0000-0000-000000000008', username: 'blossom_bee', role: 'user', xp: 140, seeds: 35, streak: 2, is_verified: false, is_suspended: false, created_at: new Date(Date.now() - 4 * 86400000).toISOString(), completed_levels: 2, total_levels: 15, progress_percent: 13 },
-    { id: 'a0000009-0000-0000-0000-000000000009', username: 'sunflower_sid', role: 'user', xp: 80, seeds: 20, streak: 1, is_verified: false, is_suspended: false, created_at: new Date(Date.now() - 2 * 86400000).toISOString(), completed_levels: 1, total_levels: 15, progress_percent: 7 }
+    { id: 'a0000001-0000-0000-0000-000000000001', username: 'flora_coder', role: 'user', xp: 1420, seeds: 420, streak: 14, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 30 * 86400000).toISOString(), completed_levels: 10, total_levels: 10, progress_percent: 100 },
+    { id: 'a0000002-0000-0000-0000-000000000002', username: 'python_sprout', role: 'user', xp: 1150, seeds: 310, streak: 10, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 24 * 86400000).toISOString(), completed_levels: 9, total_levels: 10, progress_percent: 90 },
+    { id: 'a0000003-0000-0000-0000-000000000003', username: 'botanist_bob', role: 'user', xp: 890, seeds: 240, streak: 7, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 18 * 86400000).toISOString(), completed_levels: 7, total_levels: 10, progress_percent: 70 },
+    { id: 'a0000004-0000-0000-0000-000000000004', username: 'green_thumb_max', role: 'user', xp: 680, seeds: 180, streak: 6, is_verified: false, is_suspended: false, created_at: new Date(Date.now() - 14 * 86400000).toISOString(), completed_levels: 5, total_levels: 10, progress_percent: 50 },
+    { id: 'a0000005-0000-0000-0000-000000000005', username: 'leafy_luna', role: 'user', xp: 520, seeds: 135, streak: 5, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 12 * 86400000).toISOString(), completed_levels: 4, total_levels: 10, progress_percent: 40 },
+    { id: 'a000000a-0000-0000-0000-00000000000a', username: 'admin_rose', role: 'admin', xp: 480, seeds: 165, streak: 6, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 30 * 86400000).toISOString(), completed_levels: 4, total_levels: 10, progress_percent: 40 },
+    { id: 'a0000006-0000-0000-0000-000000000006', username: 'clover_clara', role: 'user', xp: 380, seeds: 95, streak: 4, is_verified: false, is_suspended: false, created_at: new Date(Date.now() - 9 * 86400000).toISOString(), completed_levels: 3, total_levels: 10, progress_percent: 30 },
+    { id: 'a0000007-0000-0000-0000-000000000007', username: 'seedling_sam', role: 'user', xp: 240, seeds: 60, streak: 3, is_verified: true, is_suspended: false, created_at: new Date(Date.now() - 6 * 86400000).toISOString(), completed_levels: 2, total_levels: 10, progress_percent: 20 },
+    { id: 'a0000008-0000-0000-0000-000000000008', username: 'blossom_bee', role: 'user', xp: 140, seeds: 35, streak: 2, is_verified: false, is_suspended: false, created_at: new Date(Date.now() - 4 * 86400000).toISOString(), completed_levels: 1, total_levels: 10, progress_percent: 10 },
+    { id: 'a0000009-0000-0000-0000-000000000009', username: 'sunflower_sid', role: 'user', xp: 80, seeds: 20, streak: 1, is_verified: false, is_suspended: false, created_at: new Date(Date.now() - 2 * 86400000).toISOString(), completed_levels: 1, total_levels: 10, progress_percent: 10 }
   ];
 
   const DEFAULT_ITEMS = [
@@ -126,6 +126,16 @@
     try { localStorage.setItem('pg_' + k, JSON.stringify(val)); } catch (_) {}
   }
 
+  // Cache version enforcement - auto-bust stale cache
+  const DATA_VERSION = 'v5_10levels';
+  if (getStore('data_version', null) !== DATA_VERSION) {
+    try {
+      localStorage.removeItem('pg_lessons_cache');
+      localStorage.removeItem('pg_toolbox_cache');
+      setStore('data_version', DATA_VERSION);
+    } catch (_) {}
+  }
+
   /* Mock database handler when live PHP backend is not reachable */
   async function mockApi(path, opts) {
     opts = opts || {};
@@ -140,15 +150,19 @@
       { slot: 1, item_id: 2, stage: 'growing', watered: false, planted_at: Date.now() - 36000000 },
       { slot: 2, item_id: 3, stage: 'sprout', watered: true, planted_at: Date.now() - 10000000 }
     ]);
-    let progress = getStore('progress', { 1: 'done', 2: 'done', 3: 'done', 4: 'done', 5: 'done' });
+    let progress = getStore('progress', { 1: 'open' });
     let bestCodes = getStore('best_codes', {});
 
-    // Cache lessons data
+    // Cache lessons data (auto-refresh if stale or not 10 levels)
     let lessonData = getStore('lessons_cache', null);
-    if (!lessonData) {
+    const isStale = !lessonData || !lessonData.chapters || lessonData.chapters.length !== 3 || lessonData.chapters[0].slug !== 'getting-started';
+    if (isStale) {
       try {
-        const resp = await fetch('/data/lessons.json');
-        if (resp.ok) {
+        let resp = await fetch('/data/lessons.json?t=' + Date.now()).catch(() => null);
+        if (!resp || !resp.ok) {
+          resp = await fetch('../data/lessons.json?t=' + Date.now()).catch(() => null);
+        }
+        if (resp && resp.ok) {
           lessonData = await resp.json();
           setStore('lessons_cache', lessonData);
         }
@@ -341,7 +355,7 @@
         me.xp += rXp;
         setStore('me', me);
 
-        const allCount = 15;
+        const allCount = 10;
         const nextId = lid < allCount ? lid + 1 : null;
         return {
           awarded: isNew,
@@ -359,12 +373,12 @@
         streak: me.streak,
         levels_done: Object.values(progress).filter(v => v === 'done').length,
         concepts: {
-          Printing: 1, Variables: 1, Math: 1, Decisions: 1, Loops: 1, Lists: 1, Functions: 1
+          Printing: 1, Variables: 1, Math: 1, Decisions: 1, Loops: 1, Lists: 1
         },
         milestones: [
           { title: 'First sprout', done: true, desc: 'Finished your first level' },
           { title: 'Green thumb', done: true, desc: 'Finished 5 levels' },
-          { title: 'Master Harvester', done: false, desc: 'Finish 15 levels' }
+          { title: 'Master Harvester', done: false, desc: 'Finish 10 levels' }
         ]
       };
     }
@@ -439,7 +453,7 @@
         admins: users.filter(u => u.role === 'admin').length,
         suspended: users.filter(u => u.is_suspended).length,
         seeds_held: users.reduce((acc, u) => acc + (u.seeds || 0), 0),
-        lessons: 15,
+        lessons: 10,
         completions: 68,
         completions_7d: 22,
         active_today: 5,
@@ -525,10 +539,14 @@
 
     if (cleanPath.endsWith('/api/toolbox.php')) {
       let tbData = getStore('toolbox_cache', null);
-      if (!tbData) {
+      const isTbStale = !tbData || !tbData.topics || tbData.topics.length !== 10;
+      if (isTbStale) {
         try {
-          const resp = await fetch('/data/toolbox.json');
-          if (resp.ok) {
+          let resp = await fetch('/data/toolbox.json?t=' + Date.now()).catch(() => null);
+          if (!resp || !resp.ok) {
+            resp = await fetch('../data/toolbox.json?t=' + Date.now()).catch(() => null);
+          }
+          if (resp && resp.ok) {
             tbData = await resp.json();
             setStore('toolbox_cache', tbData);
           }
@@ -539,10 +557,7 @@
       const topics = rawTopics.map((t, idx) => {
         let unlocked = true;
         if (t.unlock_lesson_title) {
-          // Check if the user has completed any lessons or this specific level
-          // In mock mode, if progress has any done levels or if level matches
           const completedCount = Object.values(progress).filter(v => v === 'done').length;
-          // Each topic unlocks after level (idx + 1)
           unlocked = completedCount >= idx;
         }
         return {

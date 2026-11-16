@@ -250,22 +250,27 @@
   }
 
   let lessonMaterials = [];
-  fetch('../data/lesson_materials.json')
-    .then(r => r.ok ? r.json() : null)
-    .then(d => {
-      if (d && Array.isArray(d.lessons)) {
-        lessonMaterials = d.lessons;
-        if (lesson) fill(lesson);
+  const loadMaterials = async () => {
+    try {
+      let r = await fetch('../data/lesson_materials.json?t=' + Date.now()).catch(() => null);
+      if (!r || !r.ok) r = await fetch('/data/lesson_materials.json?t=' + Date.now()).catch(() => null);
+      if (r && r.ok) {
+        const d = await r.json();
+        if (d && Array.isArray(d.lessons)) {
+          lessonMaterials = d.lessons;
+          if (lesson) fill(lesson);
+        }
       }
-    })
-    .catch(() => {});
+    } catch (_) {}
+  };
+  loadMaterials();
 
   function findMaterial(l) {
     if (!l || !lessonMaterials.length) return null;
     return lessonMaterials.find(m => 
       m.id === l.id || 
-      (m.title && l.title && m.title.toLowerCase() === l.title.toLowerCase()) || 
-      (m.concept && l.concept && m.concept.toLowerCase() === l.concept.toLowerCase())
+      (m.title && l.title && m.title.toLowerCase().trim() === l.title.toLowerCase().trim()) || 
+      (m.concept && l.concept && m.concept.toLowerCase().trim() === l.concept.toLowerCase().trim())
     );
   }
 
@@ -417,7 +422,41 @@
     $('intro-level').textContent = (l.chapter_title || 'Chapter') + ' · Level ' + (l.sort_order || l.id);
     $('intro-title').textContent = l.title;
     $('intro-concept').textContent = 'Concept: ' + ((mat && (mat.topic || mat.concept)) || l.concept || 'Python Basics');
-    $('intro-teaching-text').textContent = (mat && mat.introduction) || CONCEPT_EXPLANATIONS[l.concept] || l.concept || 'Practice your Python skills to grow this plant.';
+
+    const teachBox = $('intro-teaching-text');
+    teachBox.innerHTML = '';
+    if (mat) {
+      if (mat.simple_explanation) {
+        const lead = PG.el('p', 'concept-summary', mat.simple_explanation);
+        teachBox.appendChild(lead);
+      }
+      const cards = PG.el('div', 'concept-cards');
+
+      // Card 1: The Big Idea
+      const bigIdeaText = (mat.discussion && mat.discussion[0] && mat.discussion[0].text) || mat.simple_explanation || '';
+      const card1 = PG.el('div', 'concept-card');
+      card1.innerHTML = '<strong>🌟 The Big Idea</strong><p>' + escapeHtml(bigIdeaText) + '</p>';
+      cards.appendChild(card1);
+
+      // Card 2: How It Works / Syntax
+      if (mat.syntax) {
+        const card2 = PG.el('div', 'concept-card');
+        card2.innerHTML = '<strong>🔍 How It Works (Syntax)</strong><p><code>' + escapeHtml(mat.syntax) + '</code></p>';
+        cards.appendChild(card2);
+      }
+
+      // Card 3: Secret Tip / Hint
+      const hintText = (l.rules && l.rules.hint) || (mat.common_mistakes && mat.common_mistakes[0]) || '';
+      if (hintText) {
+        const card3 = PG.el('div', 'concept-card concept-card--tip');
+        card3.innerHTML = '<strong>🎯 Quick Tip</strong><p>' + escapeHtml(hintText) + '</p>';
+        cards.appendChild(card3);
+      }
+      teachBox.appendChild(cards);
+    } else {
+      teachBox.textContent = CONCEPT_EXPLANATIONS[l.concept] || l.concept || 'Practice your Python skills to grow this plant.';
+    }
+
     $('intro-code').textContent = l.starter_code || '# Write code here\n';
 
     const introGoals = $('intro-goals');

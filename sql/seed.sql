@@ -3,121 +3,70 @@
 
 -- Chapters
 insert into chapters (slug, title, blurb, sort_order, is_published) values 
-  ('first-sprouts', 'First sprouts', 'Print, variables, math, decisions and loops.', 1, true),
-  ('sprouting-logic', 'Sprouting Logic & Data', 'Lists, indexing, conditionals, and while loops.', 2, true),
-  ('master-garden', 'Master Garden Algorithms', 'Dictionaries, f-strings, list filtering, and algorithms.', 3, true)
+  ('getting-started', 'Getting Started', 'Understanding programming, Python fundamentals, and leaving garden notes.', 1, true),
+  ('first-sprouts', 'First Sprouts', 'Displaying output, variables, plant labels, and math calculations.', 2, true),
+  ('growing-logic', 'Growing Logic', 'Making decisions with conditionals, repeating with loops, and organizing lists.', 3, true)
 on conflict (slug) do nothing;
 
 -- Chapter 1 Lessons
 insert into lessons (chapter_id, title, concept, goals, starter_code, expected_output, rules, reward_seeds, reward_xp, sort_order) values 
-((select id from chapters where slug='first-sprouts'), 'Say hello', 'Printing', '["Use print() to show a message", "Make the console say exactly: Hello, garden!"]'::jsonb, '# Say hello to your garden
+((select id from chapters where slug='getting-started'), 'What is Programming?', 'Programming Fundamentals', '["Understand that programs follow instructions step by step", "Display your first instruction: Step 1: Plant seed"]'::jsonb, '# Computers follow instructions step by step
+print("Step 1: Plant seed")
+', 'Step 1: Plant seed', '{"mustContain": ["print(", "Step 1: Plant seed"], "hint": "Put your text inside quotes: print(\"Step 1: Plant seed\")"}'::jsonb, 15, 40, 1),
+
+((select id from chapters where slug='getting-started'), 'What is Python?', 'Python Basics', '["Learn that Python runs code from top to bottom", "Make the console say: Python is ready!"]'::jsonb, '# Python is case-sensitive! Always use lowercase print()
+print("Python is ready!")
+', 'Python is ready!', '{"mustContain": ["print(", "Python is ready!"], "hint": "Remember lowercase print: print(\"Python is ready!\")"}'::jsonb, 15, 40, 2),
+
+((select id from chapters where slug='getting-started'), 'Leaving Garden Notes', 'Comments', '["Use the # symbol to write a comment that Python ignores", "Keep the message line active to print: Notes are free"]'::jsonb, '# Add a # in front of this note so Python ignores it
+# Plant seeds carefully
+print("Notes are free")
+', 'Notes are free', '{"mustContain": ["#", "print("], "hint": "Lines starting with # are notes for you. Python only runs lines without #"}'::jsonb, 15, 40, 3);
+
+-- Chapter 2 Lessons
+insert into lessons (chapter_id, title, concept, goals, starter_code, expected_output, rules, reward_seeds, reward_xp, sort_order) values 
+((select id from chapters where slug='first-sprouts'), 'Say Hello', 'Printing', '["Use print() to say hello to your garden", "Make the console say exactly: Hello, garden!"]'::jsonb, '# Say hello to your garden
 print("Hello, garden!")
 ', 'Hello, garden!', '{"mustContain": ["print("], "hint": "Text goes inside quotes: print(\"Hello, garden!\")"}'::jsonb, 15, 40, 1),
 
-((select id from chapters where slug='first-sprouts'), 'Name your water', 'Variables', '["Create a variable named water and set it to 4", "Print the variable"]'::jsonb, '# Store a number in a variable, then print it
+((select id from chapters where slug='first-sprouts'), 'Name Your Water', 'Variables', '["Create a variable named water and set it to 4", "Print the variable''s value using print(water)"]'::jsonb, '# Store a number in a variable, then print it
 water = 4
 print(water)
-', '4', '{"mustContain": ["water", "print(water)"], "hint": "A variable is a name, an equals sign and a value: water = 4"}'::jsonb, 15, 40, 2),
+', '4', '{"mustContain": ["water", "print(water)"], "hint": "A variable stores a value: water = 4. Print it without quotes: print(water)"}'::jsonb, 15, 40, 2),
 
-((select id from chapters where slug='first-sprouts'), 'Count the seeds', 'Math', '["Multiply seeds by pots using *", "Print the total"]'::jsonb, 'seeds = 6
+((select id from chapters where slug='first-sprouts'), 'Label Your Plant', 'Strings', '["Store the plant name \"Sunflower\" in the crop variable", "Print the plant label to the console"]'::jsonb, '# Label your plant with a text string
+crop = "Sunflower"
+print(crop)
+', 'Sunflower', '{"mustContain": ["crop", "print(crop)"], "hint": "Words go inside quotation marks: crop = \"Sunflower\""}'::jsonb, 20, 50, 3),
+
+((select id from chapters where slug='first-sprouts'), 'Count the Seeds', 'Math', '["Multiply seeds by pots using *", "Print the total seeds needed (18)"]'::jsonb, 'seeds = 6
 pots = 3
-# Print how many seeds you need in total
+# Multiply seeds by pots and print total
 print(seeds * pots)
-', '18', '{"mustContain": ["*", "print("], "hint": "You can put a calculation inside print: print(seeds * pots)"}'::jsonb, 15, 40, 3),
+', '18', '{"mustContain": ["*", "print("], "hint": "Python uses * for multiplication: print(seeds * pots)"}'::jsonb, 20, 50, 4);
 
-((select id from chapters where slug='first-sprouts'), 'Sunny or not', 'Decisions', '["Write an if that checks sun > 5", "Add an else for the other case", "Print Grow! when the sun is bright"]'::jsonb, 'sun = 8
+-- Chapter 3 Lessons
+insert into lessons (chapter_id, title, concept, goals, starter_code, expected_output, rules, reward_seeds, reward_xp, sort_order) values 
+((select id from chapters where slug='growing-logic'), 'Sunny or Not?', 'Decisions', '["Write an if that checks if sun > 5", "Add an else block for when sunlight is low", "Print Grow! when the sun is bright"]'::jsonb, 'sun = 8
 # If sun is above 5, print Grow! Otherwise print Wait
 if sun > 5:
     print("Grow!")
 else:
     print("Wait")
-', 'Grow!', '{"mustContain": ["if", "else", "print("], "hint": "End the if line with a colon and indent the next line by 4 spaces."}'::jsonb, 15, 40, 4),
+', 'Grow!', '{"mustContain": ["if", "else", "print("], "hint": "End the if and else lines with a colon (:) and indent the print lines by 4 spaces."}'::jsonb, 25, 60, 1),
 
-((select id from chapters where slug='first-sprouts'), 'Water every plant', 'Loops', '["Use a for loop with range(3)", "Print Water plant 1, Water plant 2 and Water plant 3"]'::jsonb, '# Water 3 plants, one line each
+((select id from chapters where slug='growing-logic'), 'Water Every Plant', 'Loops', '["Use a for loop with range(3)", "Print Water plant 1, Water plant 2, and Water plant 3"]'::jsonb, '# Water 3 plants using a loop
 for i in range(3):
     print("Water plant", i + 1)
 ', 'Water plant 1
 Water plant 2
-Water plant 3', '{"mustContain": ["for", "range"], "hint": "range(3) counts 0, 1, 2. Print i + 1 to start at 1."}'::jsonb, 15, 40, 5);
+Water plant 3', '{"mustContain": ["for", "range"], "hint": "range(3) counts 0, 1, 2. Use i + 1 to display 1, 2, 3!"}'::jsonb, 25, 60, 2),
 
--- Chapter 2 Lessons
-insert into lessons (chapter_id, title, concept, goals, starter_code, expected_output, rules, reward_seeds, reward_xp, sort_order) values 
-((select id from chapters where slug='sprouting-logic'), 'Gather the Harvest', 'Lists', '["Access the first element of harvest with [0]", "Print the first vegetable"]'::jsonb, '# Store 3 garden vegetables in a list
-harvest = ["carrot", "tomato", "radish"]
-# Print the first vegetable
-print(harvest[0])
-', 'carrot', '{"mustContain": ["harvest[0]", "print("], "hint": "Lists in Python start at index 0: harvest[0]"}'::jsonb, 20, 50, 1),
-
-((select id from chapters where slug='sprouting-logic'), 'Count the Petals', 'List Length', '["Use len() to measure the flowers list", "Print the length"]'::jsonb, 'flowers = ["rose", "tulip", "daisy", "sunflower"]
-# Print how many flowers are in the garden
-print(len(flowers))
-', '4', '{"mustContain": ["len(flowers)", "print("], "hint": "len(flowers) returns the total number of items in the list."}'::jsonb, 20, 50, 2),
-
-((select id from chapters where slug='sprouting-logic'), 'Flower Bloom Checker', 'Logic and Conditions', '["Use an if condition with and", "Print Blooming! when both sun >= 7 and water >= 5", "Add else block printing Wilting"]'::jsonb, 'sun = 10
-water = 8
-# If sun >= 7 and water >= 5, print Blooming! Otherwise print Wilting
-if sun >= 7 and water >= 5:
-    print("Blooming!")
-else:
-    print("Wilting")
-', 'Blooming!', '{"mustContain": ["if", "and", "else", "print("], "hint": "Combine conditions with and: if sun >= 7 and water >= 5:"}'::jsonb, 25, 60, 3),
-
-((select id from chapters where slug='sprouting-logic'), 'Watering While Sprouting', 'While Loops', '["Use a while loop checking drops > 0", "Print Drop with current drops count", "Subtract 1 from drops inside the loop"]'::jsonb, 'drops = 3
-# Use a while loop to count down drops
-while drops > 0:
-    print("Drop " + str(drops))
-    drops -= 1
-', 'Drop 3
-Drop 2
-Drop 1', '{"mustContain": ["while", "drops", "print("], "hint": "Don''t forget to decrease drops inside the while loop: drops -= 1"}'::jsonb, 25, 60, 4),
-
-((select id from chapters where slug='sprouting-logic'), 'Garden Greeting Function', 'Functions', '["Define a function named greet_plant with one parameter", "Return greeting text", "Call the function and print the result"]'::jsonb, '# Define a function named greet_plant with one parameter
-def greet_plant(name):
-    return "Hello " + name
-
-print(greet_plant("Daisy"))
-', 'Hello Daisy', '{"mustContain": ["def greet_plant", "return", "print("], "hint": "Functions let you reuse code. Indent the function body with 4 spaces."}'::jsonb, 30, 75, 5);
-
--- Chapter 3 Lessons
-insert into lessons (chapter_id, title, concept, goals, starter_code, expected_output, rules, reward_seeds, reward_xp, sort_order) values 
-((select id from chapters where slug='master-garden'), 'Catalog the Seeds', 'Dictionaries', '["Access the sunflower price using prices[\"sunflower\"]", "Print the price"]'::jsonb, 'prices = {"sunflower": 20, "tulip": 30}
-# Print the price of a sunflower
-print(prices["sunflower"])
-', '20', '{"mustContain": ["prices[", "print("], "hint": "Dictionary values are retrieved with their key: prices[\"sunflower\"]"}'::jsonb, 30, 80, 1),
-
-((select id from chapters where slug='master-garden'), 'Greenhouse Temperature', 'F-Strings', '["Use an f-string or formatting to combine variables", "Print exactly: The Fern is at 24C"]'::jsonb, 'temp = 24
-plant = "Fern"
-# Print: The Fern is at 24C
-print(f"The {plant} is at {temp}C")
-', 'The Fern is at 24C', '{"mustContain": ["print(", "24"], "hint": "Use formatted text: print(f\"The {plant} is at {temp}C\")"}'::jsonb, 35, 85, 2),
-
-((select id from chapters where slug='master-garden'), 'Weed Remover', 'List Filtering', '["Loop over garden_bed", "Use if item == flower:", "Print only the flowers"]'::jsonb, 'garden_bed = ["flower", "weed", "flower", "weed", "flower"]
-# Loop over garden_bed and print only items that equal flower
-for item in garden_bed:
-    if item == "flower":
-        print(item)
-', 'flower
-flower
-flower', '{"mustContain": ["for", "if", "print("], "hint": "Check each item inside the loop: if item == \"flower\": print(item)"}'::jsonb, 35, 90, 3),
-
-((select id from chapters where slug='master-garden'), 'Garden Grid Matrix', 'Nested Loops', '["Use nested for loops with range()", "Print the plot coordinates for each cell"]'::jsonb, '# Plant a 2x3 garden grid: Rows 1 to 2, Columns 1 to 3
-for row in range(1, 3):
-    for col in range(1, 4):
-        print(f"Plot ({row},{col})")
-', 'Plot (1,1)
-Plot (1,2)
-Plot (1,3)
-Plot (2,1)
-Plot (2,2)
-Plot (2,3)', '{"mustContain": ["for", "range", "print("], "hint": "A loop inside another loop generates coordinates for rows and columns."}'::jsonb, 40, 100, 4),
-
-((select id from chapters where slug='master-garden'), 'Ultimate Garden Simulator', 'Capstone Project', '["Sum all numbers in the crops list", "Print exactly: Harvest total: 50"]'::jsonb, '# Garden Simulator: Calculate total harvest seeds
-crops = [10, 25, 15]
-total = 0
-for yield_amount in crops:
-    total += yield_amount
-print("Harvest total:", total)
-', 'Harvest total: 50', '{"mustContain": ["for", "total", "print("], "hint": "Accumulate the sum with total += yield_amount inside your loop."}'::jsonb, 50, 150, 5);
+((select id from chapters where slug='growing-logic'), 'Seed Basket', 'Lists', '["Create a list of 3 plants with square brackets [ ]", "Access and print the second plant using [1]", "Make the console display: Mint"]'::jsonb, '# Store 3 garden plants in a list
+basket = ["Rose", "Mint", "Fern"]
+# Print the second plant (index 1)
+print(basket[1])
+', 'Mint', '{"mustContain": ["basket[1]", "print("], "hint": "Python starts counting at index 0! So basket[0] is Rose, and basket[1] is Mint."}'::jsonb, 30, 75, 3);
 
 -- Shop Items
 insert into shop_items (name, kind, cost_seeds, sprite) values ('Sunflower seed', 'seed', 20, 'sunflower');
@@ -146,44 +95,44 @@ print("Notes are free")  # so is this part', (select id from lessons where title
 
 insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
 ('print()', 'print() shows text or values in the console. Text goes inside quotes. Several values can be separated with commas.', 'print("Hello, garden!")
-print("Plants:", 3)', (select id from lessons where title='Say hello' limit 1));
+print("Plants:", 3)', (select id from lessons where lower(title)=lower('Say Hello') limit 1));
 
 insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
 ('Variables', 'A variable stores a value under a name. Use = to store it, then use the name later.', 'water = 4
 name = "Sprout"
-print(name, water)', (select id from lessons where title='Name your water' limit 1));
+print(name, water)', (select id from lessons where lower(title)=lower('Name Your Water') limit 1));
 
 insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
 ('Strings & Concatenation', 'Strings represent text in quotes. Combine them using + (concatenation). Measure the number of characters in a string with len().', 'first = "Python"
 second = "Garden"
 print(first + " " + second)
-print(len(first))', (select id from lessons where title='Label Your Plant' limit 1));
+print(len(first))', (select id from lessons where lower(title)=lower('Label Your Plant') limit 1));
 
 insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
 ('Math operators', 'Use + - * / for arithmetic. // divides and drops the decimals, % gives the remainder, ** is a power.', 'print(6 * 3)
 print(7 // 2)
 print(7 % 3)
-print(2 ** 3)', (select id from lessons where title='Count the seeds' limit 1));
+print(2 ** 3)', (select id from lessons where lower(title)=lower('Count the Seeds') limit 1));
 
 insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
 ('if and else', 'if runs code only when a condition is true. else runs when it is not. Indent the code inside by 4 spaces.', 'sun = 8
 if sun > 5:
     print("Grow!")
 else:
-    print("Wait")', (select id from lessons where title='Sunny or not' limit 1));
+    print("Wait")', (select id from lessons where lower(title)=lower('Sunny or Not?') limit 1));
 
 insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
 ('for loops and range()', 'A for loop repeats code. range(3) gives 0, 1 and 2, so the loop body runs three times.', 'for i in range(3):
-    print("Water plant", i + 1)', (select id from lessons where title='Water every plant' limit 1));
+    print("Water plant", i + 1)', (select id from lessons where lower(title)=lower('Water Every Plant') limit 1));
 
 insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
-('Lists and Indexing', 'Lists hold multiple items in order. The first item is at index 0.', 'harvest = ["carrot", "tomato", "radish"]
-print(harvest[0])', (select id from lessons where title='Gather the Harvest' limit 1));
+('Lists and Indexing', 'Lists hold multiple items in order. The first item is at index 0.', 'basket = ["Rose", "Mint", "Fern"]
+print(basket[1])', (select id from lessons where lower(title)=lower('Seed Basket') limit 1));
 
 -- Achievements
 insert into achievements (title, description, rule_key, threshold) values ('First sprout', 'Finish your first level', 'lessons_done', 1);
 insert into achievements (title, description, rule_key, threshold) values ('Green thumb', 'Finish 5 levels', 'lessons_done', 5);
-insert into achievements (title, description, rule_key, threshold) values ('Master Harvester', 'Finish 15 levels', 'lessons_done', 15);
+insert into achievements (title, description, rule_key, threshold) values ('Master Harvester', 'Finish 10 levels', 'lessons_done', 10);
 insert into achievements (title, description, rule_key, threshold) values ('Getting started', 'Earn 100 XP', 'xp', 100);
 insert into achievements (title, description, rule_key, threshold) values ('Gardener', 'Earn 250 XP', 'xp', 250);
 insert into achievements (title, description, rule_key, threshold) values ('Botanist', 'Earn 500 XP', 'xp', 500);

@@ -1,29 +1,5 @@
 {
-  "curriculum": "Python Garden - Complete Python Learning Modules",
-  "total_levels": 10,
-  "chapters": [
-    {
-      "chapter_id": 1,
-      "slug": "getting-started",
-      "title": "CHAPTER 1 — GETTING STARTED",
-      "subtitle": "Lessons 1–3 · Understanding programming and Python fundamentals",
-      "lesson_ids": [1, 2, 3]
-    },
-    {
-      "chapter_id": 2,
-      "slug": "first-sprouts",
-      "title": "CHAPTER 2 — FIRST SPROUTS",
-      "subtitle": "Lessons 4–7 · Writing instructions, storing information, and performing calculations",
-      "lesson_ids": [4, 5, 6, 7]
-    },
-    {
-      "chapter_id": 3,
-      "slug": "growing-logic",
-      "title": "CHAPTER 3 — GROWING LOGIC",
-      "subtitle": "Lessons 8–10 · Making decisions, repeating instructions, and organizing data",
-      "lesson_ids": [8, 9, 10]
-    }
-  ],
+  "curriculum": "Python Garden - 10 Beginner-Friendly Levels",
   "lessons": [
     {
       "id": 1,
@@ -33,61 +9,34 @@
       "title": "What is Programming?",
       "topic": "Introduction to Programming",
       "concept": "Programming Fundamentals",
-      "objectives": [
-        "Understand what programming and programs are.",
-        "Learn the 3-step basic programming process (Input -> Process -> Output).",
-        "Understand how computers execute precise instructions sequentially."
-      ],
-      "introduction": "Have you ever wondered how computers know what to do? When you open an application, play a game, or visit a website, the computer is following instructions created by programmers. These instructions are written using a programming language. Programming is the process of creating instructions that tell a computer how to perform specific tasks. Think of programming as planting a garden: prepare soil, plant seed, water, and provide sunlight. Skipping an important step prevents proper growth.",
+      "simple_explanation": "Computers are helpful garden friends, but they need clear instructions to do anything! Programming is simply writing down step-by-step instructions for the computer to follow.",
+      "introduction": "🌟 **The Big Idea:** Computers follow steps in order: Input (what you type) ➔ Process (what the computer does) ➔ Output (what appears on screen).\n\n🔍 **How It Works:** In Python, we use `print()` to send our instructions to the screen. Put your text inside quotation marks `\"...\"`.\n\n🎯 **Your Secret Tip:** Computers follow instructions exactly. Keep your quotes matching!",
       "discussion": [
         {
-          "heading": "What is a Program?",
-          "text": "A program is a collection of instructions written to perform a particular task. Examples include calculators, messaging apps, games, websites, and banking applications. Every program is created to solve a problem or accomplish a task."
+          "heading": "🌱 The 3 Steps of Every Program",
+          "text": "1. Input: You tell the computer what to do.\n2. Process: The computer runs your instructions.\n3. Output: The result appears on the screen!"
         },
         {
-          "heading": "How Does Programming Work?",
-          "text": "A basic programming process involves three steps:\n1. Input: Information provided to a computer (e.g. entering a user name).\n2. Processing: Computer follows instructions to work with the information (e.g. preparing a personalized greeting).\n3. Output: Result produced by the computer (e.g. displaying the welcome message)."
-        },
-        {
-          "heading": "Understanding Instructions",
-          "text": "Computers do not understand vague human instructions. Instructions must be written in a format the programming language can interpret. In Python, you can display an instruction using print(\"Step 1: Plant seed\")."
+          "heading": "🪴 Why Step Order Matters",
+          "text": "Just like gardening: you can't harvest seeds before you plant them! Computers always execute instructions in the exact order you write them."
         }
       ],
-      "important_terms": [
-        {"term": "Programming", "meaning": "Creating instructions for computers"},
-        {"term": "Program", "meaning": "A set of instructions"},
-        {"term": "Programmer", "meaning": "A person who writes programs"},
-        {"term": "Programming language", "meaning": "A language used to communicate instructions to computers"},
-        {"term": "Input", "meaning": "Information provided to a program"},
-        {"term": "Process", "meaning": "Instructions performed on information"},
-        {"term": "Output", "meaning": "The result produced by a program"}
-      ],
-      "syntax": "print(\"instruction text\")",
+      "syntax": "print(\"Your instruction here\")",
       "code_examples": [
         {
+          "explanation": "Send your first instruction to the garden terminal:",
           "code": "print(\"Step 1: Plant seed\")",
-          "explanation": "print is a built-in Python function. Parentheses () contain the info to display, quotation marks indicate text, and output is displayed in the console.",
           "output": "Step 1: Plant seed"
         }
       ],
       "common_mistakes": [
-        "Giving incomplete instructions.",
-        "Placing steps in the wrong order.",
-        "Forgetting that computers follow the written instructions exactly.",
-        "Confusing input with output."
+        "Forgetting quotation marks: print(Plant seed) will cause an error.",
+        "Mismatched quotes: print(\"Plant seed') does not work."
       ],
       "knowledge_check": [
-        "What is programming?",
-        "What do we call a collection of instructions that performs a task?",
-        "What are the three basic stages of the programming process?",
-        "Why should computer instructions be clear and organized?"
-      ],
-      "practice_activity": {
-        "task": "Write a Python instruction that displays: Step 1: Plant seed",
-        "starter_code": "print(\"Step 1: Plant seed\")",
-        "expected_output": "Step 1: Plant seed"
-      },
-      "summary": "Programming is the process of creating instructions that tell computers how to perform tasks. A program follows instructions to receive input, process information, and produce output. Understanding these basic concepts provides the foundation for learning Python."
+        "What are the 3 main stages of a program? (Input, Process, Output)",
+        "Why must instructions be written in the right order?"
+      ]
     },
     {
       "id": 2,
@@ -96,57 +45,35 @@
       "chapter_title": "Getting Started",
       "title": "What is Python?",
       "topic": "Introduction to Python Programming",
-      "concept": "Python Introduction",
-      "objectives": [
-        "Define Python and understand why it is beginner-friendly.",
-        "Identify major fields where Python is used (Web Dev, AI, Data Science, Automation).",
-        "Understand Python syntax, case-sensitivity, and sequential execution."
-      ],
-      "introduction": "Python is a high-level, general-purpose programming language known for its simple and readable syntax. It was designed to make programming easier to understand, especially for beginners. Unlike languages with complicated syntax, Python uses a structure resembling everyday English.",
+      "concept": "Python Basics",
+      "simple_explanation": "Python is a programming language designed to look and read like plain English. It's one of the friendliest languages in the world to learn!",
+      "introduction": "🌟 **The Big Idea:** Python runs your instructions line-by-line from top to bottom. It is also case-sensitive, meaning capital letters matter!\n\n🔍 **How It Works:** Always write built-in commands like `print()` in lowercase letters.\n\n🎯 **Your Secret Tip:** `Print(\"Hi\")` with a capital P causes an error. Always use lowercase `print()`!",
       "discussion": [
         {
-          "heading": "Why Python is Beginner-Friendly",
-          "text": "1. Syntax is clean and easy to read.\n2. Requires fewer lines of code.\n3. Supports different programming styles.\n4. Comes with extensive built-in functions and standard libraries.\n5. Has an active, helpful global community."
+          "heading": "🐍 Why Everyone Loves Python",
+          "text": "Python is simple, readable, and used all over the world to make websites, build robots, analyze weather data, and create games!"
         },
         {
-          "heading": "Where is Python Used?",
-          "text": "- Web Development: Frameworks like Django and Flask.\n- Artificial Intelligence & Machine Learning: TensorFlow, PyTorch.\n- Game Development: Game prototypes and mechanics.\n- Automation: Automating repetitive tasks and scripts.\n- Data Science: Data analysis and visualization with pandas and matplotlib."
-        },
-        {
-          "heading": "How Python Executes Code (Sequential Execution)",
-          "text": "Python executes code sequentially from top to bottom. If you write three print statements in sequence, line 1 runs, then line 2, then line 3."
-        },
-        {
-          "heading": "The Python Interpreter",
-          "text": "The Python interpreter is software that reads and executes Python instructions. If code contains syntax or runtime errors, the interpreter displays an error message explaining what failed."
+          "heading": "⬇️ Sequential Execution",
+          "text": "Python reads your code from top to bottom, one line at a time. Line 1 runs first, then Line 2, then Line 3."
         }
       ],
-      "syntax": "print(\"Your message here\")",
+      "syntax": "print(\"Python is ready!\")",
       "code_examples": [
         {
-          "code": "print(\"Prepare the soil\")\nprint(\"Plant the seeds\")\nprint(\"Water the garden\")",
-          "explanation": "Executes sequentially line by line from top to bottom.",
-          "output": "Prepare the soil\nPlant the seeds\nWater the garden"
+          "explanation": "Tell the garden that Python is ready to grow:",
+          "code": "print(\"Python is ready!\")",
+          "output": "Python is ready!"
         }
       ],
       "common_mistakes": [
-        "Missing quotation marks: print(Hello) instead of print(\"Hello\").",
-        "Missing parentheses: print \"Hello\".",
-        "Incorrect capitalization: Print(\"Hello\") causes NameError because Python is case-sensitive."
+        "Typing Print or PRINT instead of lowercase print.",
+        "Missing the closing parenthesis at the end of the line."
       ],
       "knowledge_check": [
-        "What is Python?",
-        "Why is Python considered beginner-friendly?",
-        "What does the Python interpreter do?",
-        "What is syntax?",
-        "Is Python case-sensitive?"
-      ],
-      "practice_activity": {
-        "task": "Write a Python program that displays: Python is ready!",
-        "starter_code": "print(\"Python is ready!\")",
-        "expected_output": "Python is ready!"
-      },
-      "summary": "Python is a beginner-friendly programming language used in web development, automation, artificial intelligence, game development, and data science. Understanding Python's syntax and sequential execution prepares learners for writing their first programs."
+        "Does Python run code from top to bottom or bottom to top?",
+        "Is Print(\"Hello\") the same as print(\"Hello\") in Python?"
+      ]
     },
     {
       "id": 3,
@@ -156,50 +83,30 @@
       "title": "Leaving Garden Notes",
       "topic": "Comments in Python",
       "concept": "Comments",
-      "objectives": [
-        "Understand what comments are and why they are written for humans.",
-        "Learn how Python ignores lines starting with #.",
-        "Differentiate single-line comments and inline comments."
-      ],
-      "introduction": "When writing a program, programmers need to leave notes explaining what certain instructions do. These notes are called comments. Comments help programmers understand code, remember details, and collaborate with others. In Python, comments begin with the hash symbol #.",
+      "simple_explanation": "Comments are notes for humans! Whenever Python sees a hash symbol (#), it completely ignores that line. Use comments to leave reminders or explain your code.",
+      "introduction": "🌟 **The Big Idea:** Code is read by humans as much as computers! A comment starts with `#` and tells Python: 'Skip this line, it's just a note for me.'\n\n🔍 **How It Works:** Anything after `#` on that line will not run.\n\n🎯 **Your Secret Tip:** If a line of code is causing bugs or isn't needed, you can put `#` in front of it to turn it off!",
       "discussion": [
         {
-          "heading": "What Are Comments?",
-          "text": "A comment is source code that Python completely ignores during program execution. Comments are written for people, not for the interpreter."
-        },
-        {
-          "heading": "Why Are Comments Important?",
-          "text": "1. Explaining Code: Clarify the purpose of complex logic.\n2. Organizing Code: Section code into clear logical blocks.\n3. Temporarily Disabling Code: Prevent lines from executing without deleting them (debugging)."
-        },
-        {
-          "heading": "Types of Comments",
-          "text": "- Single-Line Comments: Start with # on their own line.\n- Inline Comments: Placed at the end of an executable statement (e.g. water = 5  # Number of containers)."
+          "heading": "📝 How to Leave a Note",
+          "text": "# This is a garden note\nprint(\"This line will print!\")\n# print(\"This line will NOT print\")"
         }
       ],
-      "syntax": "# This is a comment\ninstruction  # inline comment",
+      "syntax": "# This is a comment\nprint(\"Code runs here\")",
       "code_examples": [
         {
-          "code": "# Garden Information\nprint(\"My Garden\")\nwater = 5  # Number of water containers\nprint(\"Water:\", water)",
-          "explanation": "Python ignores all text following the # symbol on each line.",
-          "output": "My Garden\nWater: 5"
+          "explanation": "Using notes while keeping only the message active:",
+          "code": "# Plant seeds carefully\nprint(\"Notes are free\")",
+          "output": "Notes are free"
         }
       ],
       "common_mistakes": [
-        "Leaving a note without a hash symbol # (results in a SyntaxError).",
-        "Expecting comments to produce output in the terminal."
+        "Forgetting the # symbol: writing notes without # causes a SyntaxError.",
+        "Expecting comments to appear in the console output (they are completely invisible in the output)."
       ],
       "knowledge_check": [
-        "What symbol is used to create a Python comment?",
-        "Does Python execute comments?",
-        "Why do programmers use comments?",
-        "What is the difference between a regular comment and an inline comment?"
-      ],
-      "practice_activity": {
-        "task": "Correct code by adding # in front of the note line so Python ignores it and prints 'Notes are free'.",
-        "starter_code": "# Add a # in front of this note so Python ignores it\nprint(\"Notes are free\")",
-        "expected_output": "Notes are free"
-      },
-      "summary": "Comments are notes written inside a program to help explain and organize code. Python ignores comments during execution. The # symbol is used to create single-line and inline comments."
+        "What symbol starts a comment in Python?",
+        "Will a line starting with # show up on the screen when you run it?"
+      ]
     },
     {
       "id": 4,
@@ -209,56 +116,30 @@
       "title": "Say Hello",
       "topic": "The print() Function",
       "concept": "Printing",
-      "objectives": [
-        "Use the print() function to display text and numeric output.",
-        "Differentiate single quotes, double quotes, and numbers.",
-        "Print multiple values separated by commas and use newline \\n."
-      ],
-      "introduction": "A computer program often needs to communicate information to its user. In Python, one of the easiest ways to display information is through the print() function. A function is a reusable block of code designed to perform a specific task.",
+      "simple_explanation": "The print() function is how your Python program speaks! Whatever you put inside the parentheses will be displayed in the terminal console.",
+      "introduction": "🌟 **The Big Idea:** Want to talk to the user or see what your program is doing? Use `print()`!\n\n🔍 **How It Works:** Wrap words in quotes: `print(\"Hello, garden!\")`. Numbers don't need quotes: `print(25)`.\n\n🎯 **Your Secret Tip:** You can print multiple things separated by commas: `print(\"Seeds:\", 10)` adds a space automatically!",
       "discussion": [
         {
-          "heading": "Printing Text Strings",
-          "text": "Text in Python is called a string. Strings must be enclosed in quotation marks (single or double). e.g. print(\"Hello, Garden!\") or print('Hello'). Both are valid as long as quotes match."
-        },
-        {
-          "heading": "Printing Numbers",
-          "text": "Numeric values (integers and floats) do not need quotation marks. e.g. print(25), print(3.14). Placing quotes around a number makes it a string."
-        },
-        {
-          "heading": "Printing Multiple Values and Lines",
-          "text": "Separate values by commas inside print(): print(\"Plant:\", \"Rose\"). Python automatically inserts a space between items. Multiple print statements output on separate lines, or use \\n inside a string."
+          "heading": "💬 Words vs Numbers",
+          "text": "- Words (Strings) MUST have quotation marks: print(\"Rose\")\n- Numbers do NOT need quotes: print(5)"
         }
       ],
-      "syntax": "print(value1, value2, ...)",
+      "syntax": "print(\"Hello, garden!\")",
       "code_examples": [
         {
+          "explanation": "Say hello to your garden sprout:",
           "code": "print(\"Hello, garden!\")",
-          "explanation": "Outputs the exact string enclosed in quotation marks.",
           "output": "Hello, garden!"
-        },
-        {
-          "code": "print(\"Plant:\", \"Rose\", \"Water:\", 5)",
-          "explanation": "Prints multiple items separated by spaces.",
-          "output": "Plant: Rose Water: 5"
         }
       ],
       "common_mistakes": [
-        "Forgetting quotation marks around text: print(Hello).",
-        "Forgetting parentheses: print \"Hello\".",
-        "Using mismatched quotation marks: print(\"Hello')."
+        "Leaving off the quotes around words: print(Hello).",
+        "Forgetting the closing parenthesis: print(\"Hello\"."
       ],
       "knowledge_check": [
-        "What is the purpose of print()?",
-        "What symbols surround the value inside print()?",
-        "Do numbers require quotation marks?",
-        "How can you display multiple lines?"
-      ],
-      "practice_activity": {
-        "task": "Create a Python program that displays: Hello, garden!",
-        "starter_code": "print(\"Hello, garden!\")",
-        "expected_output": "Hello, garden!"
-      },
-      "summary": "The print() function is used to display information in Python. It can display strings, numbers, and multiple values. Understanding how to use print() is essential because it allows programmers to see the results of their programs."
+        "Do numbers require quotation marks inside print()?",
+        "What happens if you forget quotes around words in print()?"
+      ]
     },
     {
       "id": 5,
@@ -268,61 +149,34 @@
       "title": "Name Your Water",
       "topic": "Variables in Python",
       "concept": "Variables",
-      "objectives": [
-        "Understand variables as named storage containers.",
-        "Use the assignment operator = to store and reassign values.",
-        "Learn Python variable naming rules and avoid NameError."
-      ],
-      "introduction": "Imagine having different containers in your garden: one holds water, another seeds, another fertilizer. To identify each, you give it a label. Python uses variables as named storage locations to hold information so it can be reused whenever needed.",
+      "simple_explanation": "A variable is like a labeled jar in your garden shed! You give the jar a name, put a value inside with the equals sign (=), and use it anytime later.",
+      "introduction": "🌟 **The Big Idea:** Variables store information so you don't have to keep retyping it. `water = 4` stores the number 4 under the name `water`.\n\n🔍 **How It Works:** `print(water)` opens the jar and displays `4`! But `print(\"water\")` in quotes just displays the word 'water'.\n\n🎯 **Your Secret Tip:** Don't put quotation marks around variable names when printing their stored value!",
       "discussion": [
         {
-          "heading": "Creating and Assigning Variables",
-          "text": "Syntax: variable_name = value. The assignment operator = assigns the value on the right to the variable name on the left."
+          "heading": "🏷️ How Assignment Works",
+          "text": "Variable Name on the left, = in the middle, Value on the right:\nwater = 4\nplant = \"Sunflower\""
         },
         {
-          "heading": "Using Variables",
-          "text": "Writing print(water) displays the stored value. Writing print(\"water\") displays the word 'water' as text. Quotes distinguish literal text from variable identifiers."
-        },
-        {
-          "heading": "Updating Variable Values",
-          "text": "Variables can be reassigned: seeds = 5, then seeds = 10 replaces 5. You can also calculate using the existing value: water = water + 2."
-        },
-        {
-          "heading": "Rules for Naming Variables",
-          "text": "- Cannot begin with a number (2water is invalid, water2 is valid).\n- No spaces allowed (use underscores: plant_name).\n- Case-sensitive (water and Water are different variables).\n- Cannot use reserved Python keywords (if, print, for, etc.)."
+          "heading": "🔄 Updating a Variable",
+          "text": "You can change what's inside the jar at any time:\nwater = 4\nwater = water + 2  # Now water is 6!"
         }
       ],
-      "syntax": "variable_name = value",
+      "syntax": "variable_name = value\nprint(variable_name)",
       "code_examples": [
         {
+          "explanation": "Store water containers and print the count:",
           "code": "water = 4\nprint(water)",
-          "explanation": "Creates variable water, stores 4, and prints its value.",
           "output": "4"
-        },
-        {
-          "code": "seeds = 5\nseeds = seeds + 5\nprint(seeds)",
-          "explanation": "Updates seeds from 5 to 10.",
-          "output": "10"
         }
       ],
       "common_mistakes": [
-        "Using an undefined variable before assignment (causes NameError).",
-        "Wrapping variable names in quotes when trying to print their value: print(\"water\").",
-        "Starting variable names with numbers or containing spaces."
+        "Putting quotes around the variable: print(\"water\") prints the word instead of 4.",
+        "Starting a variable name with a number: 2water is invalid, use water2 instead."
       ],
       "knowledge_check": [
-        "What is a variable?",
-        "What does the assignment operator = do?",
-        "How do you display the value stored in a variable?",
-        "Why is 2water an invalid variable name?",
-        "What happens when a variable is assigned a new value?"
-      ],
-      "practice_activity": {
-        "task": "Create a variable named water and assign it the value 4, then print it.",
-        "starter_code": "water = 4\nprint(water)",
-        "expected_output": "4"
-      },
-      "summary": "Variables allow programmers to store, access, and update information. They make programs flexible and reusable. Assign values to valid names using the = operator."
+        "What symbol is used to store a value into a variable? (=)",
+        "What is the difference between print(water) and print(\"water\")?"
+      ]
     },
     {
       "id": 6,
@@ -332,61 +186,34 @@
       "title": "Label Your Plant",
       "topic": "Strings in Python",
       "concept": "Strings",
-      "objectives": [
-        "Understand string data types and character sequences.",
-        "Perform string concatenation using +.",
-        "Measure string length using len()."
-      ],
-      "introduction": "To label plants, write descriptions, and display messages, programs use text. In Python, text is represented using a data type called a string (sequence of characters enclosed in quotation marks).",
+      "simple_explanation": "Any text in Python is called a 'string' because characters are strung together! Always wrap your text inside quotation marks.",
+      "introduction": "🌟 **The Big Idea:** Plant labels, messages, and names are all strings. You can store words in variables and even glue strings together with `+`!\n\n🔍 **How It Works:** `crop = \"Sunflower\"` stores the word Sunflower. You can print it with `print(crop)`.\n\n🎯 **Your Secret Tip:** `20 + 5` does math (`25`), but `\"20\" + \"5\"` joins the text (`\"205\"`)!",
       "discussion": [
         {
-          "heading": "What is a String?",
-          "text": "A string is a sequence of characters enclosed in single or double quotes. Characters include letters, digits, spaces, and symbols."
+          "heading": "🔗 Joining Strings (Concatenation)",
+          "text": "first = \"Python\"\nsecond = \"Garden\"\nprint(first + \" \" + second)  # Prints: Python Garden"
         },
         {
-          "heading": "Strings vs Numbers",
-          "text": "20 is an integer, while \"20\" is a string. 20 + 5 evaluates to 25 (math addition), but \"20\" + \"5\" evaluates to \"205\" (string concatenation)."
-        },
-        {
-          "heading": "String Concatenation",
-          "text": "Use + to join strings. Remember to explicitly include spaces if needed: first + \" \" + last."
-        },
-        {
-          "heading": "String Length with len()",
-          "text": "The len() function returns the total character count: len(\"Rose\") is 4. Spaces count as characters."
+          "heading": "📏 Measuring Length with len()",
+          "text": "The len() function counts how many letters are in a word:\nlen(\"Rose\") is 4!"
         }
       ],
-      "syntax": "string_var = \"Text\"\njoined = str1 + \" \" + str2\ncount = len(string_var)",
+      "syntax": "crop = \"Sunflower\"\nprint(crop)",
       "code_examples": [
         {
+          "explanation": "Label your garden plant:",
           "code": "crop = \"Sunflower\"\nprint(crop)",
-          "explanation": "Assigns and prints a string variable.",
           "output": "Sunflower"
-        },
-        {
-          "code": "first = \"Python\"\nsecond = \"Garden\"\nprint(first + \" \" + second)",
-          "explanation": "Concatenates two strings with a space in between.",
-          "output": "Python Garden"
         }
       ],
       "common_mistakes": [
-        "Forgetting quotation marks: crop = Sunflower treats Sunflower as a variable name.",
-        "Confusing numeric strings with integers.",
-        "Forgetting spaces when concatenating: \"Hello\" + \"Garden\" gives \"HelloGarden\"."
+        "Forgetting quotes: crop = Sunflower treats Sunflower as an undefined variable.",
+        "Forgetting a space when joining strings: \"Hello\" + \"World\" becomes \"HelloWorld\"."
       ],
       "knowledge_check": [
-        "What is a string?",
-        "Which quotation marks can Python use for strings?",
-        "What is string concatenation?",
-        "What is the difference between 10 and \"10\"?",
+        "What data type is \"Sunflower\" in Python? (String)",
         "What does the len() function do?"
-      ],
-      "practice_activity": {
-        "task": "Create a variable named crop and assign it 'Sunflower', then print it.",
-        "starter_code": "crop = \"Sunflower\"\nprint(crop)",
-        "expected_output": "Sunflower"
-      },
-      "summary": "Strings represent text in Python. They are enclosed in quotation marks and can be stored in variables, displayed with print(), combined with +, and measured with len()."
+      ]
     },
     {
       "id": 7,
@@ -396,58 +223,30 @@
       "title": "Count the Seeds",
       "topic": "Mathematical Operators in Python",
       "concept": "Math",
-      "objectives": [
-        "Master basic arithmetic operators: +, -, *, /, //, %, **.",
-        "Understand float vs integer division.",
-        "Apply standard mathematical order of operations (PEMDAS)."
-      ],
-      "introduction": "Gardening requires calculations: counting seeds needed for pots, measuring water amounts, and tracking harvest yields. Python performs arithmetic calculations automatically using mathematical operators.",
+      "simple_explanation": "Python is an incredible calculator! Use + to add, - to subtract, * to multiply, and / to divide.",
+      "introduction": "🌟 **The Big Idea:** Need to figure out how many seeds you need? Python calculates math instantly.\n\n🔍 **How It Works:** In Python, the asterisk `*` is the multiplication symbol (not the letter x).\n\n🎯 **Your Secret Tip:** If you have 6 seeds per pot and 3 pots: `seeds * pots` gives you `18`!",
       "discussion": [
         {
-          "heading": "Arithmetic Operators",
-          "text": "- Addition (+): 5 + 3 = 8\n- Subtraction (-): 10 - 4 = 6\n- Multiplication (*): 6 * 3 = 18\n- Division (/): 12 / 3 = 4.0 (always returns a float)\n- Floor Division (//): 10 // 3 = 3 (rounds down to whole number)\n- Modulus (%): 10 % 3 = 1 (returns remainder)\n- Exponentiation (**): 2 ** 3 = 8 (2 * 2 * 2)"
-        },
-        {
-          "heading": "Using Variables in Math",
-          "text": "Variables can be used in arithmetic expressions: total = seeds * pots. If variables change, the calculation adapts."
-        },
-        {
-          "heading": "Order of Operations",
-          "text": "Python follows PEMDAS: Parentheses, Exponentiation, Multiplication/Division, Addition/Subtraction. 5 + 2 * 3 = 11, while (5 + 2) * 3 = 21."
+          "heading": "➗ The Math Symbols",
+          "text": "+ Addition (5 + 3 = 8)\n- Subtraction (10 - 4 = 6)\n* Multiplication (6 * 3 = 18)\n/ Division (12 / 3 = 4.0)\n// Floor Division (drops decimals: 10 // 3 = 3)\n% Remainder (10 % 3 = 1)"
         }
       ],
-      "syntax": "result = num1 * num2",
+      "syntax": "total = seeds * pots\nprint(total)",
       "code_examples": [
         {
+          "explanation": "Calculate total seeds needed:",
           "code": "seeds = 6\npots = 3\nprint(seeds * pots)",
-          "explanation": "Multiplies seeds by pots and prints the product.",
           "output": "18"
-        },
-        {
-          "code": "print(10 // 3)\nprint(10 % 3)",
-          "explanation": "Demonstrates floor division and remainder modulus.",
-          "output": "3\n1"
         }
       ],
       "common_mistakes": [
-        "Using 'x' instead of '*' for multiplication.",
-        "Confusing standard division (/) with floor division (//).",
-        "Dividing by zero (ZeroDivisionError).",
-        "Forgetting parentheses to control operation precedence."
+        "Typing 6 x 3 instead of 6 * 3.",
+        "Dividing by zero (causes a ZeroDivisionError)."
       ],
       "knowledge_check": [
-        "Which operator is used for multiplication?",
-        "What is the difference between / and //?",
-        "What does % return?",
-        "What does ** mean?",
-        "What is the result of 5 + 2 * 3?"
-      ],
-      "practice_activity": {
-        "task": "Multiply seeds = 6 by pots = 3 and display the total.",
-        "starter_code": "seeds = 6\npots = 3\nprint(seeds * pots)",
-        "expected_output": "18"
-      },
-      "summary": "Python supports mathematical operations through arithmetic operators. Programmers can add, subtract, multiply, divide, and calculate remainders and powers using numeric literals and variables."
+        "Which symbol does Python use for multiplication? (*)",
+        "What is the result of 6 * 3 in Python?"
+      ]
     },
     {
       "id": 8,
@@ -457,56 +256,35 @@
       "title": "Sunny or Not?",
       "topic": "Conditional Statements (if, else)",
       "concept": "Decisions",
-      "objectives": [
-        "Make decisions in code using if, elif, and else statements.",
-        "Use comparison operators (==, !=, >, <, >=, <=) to evaluate conditions.",
-        "Master Python indentation rules for code blocks."
-      ],
-      "introduction": "Every day you check if there is enough sunlight for your garden. If sunny, plants grow; otherwise, wait. In programming, conditional statements allow code to make decisions and execute different paths based on whether conditions are True or False.",
+      "simple_explanation": "Code can make smart decisions! An if statement checks if something is true. If it is, Python runs your instructions; otherwise, the else block runs.",
+      "introduction": "🌟 **The Big Idea:** Does your garden have enough sunlight? `if sun > 5:` means 'if the sun is bright, grow!'. `else:` means 'otherwise, wait!'.\n\n🔍 **How It Works:** Always put a colon `:` at the end of the `if` and `else` lines, and indent the code underneath by 4 spaces.\n\n🎯 **Your Secret Tip:** Indentation tells Python which instructions belong inside the decision!",
       "discussion": [
         {
-          "heading": "The if and else Statements",
-          "text": "The if statement checks a condition. If True, its indented code block runs. The else statement runs when the if condition evaluates to False."
+          "heading": "☀️ Making a Choice",
+          "text": "sun = 8\nif sun > 5:\n    print(\"Grow!\")\nelse:\n    print(\"Wait\")"
         },
         {
-          "heading": "Comparison Operators",
-          "text": "== (equal to), != (not equal to), > (greater than), < (less than), >= (greater or equal), <= (less or equal). These evaluate to Boolean True or False."
-        },
-        {
-          "heading": "The elif Statement",
-          "text": "elif allows checking multiple sequential conditions. Python executes the first block that evaluates to True and skips the rest."
-        },
-        {
-          "heading": "Indentation is Mandatory",
-          "text": "Python uses 4 spaces of indentation to group blocks of code under if/else. Misaligned or missing indentation causes an IndentationError."
+          "heading": "⚖️ Comparison Symbols",
+          "text": "> greater than\n< less than\n== equal to (use two equals signs when comparing!)\n!= not equal to"
         }
       ],
-      "syntax": "if condition:\n    statement\nelse:\n    statement",
+      "syntax": "if condition:\n    print(\"Yes\")\nelse:\n    print(\"No\")",
       "code_examples": [
         {
+          "explanation": "Check sunlight level before growing:",
           "code": "sun = 8\nif sun > 5:\n    print(\"Grow!\")\nelse:\n    print(\"Wait\")",
-          "explanation": "Because sun (8) is greater than 5, Grow! is printed.",
           "output": "Grow!"
         }
       ],
       "common_mistakes": [
-        "Using single = (assignment) instead of double == (comparison) in conditions.",
-        "Forgetting the colon : at the end of if/elif/else statements.",
-        "Inconsistent indentation."
+        "Forgetting the colon : at the end of if and else lines.",
+        "Forgetting to indent the code underneath by 4 spaces.",
+        "Using = instead of == to compare values."
       ],
       "knowledge_check": [
-        "What is the purpose of an if statement?",
-        "What happens when an if condition is false and an else block exists?",
-        "What does elif mean?",
-        "What is the difference between = and ==?",
-        "Why is indentation important in Python?"
-      ],
-      "practice_activity": {
-        "task": "Check if sun > 5. If true, print 'Grow!'; otherwise print 'Wait'.",
-        "starter_code": "sun = 8\nif sun > 5:\n    print(\"Grow!\")\nelse:\n    print(\"Wait\")",
-        "expected_output": "Grow!"
-      },
-      "summary": "Conditional statements allow programs to make decisions. Python uses if, elif, and else with comparison operators to execute specific blocks of indented code based on True/False conditions."
+        "What keyword provides the alternative when an if condition is false? (else)",
+        "How many spaces of indentation are standard in Python? (4 spaces)"
+      ]
     },
     {
       "id": 9,
@@ -516,56 +294,31 @@
       "title": "Water Every Plant",
       "topic": "Loops in Python",
       "concept": "Loops",
-      "objectives": [
-        "Understand loop repetition and avoid repetitive code.",
-        "Use for loops with range() to iterate a specified number of times.",
-        "Understand while loops and avoid infinite loops."
-      ],
-      "introduction": "If your garden has 100 plants, writing 100 print instructions is slow and error-prone. Loops allow programmers to repeat instructions automatically without duplicating code.",
+      "simple_explanation": "Don't repeat yourself! A loop tells Python to repeat an action as many times as you want automatically.",
+      "introduction": "🌟 **The Big Idea:** If you have 100 plants to water, you don't want to type 100 lines of code! A `for` loop does the repetition for you.\n\n🔍 **How It Works:** `for i in range(3):` counts `0, 1, 2`. Adding `+ 1` makes it count `1, 2, 3`!\n\n🎯 **Your Secret Tip:** `range(3)` repeats 3 times. Put what you want to repeat indented inside the loop!",
       "discussion": [
         {
-          "heading": "The for Loop and range()",
-          "text": "A for loop iterates over a sequence. range(3) produces numbers 0, 1, 2 (starts at 0 and stops before 3). To count starting from 1, use i + 1 or range(1, 4)."
-        },
-        {
-          "heading": "Formatted Strings (f-strings) in Loops",
-          "text": "Combine loops with f-strings: print(f\"Water plant {number}\") inserts variable values directly into string output."
-        },
-        {
-          "heading": "The while Loop",
-          "text": "Repeats as long as a condition remains True. You must update the loop variable inside the body (e.g. water += 1) or the loop will run infinitely."
-        },
-        {
-          "heading": "for vs while",
-          "text": "Use for when iterating over a known sequence or count; use while when repeating until a dynamic condition changes."
+          "heading": "🔄 The for Loop Pattern",
+          "text": "for i in range(3):\n    print(\"Water plant\", i + 1)\n\nThis runs the print statement 3 times, once for each plant!"
         }
       ],
-      "syntax": "for i in range(start, stop):\n    statement\n\nwhile condition:\n    statement\n    update_counter",
+      "syntax": "for i in range(3):\n    print(\"Water plant\", i + 1)",
       "code_examples": [
         {
+          "explanation": "Water 3 garden plants in sequence:",
           "code": "for i in range(3):\n    print(\"Water plant\", i + 1)",
-          "explanation": "Iterates 3 times, displaying 1, 2, and 3.",
           "output": "Water plant 1\nWater plant 2\nWater plant 3"
         }
       ],
       "common_mistakes": [
-        "Forgetting that range(3) produces 0, 1, and 2 (not 1, 2, 3).",
-        "Forgetting to update the loop condition variable in a while loop (infinite loop).",
-        "Missing colons or improper indentation."
+        "Remembering that range(3) starts at 0 (0, 1, 2), not 1.",
+        "Forgetting the colon : after range(3).",
+        "Forgetting to indent the instruction inside the loop."
       ],
       "knowledge_check": [
-        "What is a loop?",
-        "What are the two main types of loops in Python?",
-        "What does range(3) generate?",
-        "How many times does for i in range(5) execute?",
-        "What is an infinite loop?"
-      ],
-      "practice_activity": {
-        "task": "Use a for loop with range(3) to print 'Water plant 1', 'Water plant 2', and 'Water plant 3'.",
-        "starter_code": "for i in range(3):\n    print(\"Water plant\", i + 1)",
-        "expected_output": "Water plant 1\nWater plant 2\nWater plant 3"
-      },
-      "summary": "Loops allow programmers to repeat instructions efficiently. Python provides for loops for iterating through sequences and while loops for repeating instructions while a condition is true."
+        "How many times will a loop with range(3) run? (3 times)",
+        "What are the numbers produced by range(3)? (0, 1, 2)"
+      ]
     },
     {
       "id": 10,
@@ -575,62 +328,34 @@
       "title": "Seed Basket",
       "topic": "Lists in Python",
       "concept": "Lists",
-      "objectives": [
-        "Create lists using square brackets [].",
-        "Access elements using zero-based indexing.",
-        "Modify, append, remove items, and loop through lists."
-      ],
-      "introduction": "When managing a garden with roses, mint, sunflowers, and ferns, storing each in a separate variable becomes chaotic. Python provides lists to store multiple values in a single ordered collection.",
+      "simple_explanation": "A list is like a seed basket that holds multiple items in a specific order using square brackets [].",
+      "introduction": "🌟 **The Big Idea:** Instead of creating 10 separate variables for 10 plants, put them all in one list: `basket = [\"Rose\", \"Mint\", \"Fern\"]`.\n\n🔍 **How It Works:** Python lists start counting at 0! `basket[0]` is Rose, and `basket[1]` is Mint.\n\n🎯 **Your Secret Tip:** Index 0 is the 1st item, index 1 is the 2nd item!",
       "discussion": [
         {
-          "heading": "What is a List?",
-          "text": "A list is an ordered, changeable collection of items enclosed in square brackets []: basket = [\"Rose\", \"Mint\", \"Fern\"]."
+          "heading": "🧺 How Lists Work",
+          "text": "basket = [\"Rose\", \"Mint\", \"Fern\"]\nprint(basket[0])  # Rose (first item)\nprint(basket[1])  # Mint (second item)\nprint(basket[2])  # Fern (third item)"
         },
         {
-          "heading": "Zero-Based Indexing",
-          "text": "Python indices start at 0: basket[0] is \"Rose\", basket[1] is \"Mint\", and basket[2] is \"Fern\". Trying to access an index out of bounds raises an IndexError."
-        },
-        {
-          "heading": "Modifying Lists",
-          "text": "- Reassign: basket[1] = \"Sunflower\"\n- Append: basket.append(\"Daisy\") adds to the end\n- Remove: basket.remove(\"Mint\") removes by value\n- Pop: basket.pop(0) removes by index\n- Length: len(basket) returns total items"
-        },
-        {
-          "heading": "Iterating Over a List",
-          "text": "Use a for loop to process items: for plant in basket: print(plant)."
+          "heading": "➕ Adding More Plants",
+          "text": "You can add more items anytime with append:\nbasket.append(\"Sunflower\")"
         }
       ],
-      "syntax": "my_list = [item1, item2, item3]\nitem = my_list[0]\nmy_list.append(new_item)",
+      "syntax": "basket = [\"Rose\", \"Mint\", \"Fern\"]\nprint(basket[1])",
       "code_examples": [
         {
+          "explanation": "Pick the second plant from your seed basket:",
           "code": "basket = [\"Rose\", \"Mint\", \"Fern\"]\nprint(basket[1])",
-          "explanation": "Accesses and prints the item at index 1 (second item).",
           "output": "Mint"
-        },
-        {
-          "code": "basket = [\"Rose\", \"Mint\"]\nbasket.append(\"Fern\")\nprint(basket)",
-          "explanation": "Appends an item to the end of the list.",
-          "output": "['Rose', 'Mint', 'Fern']"
         }
       ],
       "common_mistakes": [
-        "Using parentheses () instead of square brackets [] (creates a tuple, not a list).",
-        "Off-by-one errors: forgetting that the 1st item is at index 0.",
-        "Attempting to access non-existent indices (IndexError)."
+        "Using round parentheses () instead of square brackets [] (that makes a tuple, not a list).",
+        "Off-by-one error: basket[1] is the SECOND item, not the first."
       ],
       "knowledge_check": [
-        "What is a list?",
-        "Which brackets are used to create a list?",
-        "What is zero-based indexing?",
-        "What index represents the second item?",
-        "What does append() do?",
-        "What does len() return?"
-      ],
-      "practice_activity": {
-        "task": "Create a list named basket with 'Rose', 'Mint', 'Fern', and print the second item.",
-        "starter_code": "basket = [\"Rose\", \"Mint\", \"Fern\"]\nprint(basket[1])",
-        "expected_output": "Mint"
-      },
-      "summary": "Lists allow programmers to store multiple values inside a single variable. They are created with square brackets and support indexing, modifying, appending, removing, and iterating over items."
+        "What kind of brackets are used to create a list? ([ ])",
+        "What is the index of the very first item in a Python list? (0)"
+      ]
     }
   ]
 }
