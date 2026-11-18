@@ -295,29 +295,29 @@
       "topic": "Loops in Python",
       "concept": "Loops",
       "simple_explanation": "Don't repeat yourself! A loop tells Python to repeat an action as many times as you want automatically.",
-      "introduction": "🌟 **The Big Idea:** If you have 100 plants to water, you don't want to type 100 lines of code! A `for` loop does the repetition for you.\n\n🔍 **How It Works:** `for i in range(3):` counts `0, 1, 2`. Adding `+ 1` makes it count `1, 2, 3`!\n\n🎯 **Your Secret Tip:** `range(3)` repeats 3 times. Put what you want to repeat indented inside the loop!",
+      "introduction": "🌟 **The Big Idea:** If you have 100 plants to water, you don't want to type 100 lines of code! A `for` loop does the repetition for you.\n\n🔍 **How It Works:** `range(plant_count)` repeats once for each plant. If `plant_count` is 3, it counts `0, 1, 2`; adding `+ 1` displays `1, 2, 3`.\n\n🎯 **Your Secret Tip:** Change `plant_count` to repeat the task for a different number of plants. Put what you want to repeat indented inside the loop!",
       "discussion": [
         {
           "heading": "🔄 The for Loop Pattern",
-          "text": "for i in range(3):\n    print(\"Water plant\", i + 1)\n\nThis runs the print statement 3 times, once for each plant!"
+          "text": "plant_count = 3\nfor i in range(plant_count):\n    print(\"Water plant\", i + 1)\n\nThis runs the print statement once for each plant. Change plant_count to use a different garden size."
         }
       ],
-      "syntax": "for i in range(3):\n    print(\"Water plant\", i + 1)",
+      "syntax": "for i in range(plant_count):\n    print(\"Water plant\", i + 1)",
       "code_examples": [
         {
           "explanation": "Water 3 garden plants in sequence:",
-          "code": "for i in range(3):\n    print(\"Water plant\", i + 1)",
+          "code": "plant_count = 3\nfor i in range(plant_count):\n    print(\"Water plant\", i + 1)",
           "output": "Water plant 1\nWater plant 2\nWater plant 3"
         }
       ],
       "common_mistakes": [
-        "Remembering that range(3) starts at 0 (0, 1, 2), not 1.",
-        "Forgetting the colon : after range(3).",
+        "Remembering that range(plant_count) starts at 0, not 1.",
+        "Forgetting the colon : after range(plant_count).",
         "Forgetting to indent the instruction inside the loop."
       ],
       "knowledge_check": [
-        "How many times will a loop with range(3) run? (3 times)",
-        "What are the numbers produced by range(3)? (0, 1, 2)"
+        "If plant_count is 3, how many times will range(plant_count) run? (3 times)",
+        "If plant_count is 5, what numbers does range(plant_count) produce? (0, 1, 2, 3, 4)"
       ]
     },
     {

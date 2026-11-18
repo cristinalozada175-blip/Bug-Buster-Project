@@ -37,14 +37,22 @@
   let isNight = false;
 
   const SEASONS = {
-    spring: { name: 'Spring', weather: 'Gentle spring showers & fresh blossoms', icon: '🌦️', class: 'season-spring' },
-    summer: { name: 'Summer', weather: 'Warm sunny breeze and vibrant rays', icon: '☀️', class: 'season-summer' },
-    autumn: { name: 'Autumn', weather: 'Crisp golden breeze with falling leaves', icon: '🍂', class: 'season-autumn' },
-    winter: { name: 'Winter', weather: 'Cool frosted calm and light flurries', icon: '❄️', class: 'season-winter' }
+    spring: { name: 'Spring', weather: 'Gentle spring showers & fresh blossoms', icon: '🌦️', class: 'season-spring', bonus: '+3 harvest seeds' },
+    summer: { name: 'Summer', weather: 'Warm sunny breeze and vibrant rays', icon: '☀️', class: 'season-summer', bonus: '+3 harvest XP' },
+    autumn: { name: 'Autumn', weather: 'Crisp golden breeze with falling leaves', icon: '🍂', class: 'season-autumn', bonus: '+5 harvest seeds' },
+    winter: { name: 'Winter', weather: 'Cool frosted calm and light flurries', icon: '❄️', class: 'season-winter', bonus: '+5 harvest XP' }
   };
   let currentSeasonKey = 'summer';
 
   const byId = (id) => items.find((i) => i.id === id);
+  const stageName = (growthStage) => ['sprout', 'growing', 'blooming'][Math.max(0, Math.min(2, growthStage))];
+  function getGrowthStage(plot) {
+    if (Number.isInteger(plot.growth_stage)) return Math.max(0, Math.min(2, plot.growth_stage));
+    if (plot.stage === 'growing') return 1;
+    if (plot.stage === 'blooming') return 2;
+    if (plot.watered) return 1;
+    return 0;
+  }
 
   function setSeason(seasonKey) {
     currentSeasonKey = seasonKey;
@@ -55,7 +63,7 @@
     landscape.classList.add(s.class);
 
     if (seasonNameEl) seasonNameEl.textContent = s.name;
-    if (seasonWeatherEl) seasonWeatherEl.textContent = s.weather;
+    if (seasonWeatherEl) seasonWeatherEl.textContent = s.weather + ' · ' + s.bonus;
     if (seasonIconEl) seasonIconEl.textContent = s.icon;
 
     document.querySelectorAll('.season-btn').forEach(b => {
@@ -106,8 +114,8 @@
       const filled = plotData ? byId(plotData.item_id) : null;
 
       if (filled) {
-        const stage = plotData.stage || 'blooming';
-        const isWatered = !!plotData.watered;
+        const growthStage = getGrowthStage(plotData);
+        const stage = stageName(growthStage);
         const d = PG.el('div', 'plot plot-stage--' + stage);
         d.setAttribute('role', 'button');
         d.setAttribute('tabindex', '0');
@@ -122,10 +130,9 @@
         }
         d.appendChild(wrapper);
 
-        // Water droplet badge if watered
-        if (isWatered) {
-          const wBadge = PG.el('span', 'plot-water-badge', '💧');
-          wBadge.title = 'Watered';
+        if (growthStage > 0 && growthStage < 2) {
+          const wBadge = PG.el('span', 'plot-water-badge', '💧 ' + growthStage + '/2');
+          wBadge.title = 'Waterings until bloom';
           d.appendChild(wBadge);
         }
 
@@ -179,7 +186,7 @@
     const it = selected ? byId(selected) : null;
     msg.textContent = it ?
       'Selected ' + it.name + '! Now pick an empty plot to plant it.' :
-      'Choose a seed or tool from the shop, or tap an existing plot to water or harvest!';
+      'Choose an item to plant, then water twice to grow it before harvesting. Seasons add harvest bonuses.';
   }
 
   async function plant(slot) {
@@ -199,6 +206,7 @@
       plots[slot] = {
         item_id: it.id,
         stage: 'sprout',
+        growth_stage: 0,
         watered: false,
         planted_at: Date.now()
       };
@@ -225,24 +233,18 @@
     modalPlotSprite.innerHTML = '';
     modalPlotSprite.appendChild(PG.spriteEl(item.sprite));
 
-    const stageNames = { sprout: '🌱 Sprout (Young Seedling)', growing: '🌿 Growing (Forming Buds)', blooming: '🌸 Full Bloom (Mature & Radiant)' };
-    modalPlotStage.textContent = stageNames[plotData.stage] || 'Stage: ' + plotData.stage;
+    const growthStage = getGrowthStage(plotData);
+    const stage = stageName(growthStage);
+    const stageNames = { sprout: '🌱 Sprout (0/2 waterings)', growing: '🌿 Growing (1/2 waterings)', blooming: '🌸 Full Bloom (2/2 waterings)' };
+    modalPlotStage.textContent = stageNames[stage];
+    modalPlotStatus.textContent = growthStage < 2 ? '💧 Water this plant to help it grow' : '🌻 Ready to harvest';
+    modalPlotStatus.style.background = growthStage < 2 ? '#fcf0cd' : '#d8f1d8';
+    btnPlotWater.disabled = growthStage >= 2;
+    btnPlotWater.textContent = growthStage >= 2 ? '✓ Fully Grown' : '💧 Water Plant';
 
-    if (plotData.watered) {
-      modalPlotStatus.textContent = '💧 Watered & Happy';
-      modalPlotStatus.style.background = '#d8f1d8';
-      btnPlotWater.disabled = true;
-      btnPlotWater.textContent = '✓ Already Watered';
-    } else {
-      modalPlotStatus.textContent = '☀️ Thirsty for water';
-      modalPlotStatus.style.background = '#fcf0cd';
-      btnPlotWater.disabled = false;
-      btnPlotWater.textContent = '💧 Water Plant';
-    }
-
-    if (plotData.stage === 'blooming') {
+    if (growthStage >= 2) {
       btnPlotHarvest.disabled = false;
-      modalPlotDesc.textContent = 'This ' + item.name + ' has fully bloomed! You can harvest it to collect bonus seeds and XP.';
+      modalPlotDesc.textContent = 'This ' + item.name + ' has fully bloomed! Harvest it for seeds and XP, plus the ' + SEASONS[currentSeasonKey].bonus + ' seasonal bonus.';
     } else {
       btnPlotHarvest.disabled = true;
       modalPlotDesc.textContent = 'This plant is still growing. Water it to accelerate its bloom!';
@@ -260,16 +262,19 @@
     if (activeModalSlot === null) return;
     const slot = activeModalSlot;
     try {
-      await PG.api('/api/garden.php', {
+      const result = await PG.api('/api/garden.php', {
         body: { action: 'water', slot }
       });
       if (plots[slot]) {
-        plots[slot].watered = true;
-        plots[slot].stage = 'blooming';
+        plots[slot].growth_stage = result.growth_stage;
+        plots[slot].stage = result.stage;
+        plots[slot].watered = result.growth_stage > 0;
       }
       closePlotModal();
       renderPlots();
-      PG.toast('💧 Watered plot ' + (slot + 1) + '! The plant blossomed into full bloom!');
+      PG.toast(result.stage === 'blooming'
+        ? '🌸 Plot ' + (slot + 1) + ' is in full bloom! Harvest when ready.'
+        : '💧 Watered plot ' + (slot + 1) + '! It is now growing.');
     } catch (e) {
       PG.toast(e.message, true);
     }
@@ -280,7 +285,7 @@
     const slot = activeModalSlot;
     try {
       const res = await PG.api('/api/garden.php', {
-        body: { action: 'harvest', slot }
+        body: { action: 'harvest', slot, season: currentSeasonKey }
       });
       delete plots[slot];
       if (res.seeds !== undefined) {
@@ -290,7 +295,7 @@
       closePlotModal();
       renderPlots();
       renderShop();
-      PG.toast('🌾 Harvest complete! +10 Seeds earned!');
+      PG.toast('🌾 Harvested! +' + res.reward_seeds + ' seeds and +' + res.reward_xp + ' XP.');
     } catch (e) {
       PG.toast(e.message, true);
     }
@@ -333,8 +338,9 @@
       (d.plots || []).forEach((p) => {
         plots[p.slot] = {
           item_id: p.item_id,
-          stage: p.stage || 'blooming',
-          watered: !!p.watered,
+          growth_stage: getGrowthStage(p),
+          stage: stageName(getGrowthStage(p)),
+          watered: getGrowthStage(p) > 0,
           planted_at: p.planted_at || Date.now()
         };
       });

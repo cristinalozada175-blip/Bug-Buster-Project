@@ -114,7 +114,7 @@
 
   function run() {
     if (isStreaming) return;
-    const res = PyRunner.run(code.value);
+    const res = PyRunner.run(code.value, lesson.rules && lesson.rules.initial_variables);
     const e = res.error;
     renderGutter(e ? e.line : 0);
     const errMsg = e ? 'Traceback (Line ' + e.line + '): ' + e.message : '';
@@ -144,11 +144,19 @@
       reportHtml += '<div class="term-verification-fail">[✗] Syntax & Execution: Error on line ' + c.result.error.line + '</div>';
     }
 
+    (c.testResults || []).forEach((test) => {
+      reportHtml += '<div class="' + (test.passed ? 'term-verification-pass' : 'term-verification-fail') + '">[' +
+        (test.passed ? '✓' : '✗') + '] ' + escapeHtml(test.name) +
+        (test.message ? ': ' + escapeHtml(test.message).replace(/\n/g, '<br>') : '') + '</div>';
+    });
+
     (lesson.goals || []).forEach((g, idx) => {
-      if (c.passed) {
+      const goalResult = c.goalResults && c.goalResults[idx];
+      const goalPassed = goalResult ? goalResult.passed : c.passed;
+      if (goalPassed) {
         reportHtml += '<div class="term-verification-pass">[✓] Goal ' + (idx + 1) + ': ' + escapeHtml(g) + ' &mdash; VERIFIED</div>';
       } else {
-        const msg = (c.messages && c.messages[idx]) || 'Pending verification';
+        const msg = (goalResult && goalResult.message) || 'Review the failed checks above.';
         reportHtml += '<div class="term-verification-fail">[✗] Goal ' + (idx + 1) + ': ' + escapeHtml(msg) + '</div>';
       }
     });
@@ -159,6 +167,19 @@
 
     await streamToTerminal(c.result.output || [], errMsg, reportHtml);
 
+    document.querySelectorAll('#goals li').forEach((li, idx) => {
+      const result = c.goalResults && c.goalResults[idx];
+      const passed = result ? result.passed : c.passed;
+      li.classList.toggle('is-done', passed);
+      let tag = li.querySelector('.goal-verified-tag');
+      if (!tag) {
+        tag = PG.el('span', 'goal-verified-tag');
+        li.appendChild(tag);
+      }
+      tag.textContent = passed ? '✓ VERIFIED' : 'Needs another try';
+      tag.classList.toggle('is-pending', !passed);
+    });
+
     if (!c.passed) {
       hintBox.textContent = (c.messages && c.messages.join(' ')) || 'Some goals are not yet met. Check the goals list above!';
       hintBox.classList.remove('is-hidden');
@@ -168,15 +189,6 @@
     hintBox.classList.add('is-hidden');
     btnCheck.disabled = true;
     scene.classList.add('is-bloom');
-
-    // Add verified badges to goals
-    document.querySelectorAll('#goals li').forEach((li) => {
-      li.classList.add('is-done');
-      if (!li.querySelector('.goal-verified-tag')) {
-        const tag = PG.el('span', 'goal-verified-tag', '✓ VERIFIED');
-        li.appendChild(tag);
-      }
-    });
 
     try {
       const r = await PG.api('/api/progress.php', {

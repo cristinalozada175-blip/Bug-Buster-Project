@@ -540,7 +540,7 @@
     return null;
   }
 
-  function run(code) {
+  function run(code, initialVariables) {
     const ctx = { buf: '', steps: 0, line: 0 };
     const finish = (error) => {
       const out = ctx.buf.split('\n');
@@ -551,7 +551,8 @@
       const lines = prepare(code);
       const st = { i: 0 };
       const prog = parseBlock(lines, st, 0);
-      execBlock(prog, Object.create(null), ctx);
+      const env = Object.assign(Object.create(null), initialVariables || {});
+      execBlock(prog, env, ctx);
       return finish(null);
     } catch (e) {
       if (e instanceof PyError) return finish({ line: e.line || ctx.line, message: e.message });
@@ -563,19 +564,83 @@
 
   /** rules: { expected_output, mustContain: [], hint } */
   function check(code, rules) {
-    const res = run(code);
     const messages = [];
-    if (res.error) return { passed: false, result: res, messages: ['Fix the error first, then check again.'] };
-    if (rules && typeof rules.expected_output === 'string' && rules.expected_output.trim() !== '') {
-      const want = rules.expected_output.replace(/\r/g, '').trim();
-      const got = res.output.join('\n').trim();
-      if (got !== want) messages.push('The console should show:\n' + want + '\n\nYours shows:\n' + (got || '(nothing)'));
-    }
-    const squashed = squash(code);
-    ((rules && rules.mustContain) || []).forEach((frag) => {
-      if (!squashed.includes(squash(frag))) messages.push('Your code should use ' + frag);
+    const cases = rules && Array.isArray(rules.test_cases) && rules.test_cases.length
+      ? rules.test_cases
+      : [{
+        name: 'Example',
+        variables: rules && rules.initial_variables,
+        expected_output: rules && rules.expected_output
+      }];
+    const testResults = cases.map((testCase, index) => {
+      const result = run(code, testCase.variables || (rules && rules.initial_variables));
+      const expected = typeof testCase.expected_output === 'string' ? testCase.expected_output : null;
+      const actual = result.output.join('\n').replace(/\r/g, '').trim();
+      const wanted = expected === null ? null : expected.replace(/\r/g, '').trim();
+      let message = '';
+      if (result.error) {
+        message = 'Fix the error in this test before continuing.';
+      } else if (wanted !== null && actual !== wanted) {
+        message = 'Expected:\n' + wanted + '\n\nYour output:\n' + (actual || '(nothing)');
+      }
+      return {
+        name: testCase.name || 'Test ' + (index + 1),
+        passed: !message,
+        message,
+        result
+      };
     });
-    return { passed: messages.length === 0, result: res, messages };
+
+    const squashed = squash(code);
+    const requiredChecks = ((rules && rules.mustContain) || []).map((frag) => {
+      const passed = squashed.includes(squash(frag));
+      if (!passed) messages.push('Your code should use ' + frag);
+      return passed;
+    });
+    const goalChecks = rules && Array.isArray(rules.goal_checks) ? rules.goal_checks : [];
+    const executionSucceeded = testResults.every((test) => !test.result.error);
+    const goalResults = goalChecks.map((goalCheck) => {
+      let goalPassed = false;
+      if (goalCheck.type === 'output') goalPassed = testResults.every((test) => test.passed);
+      else if (goalCheck.type === 'tests') goalPassed = testResults.every((test) => test.passed);
+      else if (goalCheck.type === 'contains') goalPassed = executionSucceeded && squashed.includes(squash(goalCheck.value || ''));
+      else if (goalCheck.type === 'contains_all') {
+        goalPassed = executionSucceeded && (goalCheck.values || []).every((value) => squashed.includes(squash(value)));
+      } else if (goalCheck.type === 'output_and_contains') {
+        goalPassed = testResults.every((test) => test.passed) && squashed.includes(squash(goalCheck.value || ''));
+      }
+      else if (goalCheck.type === 'contains_any') {
+        goalPassed = executionSucceeded && (goalCheck.values || []).some((value) => squashed.includes(squash(value)));
+      }
+      let failureMessage = goalCheck.hint || 'Review this goal and try again.';
+      if (!goalCheck.hint && goalCheck.type === 'contains') failureMessage = 'Add ' + goalCheck.value + ' to your code.';
+      else if (!goalCheck.hint && goalCheck.type === 'contains_all') failureMessage = 'Use each required part: ' + (goalCheck.values || []).join(', ') + '.';
+      else if (!goalCheck.hint && goalCheck.type === 'output') failureMessage = 'Match the expected console output.';
+      else if (!goalCheck.hint && goalCheck.type === 'output_and_contains') failureMessage = 'Match the output and use ' + goalCheck.value + '.';
+      else if (!goalCheck.hint && goalCheck.type === 'tests') failureMessage = 'Adjust your solution until every practice test passes.';
+      return {
+        passed: goalPassed,
+        message: goalPassed ? 'Verified' : failureMessage
+      };
+    });
+    const passed = testResults.every((test) => test.passed) &&
+      requiredChecks.every(Boolean) && goalResults.every((goal) => goal.passed);
+    testResults.forEach((test) => {
+      if (!test.passed) messages.push(test.name + ': ' + test.message);
+    });
+    goalResults.forEach((goal, index) => {
+      if (!goal.passed) messages.push('Goal ' + (index + 1) + ': ' + goal.message);
+    });
+    const result = (testResults.find((test) => !test.passed) || testResults[0]).result;
+    return {
+      passed,
+      result,
+      messages,
+      testResults,
+      goalResults: goalChecks.length
+        ? goalResults
+        : (rules && Array.isArray(rules.goals) ? rules.goals : []).map(() => ({ passed, message: passed ? 'Verified' : 'Review the failed checks above.' }))
+    };
   }
 
   global.PyRunner = { run, check };

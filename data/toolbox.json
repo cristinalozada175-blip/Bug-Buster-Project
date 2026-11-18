@@ -61,8 +61,8 @@
       "id": 9,
       "title": "for loops and range()",
       "unlock_lesson_title": "Water Every Plant",
-      "summary": "A for loop repeats code. range(3) gives 0, 1, and 2, so the loop body runs three times. Use i + 1 to start display numbers at 1.",
-      "example_code": "for i in range(3):\n    print(\"Water plant\", i + 1)"
+      "summary": "A for loop repeats code. range(plant_count) runs once per plant, and i + 1 displays plant numbers starting at 1.",
+      "example_code": "plant_count = 3\nfor i in range(plant_count):\n    print(\"Water plant\", i + 1)"
     },
     {
       "id": 10,

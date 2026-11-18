@@ -126,8 +126,64 @@
     try { localStorage.setItem('pg_' + k, JSON.stringify(val)); } catch (_) {}
   }
 
+  function validateLessonData(data) {
+    if (!data || !Array.isArray(data.chapters) || data.chapters.length === 0) {
+      throw new Error('Lesson catalog must contain at least one chapter.');
+    }
+
+    const slugs = new Set();
+    const lessonIds = new Set();
+    const goalCheckTypes = new Set(['contains', 'contains_all', 'contains_any', 'output', 'output_and_contains', 'tests']);
+    let lessonCount = 0;
+    data.chapters.forEach((chapter, chapterIndex) => {
+      if (!chapter || typeof chapter.slug !== 'string' || !chapter.slug.trim() ||
+          typeof chapter.title !== 'string' || !chapter.title.trim() ||
+          !Array.isArray(chapter.lessons) || slugs.has(chapter.slug)) {
+        throw new Error('Lesson catalog has an invalid or duplicate chapter at position ' + (chapterIndex + 1) + '.');
+      }
+      slugs.add(chapter.slug);
+      chapter.lessons.forEach((lesson) => {
+        if (!lesson || !Number.isInteger(lesson.id) || lesson.id < 1 || lessonIds.has(lesson.id) ||
+            typeof lesson.title !== 'string' || !lesson.title.trim() ||
+            !Array.isArray(lesson.goals) || typeof lesson.starter_code !== 'string' ||
+            typeof lesson.expected_output !== 'string' ||
+            !lesson.rules || typeof lesson.rules !== 'object' || Array.isArray(lesson.rules)) {
+          throw new Error('Lesson catalog has an invalid or duplicate lesson in "' + chapter.title + '".');
+        }
+        if (lesson.rules.goal_checks !== undefined &&
+            (!Array.isArray(lesson.rules.goal_checks) || lesson.rules.goal_checks.length !== lesson.goals.length)) {
+          throw new Error('Lesson "' + lesson.title + '" must define one verification check per goal.');
+        }
+        if (lesson.rules.goal_checks && lesson.rules.goal_checks.some((check) =>
+          !check || !goalCheckTypes.has(check.type) ||
+          ((check.type === 'contains' || check.type === 'output_and_contains') && typeof check.value !== 'string') ||
+          ((check.type === 'contains_all' || check.type === 'contains_any') &&
+            (!Array.isArray(check.values) || check.values.length === 0)))) {
+          throw new Error('Lesson "' + lesson.title + '" has an unsupported goal check.');
+        }
+        if (lesson.rules.test_cases !== undefined &&
+            (!Array.isArray(lesson.rules.test_cases) || lesson.rules.test_cases.length === 0 ||
+             lesson.rules.test_cases.some((testCase) => !testCase || typeof testCase.expected_output !== 'string' ||
+               (testCase.variables !== undefined &&
+                (!testCase.variables || typeof testCase.variables !== 'object' || Array.isArray(testCase.variables)))))) {
+          throw new Error('Lesson "' + lesson.title + '" has invalid practice tests.');
+        }
+        if (lesson.rules.initial_variables !== undefined &&
+            (!lesson.rules.initial_variables || typeof lesson.rules.initial_variables !== 'object' ||
+             Array.isArray(lesson.rules.initial_variables))) {
+          throw new Error('Lesson "' + lesson.title + '" has invalid initial variables.');
+        }
+        lessonIds.add(lesson.id);
+        lessonCount++;
+      });
+    });
+
+    if (lessonCount === 0) throw new Error('Lesson catalog must contain at least one lesson.');
+    return data;
+  }
+
   // Cache version enforcement - auto-bust stale cache
-  const DATA_VERSION = 'v5_10levels';
+  const DATA_VERSION = 'v6_validated-growth';
   if (getStore('data_version', null) !== DATA_VERSION) {
     try {
       localStorage.removeItem('pg_lessons_cache');
@@ -146,15 +202,24 @@
     let me = getStore('me', DEFAULT_ME);
     let users = getStore('users', DEFAULT_USERS);
     let plots = getStore('plots', [
-      { slot: 0, item_id: 1, stage: 'blooming', watered: true, planted_at: Date.now() - 86400000 },
-      { slot: 1, item_id: 2, stage: 'growing', watered: false, planted_at: Date.now() - 36000000 },
-      { slot: 2, item_id: 3, stage: 'sprout', watered: true, planted_at: Date.now() - 10000000 }
+      { slot: 0, item_id: 1, stage: 'blooming', growth_stage: 2, watered: true, planted_at: Date.now() - 86400000 },
+      { slot: 1, item_id: 2, stage: 'growing', growth_stage: 1, watered: true, planted_at: Date.now() - 36000000 },
+      { slot: 2, item_id: 3, stage: 'sprout', growth_stage: 0, watered: false, planted_at: Date.now() - 10000000 }
     ]);
     let progress = getStore('progress', { 1: 'open' });
     let bestCodes = getStore('best_codes', {});
 
-    // Cache lessons data (auto-refresh if stale or not 10 levels)
+    // Validate cached and downloaded curriculum before it reaches lesson pages.
     let lessonData = getStore('lessons_cache', null);
+    let lessonDataError = null;
+    if (lessonData) {
+      try {
+        lessonData = validateLessonData(lessonData);
+      } catch (e) {
+        lessonData = null;
+        lessonDataError = e;
+      }
+    }
     const isStale = !lessonData || !lessonData.chapters || lessonData.chapters.length !== 3 || lessonData.chapters[0].slug !== 'getting-started';
     if (isStale) {
       try {
@@ -163,10 +228,18 @@
           resp = await fetch('../data/lessons.json?t=' + Date.now()).catch(() => null);
         }
         if (resp && resp.ok) {
-          lessonData = await resp.json();
+          lessonData = validateLessonData(await resp.json());
           setStore('lessons_cache', lessonData);
+          lessonDataError = null;
         }
-      } catch (_) {}
+      } catch (e) {
+        lessonData = null;
+        lessonDataError = e;
+        console.error('Unable to load the lesson catalog:', e);
+      }
+    }
+    if (!lessonData && !lessonDataError) {
+      lessonDataError = new Error('Lesson catalog could not be loaded.');
     }
 
     // 1. Current user
@@ -286,6 +359,7 @@
 
     // 5. Lessons & Progress
     if (cleanPath.endsWith('/api/lessons.php')) {
+      if (lessonDataError) throw lessonDataError;
       const idParam = urlParams.get('id');
       const allLessons = [];
       const chapters = (lessonData && lessonData.chapters) || [];
@@ -387,60 +461,93 @@
     if (cleanPath.endsWith('/api/garden.php')) {
       if (opts.method === 'POST') {
         const action = body.action || 'plant';
-        const slot = parseInt(body.slot, 10);
+        const slot = Number(body.slot);
+        if (!Number.isInteger(slot) || slot < 0 || slot > 11) throw new Error('Pick a plot from 1 to 12.');
+        const stageFor = (plot) => Number.isInteger(plot.growth_stage)
+          ? plot.growth_stage
+          : plot.stage === 'blooming' ? 2 : plot.stage === 'growing' || plot.watered ? 1 : 0;
+        const stageName = (stage) => ['sprout', 'growing', 'blooming'][stage];
 
         if (action === 'water') {
           const plot = plots.find(p => p.slot === slot);
-          if (plot) {
-            plot.watered = true;
-            plot.stage = 'blooming';
-            plot.watered_at = Date.now();
-            setStore('plots', plots);
-          }
-          return { ok: true, slot, stage: 'blooming', watered: true };
+          if (!plot) throw new Error('There is no plant in that plot.');
+          const growthStage = stageFor(plot);
+          if (growthStage >= 2) throw new Error('That plant is already in full bloom.');
+          plot.growth_stage = growthStage + 1;
+          plot.stage = stageName(plot.growth_stage);
+          plot.watered = true;
+          plot.watered_at = Date.now();
+          setStore('plots', plots);
+          return { ok: true, slot, stage: plot.stage, growth_stage: plot.growth_stage, watered: true };
         }
 
         if (action === 'harvest') {
           const plotIdx = plots.findIndex(p => p.slot === slot);
-          if (plotIdx !== -1) {
-            plots.splice(plotIdx, 1);
-            me.seeds += 10;
-            me.xp += 15;
-            setStore('me', me);
-            setStore('plots', plots);
-          }
-          return { ok: true, slot, seeds: me.seeds, xp: me.xp, harvested_reward: 10 };
+          if (plotIdx === -1) throw new Error('There is no plant in that plot.');
+          if (stageFor(plots[plotIdx]) < 2) throw new Error('Water this plant twice before harvesting it.');
+          const season = body.season || 'summer';
+          const seasonalBonus = {
+            spring: { seeds: 3, xp: 0 },
+            summer: { seeds: 0, xp: 3 },
+            autumn: { seeds: 5, xp: 0 },
+            winter: { seeds: 0, xp: 5 }
+          }[season];
+          if (!seasonalBonus) throw new Error('Choose a valid season.');
+          const rewardSeeds = 10 + seasonalBonus.seeds;
+          const rewardXp = 15 + seasonalBonus.xp;
+          plots.splice(plotIdx, 1);
+          me.seeds += rewardSeeds;
+          me.xp += rewardXp;
+          setStore('me', me);
+          setStore('plots', plots);
+          return {
+            ok: true, slot, seeds: me.seeds, xp: me.xp,
+            reward_seeds: rewardSeeds, reward_xp: rewardXp, seasonal_bonus: seasonalBonus
+          };
         }
 
         if (action === 'dig') {
+          if (!plots.some(p => p.slot === slot)) throw new Error('There is no plant in that plot.');
           plots = plots.filter(p => p.slot !== slot);
           setStore('plots', plots);
           return { ok: true, slot };
         }
 
         // Standard Plant
+        if (action !== 'plant') throw new Error('Unknown garden action.');
+        if (plots.some(p => p.slot === slot)) throw new Error('That plot is already planted.');
         const itemId = parseInt(body.item_id, 10);
         const item = DEFAULT_ITEMS.find(i => i.id === itemId);
         if (item && me.seeds >= item.cost_seeds) {
           me.seeds -= item.cost_seeds;
           setStore('me', me);
-          plots = plots.filter(p => p.slot !== slot);
           plots.push({
             slot,
             item_id: itemId,
             stage: 'sprout',
+            growth_stage: 0,
             watered: false,
             planted_at: Date.now()
           });
           setStore('plots', plots);
-          return { ok: true, slot, seeds: me.seeds, item_id: itemId, stage: 'sprout' };
+          return { ok: true, slot, seeds: me.seeds, item_id: itemId, stage: 'sprout', growth_stage: 0 };
         }
-        throw new Error('Not enough seeds');
+        if (item) throw new Error('Not enough seeds.');
+        throw new Error('That item is not available.');
       }
 
       return {
         items: DEFAULT_ITEMS,
-        plots: plots,
+        plots: plots.map((plot) => {
+          const growthStage = Number.isInteger(plot.growth_stage)
+            ? plot.growth_stage
+            : plot.stage === 'blooming' ? 2 : plot.stage === 'growing' || plot.watered ? 1 : 0;
+          return {
+            ...plot,
+            growth_stage: growthStage,
+            stage: ['sprout', 'growing', 'blooming'][growthStage]
+          };
+        }),
         seeds: me.seeds
       };
     }
@@ -531,6 +638,7 @@
     }
 
     if (cleanPath.includes('/api/admin/lessons.php')) {
+      if (lessonDataError) throw lessonDataError;
       return {
         chapters: (lessonData && lessonData.chapters) || [],
         lessons: (lessonData && lessonData.chapters && lessonData.chapters.flatMap(c => c.lessons)) || []
@@ -577,8 +685,9 @@
   }
 
   PG.api = async function (path, opts) {
-    opts = opts || {};
-    const init = { method: opts.method || 'GET', headers: {}, credentials: 'same-origin' };
+    opts = { ...(opts || {}) };
+    opts.method = opts.method || (opts.body !== undefined ? 'POST' : 'GET');
+    const init = { method: opts.method, headers: {}, credentials: 'same-origin' };
 
     // Transmit session Bearer token from localStorage for bulletproof dual auth
     const savedToken = localStorage.getItem('pg_token');

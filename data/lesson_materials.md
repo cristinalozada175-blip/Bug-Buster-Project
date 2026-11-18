@@ -452,11 +452,13 @@ Instead of typing the same instructions over and over, loops allow programs to r
 
 #### 2. The `for` Loop with `range()`
 ```python
-for i in range(3):
+plant_count = 3
+for i in range(plant_count):
     print("Water plant", i + 1)
 ```
-- `range(3)` produces: `0`, `1`, `2`.
+- `range(plant_count)` produces numbers from `0` to `plant_count - 1`.
 - `i + 1` shifts the display count to start at `1`, `2`, `3`.
+- Changing `plant_count` changes how many plants are watered.
 
 #### 3. The `while` Loop
 A `while` loop continues executing as long as its condition remains `True`:
@@ -473,7 +475,8 @@ while water <= 3:
 
 #### 5. Practice Activity
 ```python
-for i in range(3):
+plant_count = 3
+for i in range(plant_count):
     print("Water plant", i + 1)
 ```
 *Expected Output:*

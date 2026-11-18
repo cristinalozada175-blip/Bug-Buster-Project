@@ -28,7 +28,9 @@ create table shop_items (
 create table garden_plots (
   id serial primary key, user_id uuid references profiles(id) on delete cascade,
   slot int not null check (slot between 0 and 11), item_id int references shop_items(id),
-  planted_at timestamptz default now(), unique (user_id, slot));
+  planted_at timestamptz default now(),
+  growth_stage smallint not null default 0 check (growth_stage between 0 and 2),
+  unique (user_id, slot));
 create table toolbox_topics (
   id serial primary key, title text not null, summary text, example_code text,
   unlock_lesson_id int references lessons(id) on delete set null);

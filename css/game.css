@@ -471,6 +471,9 @@
   vertical-align: middle;
   animation: popIn 0.3s ease;
 }
+.goal-verified-tag.is-pending {
+  background: #9a6b22;
+}
 @keyframes popIn {
   from { transform: scale(0.6); opacity: 0; }
   to { transform: scale(1); opacity: 1; }

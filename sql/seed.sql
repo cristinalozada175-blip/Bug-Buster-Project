@@ -55,12 +55,12 @@ else:
     print("Wait")
 ', 'Grow!', '{"mustContain": ["if", "else", "print("], "hint": "End the if and else lines with a colon (:) and indent the print lines by 4 spaces."}'::jsonb, 25, 60, 1),
 
-((select id from chapters where slug='growing-logic'), 'Water Every Plant', 'Loops', '["Use a for loop with range(3)", "Print Water plant 1, Water plant 2, and Water plant 3"]'::jsonb, '# Water 3 plants using a loop
-for i in range(3):
+((select id from chapters where slug='growing-logic'), 'Water Every Plant', 'Loops', '["Use a for loop with range(plant_count)", "Print one watering message for each plant"]'::jsonb, '# plant_count is supplied by each practice test
+for i in range(plant_count):
     print("Water plant", i + 1)
 ', 'Water plant 1
 Water plant 2
-Water plant 3', '{"mustContain": ["for", "range"], "hint": "range(3) counts 0, 1, 2. Use i + 1 to display 1, 2, 3!"}'::jsonb, 25, 60, 2),
+Water plant 3', '{"mustContain": ["for", "range"], "hint": "Use range(plant_count) to water each plant, and i + 1 to display numbers starting at 1."}'::jsonb, 25, 60, 2),
 
 ((select id from chapters where slug='growing-logic'), 'Seed Basket', 'Lists', '["Create a list of 3 plants with square brackets [ ]", "Access and print the second plant using [1]", "Make the console display: Mint"]'::jsonb, '# Store 3 garden plants in a list
 basket = ["Rose", "Mint", "Fern"]
@@ -122,7 +122,8 @@ else:
     print("Wait")', (select id from lessons where lower(title)=lower('Sunny or Not?') limit 1));
 
 insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 
-('for loops and range()', 'A for loop repeats code. range(3) gives 0, 1 and 2, so the loop body runs three times.', 'for i in range(3):
+('for loops and range()', 'A for loop repeats code. range(plant_count) runs once per plant.', 'plant_count = 3
+for i in range(plant_count):
     print("Water plant", i + 1)', (select id from lessons where lower(title)=lower('Water Every Plant') limit 1));
 
 insert into toolbox_topics (title, summary, example_code, unlock_lesson_id) values 

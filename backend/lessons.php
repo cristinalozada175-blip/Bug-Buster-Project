@@ -3,6 +3,18 @@ require __DIR__ . '/_bootstrap.php';
 method_is('GET');
 $me = require_user();
 [$list, $done, $chapters] = lessons_for($me['id']);
+$catalogContents = file_get_contents(dirname(__DIR__) . '/data/lessons.json');
+if ($catalogContents === false) fail('Lesson catalog unavailable', 500);
+$catalog = json_decode($catalogContents, true);
+if (!is_array($catalog) || !isset($catalog['chapters']) || !is_array($catalog['chapters'])) {
+    fail('Lesson catalog is invalid', 500);
+}
+$catalogLessons = [];
+foreach ($catalog['chapters'] as $chapter) {
+    foreach ($chapter['lessons'] ?? [] as $catalogLesson) {
+        $catalogLessons[strtolower(trim($catalogLesson['title']))] = $catalogLesson;
+    }
+}
 
 if (isset($_GET['id'])) {
     $id = (int)$_GET['id'];
@@ -10,12 +22,16 @@ if (isset($_GET['id'])) {
         if ((int)$l['id'] !== $id) continue;
         if ($l['status'] === 'locked') fail('Finish the earlier levels first', 403);
         $best = sb('GET', '/user_progress?user_id=eq.' . q($me['id']) . '&lesson_id=eq.' . $id . '&select=best_code');
+        $catalogLesson = $catalogLessons[strtolower(trim($l['title']))] ?? [];
         $rules = is_array($l['rules']) ? $l['rules'] : [];
-        $rules['expected_output'] = $l['expected_output'];
+        $rules = array_merge($rules, $catalogLesson['rules'] ?? []);
+        $rules['expected_output'] = $catalogLesson['expected_output'] ?? $l['expected_output'];
         json_out(['lesson' => [
             'id' => $id, 'title' => $l['title'], 'concept' => $l['concept'],
-            'chapter_title' => $l['chapter_title'], 'goals' => $l['goals'] ?: [],
-            'starter_code' => $l['starter_code'], 'best_code' => $best[0]['best_code'] ?? null,
+            'chapter_title' => $l['chapter_title'],
+            'goals' => $catalogLesson['goals'] ?? ($l['goals'] ?: []),
+            'starter_code' => $catalogLesson['starter_code'] ?? $l['starter_code'],
+            'best_code' => $best[0]['best_code'] ?? null,
             'rules' => $rules, 'status' => $l['status'],
             'reward_seeds' => (int)$l['reward_seeds'], 'reward_xp' => (int)$l['reward_xp'],
             'next_id' => isset($list[$i + 1]) ? (int)$list[$i + 1]['id'] : null,
