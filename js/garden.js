@@ -32,6 +32,7 @@
   let items = [];
   let plots = {}; // slot -> { item_id, stage, watered, planted_at }
   let seeds = 0;
+  let legacyGrowthMode = false;
   let selected = null;
   let activeModalSlot = null;
   let isNight = false;
@@ -184,9 +185,14 @@
 
   function hint() {
     const it = selected ? byId(selected) : null;
+    const compatibilityHint = legacyGrowthMode
+      ? ' Compatibility mode is active: watering progress is not saved, so water once to bloom. Run sql/upgrade_garden_growth.sql to enable saved two-stage growth.'
+      : '';
     msg.textContent = it ?
-      'Selected ' + it.name + '! Now pick an empty plot to plant it.' :
-      'Choose an item to plant, then water twice to grow it before harvesting. Seasons add harvest bonuses.';
+      'Selected ' + it.name + '! Now pick an empty plot to plant it.' + compatibilityHint :
+      (legacyGrowthMode
+        ? 'Compatibility mode is active: watering progress is not saved, so water once to bloom. Run sql/upgrade_garden_growth.sql to enable saved two-stage growth.'
+        : 'Choose an item to plant, then water twice to grow it before harvesting. Seasons add harvest bonuses.');
   }
 
   async function plant(slot) {
@@ -203,11 +209,13 @@
           action: 'plant'
         }
       });
+      if (r.growth_mode) legacyGrowthMode = r.growth_mode === 'legacy';
+      const growthStage = Number.isInteger(r.growth_stage) ? r.growth_stage : 0;
       plots[slot] = {
         item_id: it.id,
-        stage: 'sprout',
-        growth_stage: 0,
-        watered: false,
+        stage: r.stage || stageName(growthStage),
+        growth_stage: growthStage,
+        watered: growthStage > 0,
         planted_at: Date.now()
       };
       seeds = r.seeds;
@@ -265,6 +273,7 @@
       const result = await PG.api('/api/garden.php', {
         body: { action: 'water', slot }
       });
+      if (result.growth_mode) legacyGrowthMode = result.growth_mode === 'legacy';
       if (plots[slot]) {
         plots[slot].growth_stage = result.growth_stage;
         plots[slot].stage = result.stage;
@@ -287,6 +296,7 @@
       const res = await PG.api('/api/garden.php', {
         body: { action: 'harvest', slot, season: currentSeasonKey }
       });
+      if (res.growth_mode) legacyGrowthMode = res.growth_mode === 'legacy';
       delete plots[slot];
       if (res.seeds !== undefined) {
         seeds = res.seeds;
@@ -335,6 +345,7 @@
     PG.api('/api/garden.php').then((d) => {
       items = d.items || [];
       seeds = d.seeds || 0;
+      legacyGrowthMode = d.growth_mode === 'legacy';
       (d.plots || []).forEach((p) => {
         plots[p.slot] = {
           item_id: p.item_id,

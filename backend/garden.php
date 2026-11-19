@@ -4,7 +4,7 @@ $method = method_is('GET', 'POST');
 $me = require_user();
 $uid = q($me['id']);
 
-function garden_growth_stage_rows(string $query): array {
+function garden_growth_stage_rows(string $query): ?array {
     $path = '/garden_plots?' . $query;
     [$code, $data] = sb_raw('GET', $path);
     if ($code < 200 || $code >= 300) {
@@ -12,7 +12,7 @@ function garden_growth_stage_rows(string $query): array {
         if (strpos($details, 'growth_stage') !== false
             && (strpos($details, 'column') !== false || strpos($details, 'schema cache') !== false)) {
             error_log('Supabase ' . $code . ' on GET ' . $path . ': ' . json_encode($data));
-            fail('Garden database needs an update. Run sql/upgrade_garden_growth.sql in Supabase, then reload.', 503);
+            return null;
         }
         error_log('Supabase ' . $code . ' on GET ' . $path . ': ' . json_encode($data));
         fail('Database error', 500);
@@ -23,13 +23,20 @@ function garden_growth_stage_rows(string $query): array {
 if ($method === 'GET') {
     $items = sb('GET', '/shop_items?is_active=eq.true&order=cost_seeds.asc&select=id,name,kind,cost_seeds,sprite');
     $plots = garden_growth_stage_rows("user_id=eq.$uid&select=slot,item_id,growth_stage,planted_at");
+    $legacyGrowth = $plots === null;
+    if ($legacyGrowth) {
+        $plots = sb('GET', "/garden_plots?user_id=eq.$uid&select=slot,item_id,planted_at");
+    }
     $stageNames = ['sprout', 'growing', 'blooming'];
     foreach ($plots as &$plot) {
-        $plot['growth_stage'] = max(0, min(2, (int)$plot['growth_stage']));
+        $plot['growth_stage'] = $legacyGrowth ? 1 : max(0, min(2, (int)$plot['growth_stage']));
         $plot['stage'] = $stageNames[$plot['growth_stage']];
     }
     unset($plot);
-    json_out(['items' => $items, 'plots' => $plots, 'seeds' => (int)$me['seeds']]);
+    json_out([
+        'items' => $items, 'plots' => $plots, 'seeds' => (int)$me['seeds'],
+        'growth_mode' => $legacyGrowth ? 'legacy' : 'staged'
+    ]);
 }
 
 $in = read_json();
@@ -40,6 +47,14 @@ if ($slot === false || $slot < 0 || $slot > 11) fail('Pick a plot from 1 to 12')
 
 if ($action === 'water') {
     $plots = garden_growth_stage_rows("user_id=eq.$uid&slot=eq.$slot&select=id,growth_stage");
+    if ($plots === null) {
+        $plots = sb('GET', "/garden_plots?user_id=eq.$uid&slot=eq.$slot&select=id");
+        if (!$plots) fail('There is no plant in that plot', 404);
+        json_out([
+            'ok' => true, 'slot' => $slot, 'growth_stage' => 2,
+            'stage' => 'blooming', 'growth_mode' => 'legacy'
+        ]);
+    }
     if (!$plots) fail('There is no plant in that plot', 404);
     $plotId = (int)$plots[0]['id'];
     $growthStage = (int)$plots[0]['growth_stage'];
@@ -59,8 +74,12 @@ if ($action === 'water') {
 
 if ($action === 'harvest') {
     $plots = garden_growth_stage_rows("user_id=eq.$uid&slot=eq.$slot&select=id,growth_stage");
+    $legacyGrowth = $plots === null;
+    if ($legacyGrowth) {
+        $plots = sb('GET', "/garden_plots?user_id=eq.$uid&slot=eq.$slot&select=id");
+    }
     if (!$plots) fail('There is no plant in that plot', 404);
-    if ((int)$plots[0]['growth_stage'] < 2) fail('Water this plant twice before harvesting it', 409);
+    if (!$legacyGrowth && (int)$plots[0]['growth_stage'] < 2) fail('Water this plant twice before harvesting it', 409);
 
     $season = (string)($in['season'] ?? 'summer');
     $seasonalBonuses = [
@@ -81,8 +100,10 @@ if ($action === 'harvest') {
     ]);
     if (!$updated) fail('Your balance changed. Reload the garden and try again', 409);
 
+    $deletePath = '/garden_plots?id=eq.' . (int)$plots[0]['id'] . '&user_id=eq.' . $uid;
+    if (!$legacyGrowth) $deletePath .= '&growth_stage=eq.2';
     [$code, $deleted] = sb_raw('DELETE',
-        '/garden_plots?id=eq.' . (int)$plots[0]['id'] . '&user_id=eq.' . $uid . '&growth_stage=eq.2',
+        $deletePath,
         null,
         ['return=representation']
     );
@@ -93,7 +114,8 @@ if ($action === 'harvest') {
 
     json_out([
         'ok' => true, 'slot' => $slot, 'seeds' => $seeds, 'xp' => $xp,
-        'reward_seeds' => $rewardSeeds, 'reward_xp' => $rewardXp, 'seasonal_bonus' => $bonus
+        'reward_seeds' => $rewardSeeds, 'reward_xp' => $rewardXp, 'seasonal_bonus' => $bonus,
+        'growth_mode' => $legacyGrowth ? 'legacy' : 'staged'
     ]);
 }
 
@@ -110,17 +132,24 @@ $cost = (int)$item[0]['cost_seeds'];
 $balance = (int)$me['seeds'];
 if ($balance < $cost) fail('Not enough seeds yet', 402);
 if (sb('GET', "/garden_plots?user_id=eq.$uid&slot=eq.$slot&select=id")) fail('That plot is already planted', 409);
+$stageRows = garden_growth_stage_rows("user_id=eq.$uid&select=id,growth_stage&limit=1");
+$legacyGrowth = $stageRows === null;
 
 /* spend seeds first, guarded by the old balance so two requests cannot both pay */
 $paid = sb('PATCH', "/profiles?id=eq.$uid&seeds=eq.$balance", ['seeds' => $balance - $cost]);
 if (!$paid) fail('Your balance changed. Try again.', 409);
 
-[$code] = sb_raw('POST', '/garden_plots', [
-    'user_id' => $me['id'], 'slot' => $slot, 'item_id' => $itemId, 'growth_stage' => 0
-]);
+$plotData = ['user_id' => $me['id'], 'slot' => $slot, 'item_id' => $itemId];
+if (!$legacyGrowth) $plotData['growth_stage'] = 0;
+[$code] = sb_raw('POST', '/garden_plots', $plotData);
 if ($code < 200 || $code >= 300) {
     sb('PATCH', "/profiles?id=eq.$uid", ['seeds' => $balance]); // refund
     fail('That plot is already planted', 409);
 }
-json_out(['ok' => true, 'seeds' => $balance - $cost, 'slot' => $slot, 'item_id' => $itemId], 201);
+json_out([
+    'ok' => true, 'seeds' => $balance - $cost, 'slot' => $slot, 'item_id' => $itemId,
+    'growth_stage' => 0,
+    'stage' => 'sprout',
+    'growth_mode' => $legacyGrowth ? 'legacy' : 'staged'
+], 201);
 ?>
