@@ -4,9 +4,25 @@ $method = method_is('GET', 'POST');
 $me = require_user();
 $uid = q($me['id']);
 
+function garden_growth_stage_rows(string $query): array {
+    $path = '/garden_plots?' . $query;
+    [$code, $data] = sb_raw('GET', $path);
+    if ($code < 200 || $code >= 300) {
+        $details = strtolower(is_array($data) ? (string)json_encode($data) : (string)$data);
+        if (strpos($details, 'growth_stage') !== false
+            && (strpos($details, 'column') !== false || strpos($details, 'schema cache') !== false)) {
+            error_log('Supabase ' . $code . ' on GET ' . $path . ': ' . json_encode($data));
+            fail('Garden database needs an update. Run sql/upgrade_garden_growth.sql in Supabase, then reload.', 503);
+        }
+        error_log('Supabase ' . $code . ' on GET ' . $path . ': ' . json_encode($data));
+        fail('Database error', 500);
+    }
+    return is_array($data) ? $data : [];
+}
+
 if ($method === 'GET') {
     $items = sb('GET', '/shop_items?is_active=eq.true&order=cost_seeds.asc&select=id,name,kind,cost_seeds,sprite');
-    $plots = sb('GET', "/garden_plots?user_id=eq.$uid&select=slot,item_id,growth_stage,planted_at");
+    $plots = garden_growth_stage_rows("user_id=eq.$uid&select=slot,item_id,growth_stage,planted_at");
     $stageNames = ['sprout', 'growing', 'blooming'];
     foreach ($plots as &$plot) {
         $plot['growth_stage'] = max(0, min(2, (int)$plot['growth_stage']));
@@ -23,7 +39,7 @@ $slot = filter_var($in['slot'] ?? null, FILTER_VALIDATE_INT);
 if ($slot === false || $slot < 0 || $slot > 11) fail('Pick a plot from 1 to 12');
 
 if ($action === 'water') {
-    $plots = sb('GET', "/garden_plots?user_id=eq.$uid&slot=eq.$slot&select=id,growth_stage");
+    $plots = garden_growth_stage_rows("user_id=eq.$uid&slot=eq.$slot&select=id,growth_stage");
     if (!$plots) fail('There is no plant in that plot', 404);
     $plotId = (int)$plots[0]['id'];
     $growthStage = (int)$plots[0]['growth_stage'];
@@ -42,7 +58,7 @@ if ($action === 'water') {
 }
 
 if ($action === 'harvest') {
-    $plots = sb('GET', "/garden_plots?user_id=eq.$uid&slot=eq.$slot&select=id,growth_stage");
+    $plots = garden_growth_stage_rows("user_id=eq.$uid&slot=eq.$slot&select=id,growth_stage");
     if (!$plots) fail('There is no plant in that plot', 404);
     if ((int)$plots[0]['growth_stage'] < 2) fail('Water this plant twice before harvesting it', 409);
 

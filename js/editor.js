@@ -40,6 +40,35 @@
     'Capstone Project': 'Put all your garden skills together: variables, lists, accumulation, loops, and output formatting in one master script!'
   };
 
+  const QUEST_SCENE_SPRITES = {
+    'what is programming?': ['seed'],
+    'what is python?': ['seed', 'sprout'],
+    'leaving garden notes': ['leaf'],
+    'say hello': ['sparkle'],
+    'name your water': ['droplet'],
+    'label your plant': ['tulip'],
+    'count the seeds': ['seed', 'seed', 'seed', 'seed', 'seed', 'seed'],
+    'sunny or not?': ['sunflower', 'droplet'],
+    'water every plant': ['sprout', 'sprout', 'sprout', 'sprout', 'sprout', 'sprout', 'sprout', 'sprout', 'sprout'],
+    'seed basket': ['sunflower', 'tulip', 'mushroom']
+  };
+
+  function renderQuestScene(currentLesson) {
+    const grid = scene.querySelector('.scene__plot-grid');
+    if (!grid) return;
+    const title = String(currentLesson.title || '').trim().toLowerCase();
+    const sprites = QUEST_SCENE_SPRITES[title] || ['seed'];
+    grid.textContent = '';
+    for (let i = 0; i < 9; i++) {
+      const plot = PG.el('span', 'scene-plot');
+      if (sprites[i]) plot.appendChild(PG.spriteEl(sprites[i], 'scene-plant'));
+      grid.appendChild(plot);
+    }
+    scene.dataset.questId = String(currentLesson.id);
+    scene.setAttribute('aria-label', 'Garden scene for quest: ' + currentLesson.title);
+    if (currentLesson.status === 'done') scene.classList.add('is-bloom');
+  }
+
   function renderGutter(errLine) {
     const n = code.value.split('\n').length;
     gutter.textContent = '';
@@ -428,6 +457,7 @@
   function fill(l) {
     lesson = l;
     document.title = l.title + ' | Python Garden';
+    renderQuestScene(l);
 
     // 1. Populate Lesson Before the Game (Quest Intro Paper)
     const mat = findMaterial(l);
